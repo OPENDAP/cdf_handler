@@ -1,5 +1,5 @@
 
-# $Id: Makefile.in,v 1.2 2003/05/08 16:59:20 pwest Exp $
+# $Id: Makefile.in,v 1.3 2003/05/22 18:07:16 pwest Exp $
 
 @SET_MAKE@
 
@@ -7,7 +7,7 @@
 # DEFS gets the `-D' defines that describe what a particular system has
 # or doesn't have.
 
-PROG = libcdf-dods.a cdf_dods
+PROG = libcdf-dods.a cdf_handler
 DODS_ROOT = @dods_relative@
 
 INCS = -I. @INCS@
@@ -84,14 +84,14 @@ CDFOBJS = CDFArray.o CDFFloat32.o CDFFloat64.o CDFInt32.o CDFUInt32.o \
 	CDFreadAttributes.o CDFreadDescriptors.o \
 	CDFutilities.o
 
-SSRCS = cdf_dods.cc
-SRVOBJS = cdf_dods.o
+SSRCS = cdf_handler.cc
+SRVOBJS = cdf_handler.o
 
 # Matlab client can be suppressed by a switch to configure.
-all: libcdf-dods.a cdf_dods
+all: libcdf-dods.a cdf_handler
 
-cdf_dods: $(SRVOBJS) libcdf-dods.a
-	$(CXX) $(LDFLAGS) -o cdf_dods $(SRVOBJS) $(LIBS)
+cdf_handler: $(SRVOBJS) libcdf-dods.a
+	$(CXX) $(LDFLAGS) -o cdf_handler $(SRVOBJS) $(LIBS)
 
 libcdf-dods.a: $(LIBOBJS) $(CDFOBJS) 
 	$(AR) -cru $@ $(LIBOBJS) $(CDFOBJS) 
@@ -129,12 +129,10 @@ collect-coverage-data:
 	     gcov -l -o ../ $$f >> $$cov_dat; \
          done)
 
-install: libcdf-dods.a cdf_dods
+install: libcdf-dods.a cdf_handler
 	$(INSTALL_DATA) libcdf-dods.a $(libdir)
 	$(RANLIB) $(libdir)/libcdf-dods.a
-	$(INSTALL_PROGRAM) -s cdf_dods $(etcdir)
-	$(LN_S) -f ./cdf_dods $(etcdir)/cdf_das
-	$(LN_S) -f ./cdf_dods $(etcdir)/cdf_dds
+	$(INSTALL_PROGRAM) -s cdf_handler $(etcdir)
 
 clean:	
 	-rm -f *.o *.sum *.log *~ core
@@ -174,7 +172,7 @@ binary-tar:
             --file DODS-cdf-server-$(version)-$(host).tar.gz \
             DODS/NEWS \
             DODS/docs/README DODS/docs/README-cdf-server \
-            DODS/etc/cdf_dods ; \
+            DODS/etc/cdf_handler ; \
         $(TAR) --gzip --create --dereference \
             --file DODS-cdf-client-$(version)-$(host).tar.gz \
             DODS/NEWS \
@@ -216,7 +214,7 @@ tags:
 	$(CXX) -c $(CXXFLAGS) $(CPPFLAGS) -o $@ $<
 
 # DO NOT DELETE; depend depends on this line.
-cdf_dods.o: cdf_dods.cc ../../include/cgi_util.h \
+cdf_handler.o: cdf_handler.cc ../../include/cgi_util.h \
   ../../include/DDS.h ../../include/Pix.h ../../include/IteratorAdapter.h \
   ../../include/BaseType.h ../../include/InternalErr.h \
   ../../include/Error.h ../../include/Clause.h ../../include/expr.h \
