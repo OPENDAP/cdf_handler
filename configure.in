@@ -1,0 +1,102 @@
+dnl -*- m4 -*-
+dnl Process this file with autoconf to produce a configure script.
+
+AC_REVISION($Id: configure.in,v 1.1 2003/05/08 16:59:20 pwest Exp $)
+AC_INIT(cdf_dods.cc)
+AC_CONFIG_AUX_DIR(../../etc)
+AC_CONFIG_HEADER(config_cdf.h)
+
+AC_CONFIG_AUX_DIR(../../etc)
+
+AC_PREFIX_DEFAULT("\$(DODS_ROOT)")
+
+dnl DODS_ROOT is the fully qualified pathname to the root of the DODS
+dnl subtree. 
+
+DODS_GET_DODS_ROOT
+DODS_DIRECTORY_VERSION
+
+DODS_SERVER_VERSION=\"cdfnew-dods/$VERSION\"
+AC_DEFINE_UNQUOTED(DODS_SERVER_VERSION, $DODS_SERVER_VERSION)
+
+dnl `depend' is the command to use to generate dependencies for Makefiles.
+
+depend=${dods_relative}/etc/depend.sh
+AC_SUBST(depend)
+
+AC_CANONICAL_HOST
+AC_SUBST(host)
+
+CFLAGS=${CFLAGS-"-gstabs -O2 $CFLAGS"}
+AC_MSG_RESULT(Setting CFLAGS to $CFLAGS)
+
+CXXFLAGS=${CXXFLAGS-"-gstabs -O2 $CXXFLAGS"}
+AC_MSG_RESULT(Setting CXXFLAGS to $CXXFLAGS)
+
+dnl Turn off all optimizations
+dnl DODS_GCC_VERSION
+dnl echo "GCC_VER: $GCC_VER"
+dnl case $GCC_VER in
+dnl     2.95*) CXXFLAGS="-gstabs -O0 $CXXFLAGS";;
+dnl     *) CXXFLAGS="-gstabs -O0 $CXXFLAGS";;
+dnl esac
+
+dnl Checks for programs.
+AC_PROG_AWK
+AC_PROG_CC
+AC_ISC_POSIX
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
+AC_PROG_RANLIB
+AC_PROG_CPP
+AC_PROG_INSTALL
+
+DODS_GCC
+DODS_PROG_LEX
+DODS_PROG_GTAR
+DODS_PROG_PERL
+DODS_PROG_BISON
+
+dnl Never use exceptions with this code until 2.8.x is out!
+
+DODS_OS
+DODS_MACHINE
+if test "$OS" = ultrix && test "$MACHINE" = vax; then
+    case "$CC" in
+        /bin/cc*|cc*)
+echo "changing C compiler to \`vcc' because \`cc' floating-point is broken"
+            CC=vcc
+            ;;
+    esac
+fi
+
+CXX=${CXX-g++}
+AC_MSG_RESULT(Setting CXX to $CXX)
+AC_SUBST(CXX)
+
+dnl Checks for header files.
+AC_HEADER_STDC
+AC_CHECK_HEADERS(fcntl.h limits.h unistd.h)
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_TYPE_OFF_T
+AC_TYPE_SIZE_T
+
+dnl Checks for library functions.
+AC_FUNC_VPRINTF
+AC_CHECK_FUNCS(strerror strtol)
+
+DODS_CHECK_SIZES
+
+DODS_CDF_LIBRARY
+
+DODS_RX_LIB
+DODS_WWW_LIB
+DODS_COMPRESSION_LIB
+
+DODS_EFENCE
+DODS_DBNEW
+DODS_DEBUG_OPTION
+
+AC_OUTPUT(Makefile)

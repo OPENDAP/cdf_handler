@@ -23,38 +23,44 @@
 //
 // You can contact OPeNDAP, Inc. at PO Box 112, Saunderstown, RI. 02874-0112.
  
-// cdf-dods implementation of OPeNDAP Float64 class used to access variables
-// in the cdf files.
+// Represents the data model objects that are not used in the cdf-dods
+// implementation of a dods server
 //
 // pwest 05/08/03
 
-#ifndef _CDFFloat64_h
-#define _CDFFloat64_h 1
+#ifndef _CDFUnused_h
+#define _CDFUnused_h 1
 
 #ifdef __GNUG__
 #pragma interface
 #endif
 
-#include "Float64.h"
+#include <string>
 
-extern Float64 *NewFloat64( const string &n = "" ) ;
+using std::string ;
 
-class CDFFloat64 : public Float64 {
-public:
-    CDFFloat64( const string &n = (char *)0 ) ;
+class Structure ;
+class Function ;
+class Grid ;
+class Int16 ;
+class List ;
+class Sequence ;
+class UInt16 ;
+class Url ;
+class BaseType ;
 
-    virtual ~CDFFloat64( ) ;
+extern Structure *NewStructure( const string &n = "" ) ;
+extern Function *NewFunction( const string &n = "" ) ;
+extern Grid *NewGrid( const string &n = "" ) ;
+extern Int16 *NewInt16( const string &n = "" ) ;
+extern List *NewList( const string &n = "", BaseType *v = 0 ) ;
+extern Sequence *NewSequence( const string &n = "" ) ;
+extern UInt16 *NewUInt16( const string &n = "" ) ;
+extern Url *NewUrl( const string &n = "" ) ;
 
-    virtual BaseType *ptr_duplicate( ) ;
-    
-    virtual bool read( const string &dataset ) ;
-};
+#endif // _CDFUnused_h
 
-typedef CDFFloat64 * CDFFloat64Ptr;
-
-#endif
-
-// $Log: CDFFloat64.h,v $
-// Revision 1.2  2003/05/08 16:59:20  pwest
+// $Log: CDFUnused.h,v $
+// Revision 1.1  2003/05/08 16:59:20  pwest
 // cdf-dods server implementation
 //

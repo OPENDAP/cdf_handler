@@ -1,5 +1,5 @@
 
-# $Id: Makefile.in,v 1.1 1996/06/10 20:34:03 jimg Exp $
+# $Id: Makefile.in,v 1.2 2003/05/08 16:59:20 pwest Exp $
 
 @SET_MAKE@
 
@@ -7,24 +7,24 @@
 # DEFS gets the `-D' defines that describe what a particular system has
 # or doesn't have.
 
-PROG = cdf_das cdf_dds cdf_dods
-DODS_ROOT = ../../..
+PROG = libcdf-dods.a cdf_dods
+DODS_ROOT = @dods_relative@
 
-INCS = -I$(DODS_ROOT)/include -I./lcdf/include
-DEFS = -DUSE_LIBGXX_INLINES -DLOCAL @SWAP@ @NETLONG@ @DEFS@
+INCS = -I. @INCS@
+DEFS = -DLOCAL @DEFS@
 CPPFLAGS = @CPPFLAGS@ $(DEFS) $(INCS)
-CFLAGS = @CFLAGS@ $(SWAP) $(NETLONG)
-CXXFLAGS = @CXXFLAGS@
+CFLAGS = @CFLAGS@
+CXXFLAGS = @CXXFLAGS@ -Wall -Wno-deprecated
+TEST_COV_FLAGS = -ftest-coverage -fprofile-arcs
+TAGS_FLAGS = -i ../dap/TAGS
 
 # Make sure that the core software libraries just built can be found without
 # first running make install, but that if `make install' and `make clean' has
 # been run those libraries will be found in the `lib' directory.
-LDFLAGS = @LDFLAGS@ -L. -L./lcdf/lib -L$(DODS_ROOT)/lib
-
+LDFLAGS = -L. @LDFLAGS@
 LFLAGS=-8
 YFLAGS=-d
-
-LIBS = -lcdf-dods -ldap++ -lcdf-dods -ldap++ -lnetio -lerrmsg @LIBS@
+LIBS = -lcdf-dods -ldap++ -lcdf-dods -ldap++ -lcdf @LIBS@
 
 # Set the instalation directories; prefix can be set on the command line
 # during Makefile construction with `./configure --prefix /my/choice'
@@ -44,8 +44,15 @@ INSTALLMAN = man
 
 SHELL = /bin/sh
 srcdir = @srcdir@
-VPATH = @srcdir@:lnetcdf
-dir = @dir@
+version = @VERSION@
+basedir = cdfnew-dods
+dir = $(basedir)-$(version)
+host = @host@
+
+COMPONENT_NAME = DODS CDF Server
+AWK = @AWK@
+TAR = @TAR@
+PERL = @PERL@
 
 # testsuite specifics
 RUNTEST= runtest
@@ -54,101 +61,151 @@ RUNTESTFLAGS= #--all --verbose
 # names of key programs
 
 LN_S = @LN_S@
-AWK = @AWK@
 CC = @CC@
 CXX = @CXX@
 YACC = @YACC@
 LEX = @LEX@
-TYPEAR = ar
+AR = ar
 RANLIB = @RANLIB@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 TAGS = etags
+STRIP = strip
+VPATH = .
 
-CDFSRC = CDFArray.cc CDFByte.cc CDFFloat64.cc CDFFuCDFtion.cc CDFGrid.cc \
-	CDFInt32.cc CDFList.cc CDFSequeCDFe.cc CDFStr.cc CDFStructure.cc CDFUrl.cc
+CDFSRCS = CDFArray.cc CDFFloat32.cc CDFFloat64.cc CDFInt32.cc CDFUInt32.cc \
+	CDFByte.cc CDFStr.cc CDFUnused.cc \
+	CDFreadAttributes.cc CDFreadDescriptors.cc \
+	CDFutilities.cc
 
-CDFOBJ = CDFArray.o CDFByte.o CDFFloat64.o CDFFuCDFtion.o CDFGrid.o \
-	CDFInt32.o 	CDFList.o CDFSequeCDFe.o CDFStr.o CDFStructure.o CDFUrl.o
+CDFOBJS = CDFArray.o CDFFloat32.o CDFFloat64.o CDFInt32.o CDFUInt32.o \
+	CDFByte.o CDFStr.o CDFUnused.o \
+	CDFreadAttributes.o CDFreadDescriptors.o \
+	CDFutilities.o
 
-SSRCS = cdf_das.cc cdfdas.cc cdf_dds.cc cdfdds.cc cdf_dods.cc $(NETSRC)
-DASOBJS = cdf_das.o cdfdas.o $(NETOBJ)
-DDSOBJS = cdf_dds.o cdfdds.o $(NETOBJ)
-SRVOBJS = cdf_dods.o cdfdds.o $(NETOBJ)
+SSRCS = cdf_dods.cc
+SRVOBJS = cdf_dods.o
 
-NETSRC = NCConnect.cc inst.cc $(NCSRC)
-NETOBJ = NCConnect.o inst.o $(NCOBJ)
-
-LIBSRCS = $(NETSRC) Dfile.cc Ddim.cc Dattr.cc Dvar.cc Dcdf.cc Dputget.cc \
-           Dputgetg.cc 
-LIBOBJS = $(NETOBJ) Dfile.o Ddim.o Dattr.o Dvar.o Dcdf.o Dputget.o Dputgetg.o
-
-NCHDRS = lnetcdf.h
-XDRFILE	= @XDRFILE@
-
-NCOBJS = larray.o lattr.o lcdf.o ldim.o lfile.o liarray.o lerror.o \
-	 lglobdef.o lputget.o lputgetg.o lsharray.o lstring.o lvar.o \
-	 l@XDRFILE@.o
-
-.PHONY:	programs
-all: libcdf-dods.a cdf_das cdf_dds cdf_dods programs
-
-cdf_das:	$(DASOBJS) libcdf-dods.a
-	$(CXX) $(LDFLAGS) -o cdf_das $(DASOBJS) $(LIBS)	
-
-cdf_dds: $(DDSOBJS) libcdf-dods.a
-	$(CXX) $(LDFLAGS) -o cdf_dds $(DDSOBJS)  $(LIBS)
+# Matlab client can be suppressed by a switch to configure.
+all: libcdf-dods.a cdf_dods
 
 cdf_dods: $(SRVOBJS) libcdf-dods.a
 	$(CXX) $(LDFLAGS) -o cdf_dods $(SRVOBJS) $(LIBS)
 
-libcdf-dods.a: $(LIBOBJS) $(CDFOBJS)
-	$(AR) -cru $@ $?
+libcdf-dods.a: $(LIBOBJS) $(CDFOBJS) 
+	$(AR) -cru $@ $(LIBOBJS) $(CDFOBJS) 
 	$(RANLIB) $@
-
-programs:
-	cd ncdump && $(MAKE) $(MFLAGS) all && cd ..
-	cd ncview && $(MAKE) $(MFLAGS) all && cd ..
 
 # Standard targets with some customization for das-test and dds-test
 
-Makefile: ${srcdir}/Makefile.in
-	${SHELL} config.status
+configure: configure.in $(DODS_ROOT)/etc/aclocal.m4
+	autoconf --localdir=$(DODS_ROOT)/etc
+
+Makefile: Makefile.in
+	if [ -x ./config.status ]; \
+	then \
+	    ${SHELL} ./config.status; \
+	else \
+	    ./configure; \
+	fi
 
 check:
-	echo "No tests"
-	cd ncdump && $(MAKE) $(MFLAGS) check && cd ..
-	cd ncview && $(MAKE) $(MFLAGS) check && cd ..
+	echo "No tests at this time"
 
-install: all
-	$(INSTALL_DATA) libnc-dods.a $(libdir)
-	$(RANLIB) $(libdir)/libnc-dods.a
-	$(INSTALL_PROGRAM) nc_das $(etcdir)
-	$(INSTALL_PROGRAM) nc_dds $(etcdir)
-	$(INSTALL_PROGRAM) nc_dods $(etcdir)
-	$(INSTALL_PROGRAM) nc $(etcdir)
-	cd ncdump && $(MAKE) $(MFLAGS) install && cd ..
-	cd ncview && $(MAKE) $(MFLAGS) install && cd ..
+test-coverage: clean
+	$(MAKE) $(MFLAGS) CXXFLAGS="$(CXXFLAGS) $(TEST_COV_FLAGS)" check
+
+# Note that the gcov options -f and -b are useful but sometimes make looking
+# at the results of coverage analysis a little taxing. -b reports on all
+# branched and -f reports on all functions. The -l -o options summarize on a
+# per-file basis. 3/27/98 jhrg
+collect-coverage-data:
+	(cd test-coverage; \
+         cov_dat="coverage-data-`date +%m.%d.%y`"; \
+	 touch $$cov_dat; \
+	 for f in $(ALLSRCS); do \
+	     echo "\n*** Coverage data for $$f ***\n" >> $$cov_dat; \
+	     gcov -l -o ../ $$f >> $$cov_dat; \
+         done)
+
+install: libcdf-dods.a cdf_dods
+	$(INSTALL_DATA) libcdf-dods.a $(libdir)
+	$(RANLIB) $(libdir)/libcdf-dods.a
+	$(INSTALL_PROGRAM) -s cdf_dods $(etcdir)
+	$(LN_S) -f ./cdf_dods $(etcdir)/cdf_das
+	$(LN_S) -f ./cdf_dods $(etcdir)/cdf_dds
 
 clean:	
 	-rm -f *.o *.sum *.log *~ core
-	-rm -f $(PROG) libnc-dods.a
-	cd ncdump && $(MAKE) $(MFLAGS) clean && cd ..
-	cd ncview && $(MAKE) $(MFLAGS) clean && cd ..
+	-rm -f $(PROG)
 
 distclean:
 	-rm -f *.o *.sum *.log *~ core
-	-rm -f $(PROG) libnc-dods.a
+	-rm -f $(PROG)
 	-rm -f config.status config.log config.cache
-	-rm -f site.exp
-	cd ncdump && $(MAKE) $(MFLAGS) distclean && cd ..
-	cd ncview && $(MAKE) $(MFLAGS) distclean && cd ..
+	-rm -f site.exp config_cdf.h
 
+.PHONY: depend
 depend: 
-	@depend@ -- $(INCS) -I/usr/local/lib/g++-include -- $(SSRCS) $(CSRCS)
-	cd ncdump && $(MAKE) $(MFLAGS) depend && cd ..
-	cd ncview && $(MAKE) $(MFLAGS) depend && cd ..
+	@depend@ -m Makefile.in -- $(CPPFLAGS) -- $(SSRCS) $(CDFSRCS)
+	$(MAKE) $(MFLAGS) Makefile
+
+.PHONY: tar
+tar:
+	-rm -f config.cache config.log config.status
+	cd $(DODS_ROOT)/.. && \
+	$(TAR) --exclude 'old' --exclude '.#*' --exclude 'CVS' \
+	    --exclude '.snprj*' --exclude '.flc*' --exclude 'Makefile' \
+	    --gzip --create --dereference --file DODS-$(dir).tar.gz \
+	    DODS/src/$(dir)
+
+# Creates tar files for binary distributions.
+#
+.PHONY: binary-tar
+binary-tar:
+	cd $(DODS_ROOT).. && ( \
+	$(TAR) --gzip --create --dereference \
+            --file DODS-cdf-library-$(version)-$(host).tar.gz \
+            DODS/NEWS \
+            DODS/docs/README DODS/docs/README-cdf-library \
+            DODS/lib/libcdf-dods.a ; \
+        $(TAR) --gzip --create --dereference \
+            --file DODS-cdf-server-$(version)-$(host).tar.gz \
+            DODS/NEWS \
+            DODS/docs/README DODS/docs/README-cdf-server \
+            DODS/etc/cdf_dods ; \
+        $(TAR) --gzip --create --dereference \
+            --file DODS-cdf-client-$(version)-$(host).tar.gz \
+            DODS/NEWS \
+            DODS/docs/README DODS/docs/README-cdf-client )
+
+.PHONY: update-version
+update-version: check-version
+	@echo "Version is: `cat version.h`"
+	if test ! -d ../$(dir); then mv ../$(basedir)* ../$(dir); fi
+	if test ! -f $(DODS_ROOT)VERSION; then touch $(DODS_ROOT)VERSION; fi
+	$(etcdir)/update-manifest.pl "$(COMPONENT_NAME)" $(version) \
+		< $(DODS_ROOT)VERSION > tmp.dods.manifest
+	mv tmp.dods.manifest $(DODS_ROOT)VERSION
+
+# Compare the version encoded in this Makefile (set by configure) with the
+# version in version.h. The version make variable is set up near the top of
+# the Makefile.
+.PHONY: check-version
+check-version:
+	@echo "Checking for version.h and Makefile version match-up"
+	@if [ "$(version)" != "`cat version.h`" ]; \
+	then \
+		echo "You must manually re-run configure!"; \
+		exit 1; \
+	else \
+		echo "Yes, they match."; \
+	fi
+
+.PHONY: tags
+tags:
+	$(TAGS) $(TAGS_FLAGS) *.cc *.h
 
 .SUFFIXES:      .o .cc .c
 
@@ -158,5 +215,62 @@ depend:
 .cc.o:
 	$(CXX) -c $(CXXFLAGS) $(CPPFLAGS) -o $@ $<
 
-# DO NOT DELETE THIS LINE -- make depend depends on it.
-
+# DO NOT DELETE; depend depends on this line.
+cdf_dods.o: cdf_dods.cc ../../include/cgi_util.h \
+  ../../include/DDS.h ../../include/Pix.h ../../include/IteratorAdapter.h \
+  ../../include/BaseType.h ../../include/InternalErr.h \
+  ../../include/Error.h ../../include/Clause.h ../../include/expr.h \
+  ../../include/RValue.h ../../include/ObjectType.h \
+  ../../include/EncodingType.h CDFnamePath.h CDFutilities.h \
+  /twilek/d/pwest/cdf/cdf27-dist/include/cdf.h CDFreadDescriptors.h \
+  ../../include/DODSFilter.h ../../include/DAS.h \
+  ../../include/AttrTable.h CDFreadAttributes.h
+CDFArray.o: CDFArray.cc CDFArray.h ../../include/Array.h \
+  ../../include/dods-limits.h ../../include/Vector.h \
+  ../../include/BaseType.h ../../include/InternalErr.h \
+  ../../include/Error.h ../../include/DDS.h ../../include/Pix.h \
+  ../../include/IteratorAdapter.h ../../include/Clause.h \
+  ../../include/expr.h ../../include/RValue.h \
+  ../../include/dods-datatypes.h
+CDFFloat64.o: CDFFloat64.cc CDFFloat64.h ../../include/Float64.h \
+  ../../include/dods-datatypes.h ../../include/BaseType.h \
+  ../../include/InternalErr.h ../../include/Error.h
+CDFInt32.o: CDFInt32.cc CDFInt32.h ../../include/Int32.h \
+  ../../include/dods-datatypes.h ../../include/BaseType.h \
+  ../../include/InternalErr.h ../../include/Error.h
+CDFUInt32.o: CDFUInt32.cc CDFUInt32.h ../../include/UInt32.h \
+  ../../include/dods-datatypes.h ../../include/BaseType.h \
+  ../../include/InternalErr.h ../../include/Error.h
+CDFByte.o: CDFByte.cc CDFByte.h ../../include/Byte.h \
+  ../../include/dods-datatypes.h ../../include/BaseType.h \
+  ../../include/InternalErr.h ../../include/Error.h
+CDFStr.o: CDFStr.cc CDFStr.h ../../include/Str.h \
+  ../../include/dods-limits.h ../../include/BaseType.h \
+  ../../include/InternalErr.h ../../include/Error.h
+CDFUnused.o: CDFUnused.cc CDFUnused.h
+CDFreadAttributes.o: CDFreadAttributes.cc CDFreadAttributes.h \
+  ../../include/DAS.h ../../include/Pix.h ../../include/IteratorAdapter.h \
+  ../../include/AttrTable.h ../../include/Error.h CDFutilities.h \
+  /twilek/d/pwest/cdf/cdf27-dist/include/cdf.h ../../include/BaseType.h \
+  ../../include/InternalErr.h
+CDFreadDescriptors.o: CDFreadDescriptors.cc CDFreadDescriptors.h \
+  ../../include/DDS.h ../../include/Pix.h ../../include/IteratorAdapter.h \
+  ../../include/BaseType.h ../../include/InternalErr.h \
+  ../../include/Error.h ../../include/Clause.h ../../include/expr.h \
+  ../../include/RValue.h ../../include/cgi_util.h \
+  ../../include/ObjectType.h ../../include/EncodingType.h \
+  ../../include/DODSFilter.h ../../include/DAS.h \
+  ../../include/AttrTable.h CDFutilities.h \
+  /twilek/d/pwest/cdf/cdf27-dist/include/cdf.h CDFArray.h \
+  ../../include/Array.h ../../include/dods-limits.h \
+  ../../include/Vector.h ../../include/dods-datatypes.h
+CDFutilities.o: CDFutilities.cc CDFutilities.h \
+  /twilek/d/pwest/cdf/cdf27-dist/include/cdf.h ../../include/BaseType.h \
+  ../../include/InternalErr.h ../../include/Error.h \
+  ../../include/cgi_util.h ../../include/DDS.h ../../include/Pix.h \
+  ../../include/IteratorAdapter.h ../../include/Clause.h \
+  ../../include/expr.h ../../include/RValue.h ../../include/ObjectType.h \
+  ../../include/EncodingType.h CDFByte.h ../../include/Byte.h \
+  ../../include/dods-datatypes.h CDFInt32.h ../../include/Int32.h \
+  CDFUInt32.h ../../include/UInt32.h CDFFloat64.h ../../include/Float64.h \
+  CDFStr.h ../../include/Str.h ../../include/dods-limits.h

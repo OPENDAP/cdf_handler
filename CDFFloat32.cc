@@ -23,38 +23,44 @@
 //
 // You can contact OPeNDAP, Inc. at PO Box 112, Saunderstown, RI. 02874-0112.
  
-// cdf-dods implementation of OPeNDAP Float64 class used to access variables
-// in the cdf files.
+// Implementation for CDFFloat32.
 //
 // pwest 05/08/03
 
-#ifndef _CDFFloat64_h
-#define _CDFFloat64_h 1
-
 #ifdef __GNUG__
-#pragma interface
+#pragma implementation
 #endif
 
-#include "Float64.h"
+#include "CDFFloat32.h"
 
-extern Float64 *NewFloat64( const string &n = "" ) ;
+Float32 *NewFloat32( const string &n )
+{
+    return new CDFFloat32( n ) ;
+}
 
-class CDFFloat64 : public Float64 {
-public:
-    CDFFloat64( const string &n = (char *)0 ) ;
+CDFFloat32::CDFFloat32( const string &n ) : Float32( n )
+{
+}
 
-    virtual ~CDFFloat64( ) ;
+CDFFloat32::~CDFFloat32( )
+{
+}
 
-    virtual BaseType *ptr_duplicate( ) ;
-    
-    virtual bool read( const string &dataset ) ;
-};
+BaseType *CDFFloat32::ptr_duplicate( )
+{
+    return new CDFFloat32( *this ) ;
+}
 
-typedef CDFFloat64 * CDFFloat64Ptr;
+bool CDFFloat32::read( const string &dataset )
+{
+    if ( read_p( ) )
+	return true ;
 
-#endif
+    set_read_p( true ) ;  
+    return true ;
+}
 
-// $Log: CDFFloat64.h,v $
-// Revision 1.2  2003/05/08 16:59:20  pwest
+// $Log: CDFFloat32.cc,v $
+// Revision 1.1  2003/05/08 16:59:20  pwest
 // cdf-dods server implementation
 //
