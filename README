@@ -1,0 +1,12 @@
+This file describes the modifcations made during the creation of the
+CDF objects created to make a CDF server. 
+
+CDF support an EPOCH type.  This is a long (or maybe double) that
+captures date and time.  
+
+
+CDF has one set of dimensions for all of the variables in the file.
+It uses a variance flag to reduce the data storge requirement for
+repetative data.  The variance flag was eliminated in the server
+and all variables in a single CDF were passed to DODS with the
+same dimensions.
