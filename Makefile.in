@@ -1,5 +1,5 @@
 
-# $Id: Makefile.in,v 1.4 2004/07/02 20:49:22 pwest Exp $
+# $Id: Makefile.in,v 1.5 2004/07/02 20:52:46 pwest Exp $
 
 @SET_MAKE@
 
@@ -60,12 +60,12 @@ TAGS = etags
 VPATH = .
 
 # Matlab client can be suppressed by a switch to configure.
-all: libcdf-dods.a cdf_handler
+all: $(LIB) $(PROG)
 
-lib: libcdf-dods.a
+lib: $(LIB)
 
-cdf_handler: $(SRVOBJS) libcdf-dods.a
-	$(CXX) -o cdf_handler $(SRVOBJS) $(LIBS)
+$(PROG): $(SRVOBJS) $(LIB)
+	$(CXX) -o $(PROG) $(SRVOBJS) $(LIBS)
 
 libcdf-dods.a: $(LIBOBJS) $(CDFOBJS) 
 	$(AR) -cru $@ $(LIBOBJS) $(CDFOBJS) 
@@ -87,18 +87,18 @@ Makefile: Makefile.in
 check:
 	echo "No tests at this time"
 
-install: libcdf-dods.a cdf_handler
-	$(INSTALL_DATA) libcdf-dods.a $(libdir)
-	$(RANLIB) $(libdir)/libcdf-dods.a
-	$(INSTALL_PROGRAM) -s cdf_handler $(etcdir)
+install: $(LIB) $(PROG)
+	$(INSTALL_DATA) $(LIB) $(libdir)
+	$(RANLIB) $(libdir)/$(LIB)
+	$(INSTALL_PROGRAM) -s $(PROG) $(etcdir)
 
 clean:	
 	-rm -f *.o *.sum *.log *~ core
-	-rm -f $(PROG)
+	-rm -f $(PROG) $(LIB)
 
 distclean:
 	-rm -f *.o *.sum *.log *~ core
-	-rm -f $(PROG)
+	-rm -f $(PROG) $(LIB)
 	-rm -f config.status config.log config.cache
 	-rm -f site.exp config_cdf.h
 
