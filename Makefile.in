@@ -1,5 +1,5 @@
 
-# $Id: Makefile.in,v 1.3 2003/05/22 18:07:16 pwest Exp $
+# $Id: Makefile.in,v 1.4 2004/07/02 20:49:22 pwest Exp $
 
 @SET_MAKE@
 
@@ -7,91 +7,65 @@
 # DEFS gets the `-D' defines that describe what a particular system has
 # or doesn't have.
 
-PROG = libcdf-dods.a cdf_handler
 DODS_ROOT = @dods_relative@
-
-INCS = -I. @INCS@
-DEFS = -DLOCAL @DEFS@
-CPPFLAGS = @CPPFLAGS@ $(DEFS) $(INCS)
-CFLAGS = @CFLAGS@
-CXXFLAGS = @CXXFLAGS@ -Wall -Wno-deprecated
-TEST_COV_FLAGS = -ftest-coverage -fprofile-arcs
-TAGS_FLAGS = -i ../dap/TAGS
-
-# Make sure that the core software libraries just built can be found without
-# first running make install, but that if `make install' and `make clean' has
-# been run those libraries will be found in the `lib' directory.
-LDFLAGS = -L. @LDFLAGS@
-LFLAGS=-8
-YFLAGS=-d
-LIBS = -lcdf-dods -ldap++ -lcdf-dods -ldap++ -lcdf @LIBS@
-
-# Set the instalation directories; prefix can be set on the command line
-# during Makefile construction with `./configure --prefix /my/choice'
 
 prefix = @prefix@
 exec_prefix = $(prefix)
 bindir = $(exec_prefix)/bin
 libdir = $(exec_prefix)/lib
 includedir = $(prefix)/include
-manext = 1
-mandir = $(prefix)/man/man$(manext)
+etcdir = $(prefix)/etc
+TAR = @TAR@
+AR = ar
+RANLIB = @RANLIB@
+INSTALL = @INSTALL@
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
 
-src = $(DODS_ROOT)/src
-etcdir = $(DODS_ROOT)/etc
+CDFSRCS:=CDFArray.cc CDFFloat32.cc CDFFloat64.cc CDFInt32.cc CDFUInt32.cc \
+	CDFByte.cc CDFStr.cc CDFUnused.cc \
+	CDFreadAttributes.cc CDFreadDescriptors.cc \
+	CDFutilities.cc
+CDFOBJS:=CDFArray.o CDFFloat32.o CDFFloat64.o CDFInt32.o CDFUInt32.o \
+	CDFByte.o CDFStr.o CDFUnused.o \
+	CDFreadAttributes.o CDFreadDescriptors.o \
+	CDFutilities.o
 
-INSTALLMAN = man
+SSRCS:=cdf_handler.cc
+SRVOBJS:=cdf_handler.o
+
+LIB:=libcdf-dods.a
+PROG:=cdf_handler
+INCS:=-I. @INCS@
+DEFS:=@DEFS@
+CXXFLAGS:=@CXXFLAGS@ -Wall -Wno-deprecated
+CPPFLAGS:=$(CXXFLAGS) $(DEFS) $(INCS)
+
+LIBS:=-L. -lcdf-dods -ldap++ -lcdf-dods -ldap++ -lcdf @LIBS@
 
 SHELL = /bin/sh
-srcdir = @srcdir@
 version = @VERSION@
-basedir = cdfnew-dods
+basedir = cdf-dods
 dir = $(basedir)-$(version)
 host = @host@
 
 COMPONENT_NAME = DODS CDF Server
-AWK = @AWK@
-TAR = @TAR@
-PERL = @PERL@
-
-# testsuite specifics
-RUNTEST= runtest
-RUNTESTFLAGS= #--all --verbose
 
 # names of key programs
 
 LN_S = @LN_S@
 CC = @CC@
 CXX = @CXX@
-YACC = @YACC@
-LEX = @LEX@
-AR = ar
-RANLIB = @RANLIB@
-INSTALL = @INSTALL@
-INSTALL_DATA = @INSTALL_DATA@
-INSTALL_PROGRAM = @INSTALL_PROGRAM@
 TAGS = etags
-STRIP = strip
 VPATH = .
-
-CDFSRCS = CDFArray.cc CDFFloat32.cc CDFFloat64.cc CDFInt32.cc CDFUInt32.cc \
-	CDFByte.cc CDFStr.cc CDFUnused.cc \
-	CDFreadAttributes.cc CDFreadDescriptors.cc \
-	CDFutilities.cc
-
-CDFOBJS = CDFArray.o CDFFloat32.o CDFFloat64.o CDFInt32.o CDFUInt32.o \
-	CDFByte.o CDFStr.o CDFUnused.o \
-	CDFreadAttributes.o CDFreadDescriptors.o \
-	CDFutilities.o
-
-SSRCS = cdf_handler.cc
-SRVOBJS = cdf_handler.o
 
 # Matlab client can be suppressed by a switch to configure.
 all: libcdf-dods.a cdf_handler
 
+lib: libcdf-dods.a
+
 cdf_handler: $(SRVOBJS) libcdf-dods.a
-	$(CXX) $(LDFLAGS) -o cdf_handler $(SRVOBJS) $(LIBS)
+	$(CXX) -o cdf_handler $(SRVOBJS) $(LIBS)
 
 libcdf-dods.a: $(LIBOBJS) $(CDFOBJS) 
 	$(AR) -cru $@ $(LIBOBJS) $(CDFOBJS) 
@@ -100,7 +74,7 @@ libcdf-dods.a: $(LIBOBJS) $(CDFOBJS)
 # Standard targets with some customization for das-test and dds-test
 
 configure: configure.in $(DODS_ROOT)/etc/aclocal.m4
-	autoconf --localdir=$(DODS_ROOT)/etc
+	autoconf --include=$(DODS_ROOT)/etc
 
 Makefile: Makefile.in
 	if [ -x ./config.status ]; \
@@ -112,22 +86,6 @@ Makefile: Makefile.in
 
 check:
 	echo "No tests at this time"
-
-test-coverage: clean
-	$(MAKE) $(MFLAGS) CXXFLAGS="$(CXXFLAGS) $(TEST_COV_FLAGS)" check
-
-# Note that the gcov options -f and -b are useful but sometimes make looking
-# at the results of coverage analysis a little taxing. -b reports on all
-# branched and -f reports on all functions. The -l -o options summarize on a
-# per-file basis. 3/27/98 jhrg
-collect-coverage-data:
-	(cd test-coverage; \
-         cov_dat="coverage-data-`date +%m.%d.%y`"; \
-	 touch $$cov_dat; \
-	 for f in $(ALLSRCS); do \
-	     echo "\n*** Coverage data for $$f ***\n" >> $$cov_dat; \
-	     gcov -l -o ../ $$f >> $$cov_dat; \
-         done)
 
 install: libcdf-dods.a cdf_handler
 	$(INSTALL_DATA) libcdf-dods.a $(libdir)
@@ -205,70 +163,81 @@ check-version:
 tags:
 	$(TAGS) $(TAGS_FLAGS) *.cc *.h
 
-.SUFFIXES:      .o .cc .c
-
-.c.o:
-	$(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
+.SUFFIXES:      .o .cc
 
 .cc.o:
-	$(CXX) -c $(CXXFLAGS) $(CPPFLAGS) -o $@ $<
+	$(CXX) -c $(CPPFLAGS) -o $@ $<
 
 # DO NOT DELETE; depend depends on this line.
-cdf_handler.o: cdf_handler.cc ../../include/cgi_util.h \
-  ../../include/DDS.h ../../include/Pix.h ../../include/IteratorAdapter.h \
-  ../../include/BaseType.h ../../include/InternalErr.h \
-  ../../include/Error.h ../../include/Clause.h ../../include/expr.h \
-  ../../include/RValue.h ../../include/ObjectType.h \
-  ../../include/EncodingType.h CDFnamePath.h CDFutilities.h \
-  /twilek/d/pwest/cdf/cdf27-dist/include/cdf.h CDFreadDescriptors.h \
-  ../../include/DODSFilter.h ../../include/DAS.h \
-  ../../include/AttrTable.h CDFreadAttributes.h
-CDFArray.o: CDFArray.cc CDFArray.h ../../include/Array.h \
-  ../../include/dods-limits.h ../../include/Vector.h \
-  ../../include/BaseType.h ../../include/InternalErr.h \
-  ../../include/Error.h ../../include/DDS.h ../../include/Pix.h \
-  ../../include/IteratorAdapter.h ../../include/Clause.h \
-  ../../include/expr.h ../../include/RValue.h \
-  ../../include/dods-datatypes.h
-CDFFloat64.o: CDFFloat64.cc CDFFloat64.h ../../include/Float64.h \
-  ../../include/dods-datatypes.h ../../include/BaseType.h \
-  ../../include/InternalErr.h ../../include/Error.h
-CDFInt32.o: CDFInt32.cc CDFInt32.h ../../include/Int32.h \
-  ../../include/dods-datatypes.h ../../include/BaseType.h \
-  ../../include/InternalErr.h ../../include/Error.h
-CDFUInt32.o: CDFUInt32.cc CDFUInt32.h ../../include/UInt32.h \
-  ../../include/dods-datatypes.h ../../include/BaseType.h \
-  ../../include/InternalErr.h ../../include/Error.h
-CDFByte.o: CDFByte.cc CDFByte.h ../../include/Byte.h \
-  ../../include/dods-datatypes.h ../../include/BaseType.h \
-  ../../include/InternalErr.h ../../include/Error.h
-CDFStr.o: CDFStr.cc CDFStr.h ../../include/Str.h \
-  ../../include/dods-limits.h ../../include/BaseType.h \
-  ../../include/InternalErr.h ../../include/Error.h
+cdf_handler.o: cdf_handler.cc config_cdf.h CDFutilities.h \
+  /project/cedar/src/pwest/cdf/include/cdf.h ../dap/BaseType.h \
+  ../dap/AttrTable.h /project/cedar/lib/dap-3.4.6/include/Pix.h \
+  /project/cedar/lib/dap-3.4.6/include/IteratorAdapter.h ../dap/Error.h \
+  ../dap/InternalErr.h ../dap/dods-datatypes.h CDFreadDescriptors.h \
+  ../dap/DDS.h ../dap/DAS.h ../dap/DODSResponseObject.h ../dap/Clause.h \
+  ../dap/expr.h ../dap/RValue.h ../dap/cgi_util.h ../dap/ObjectType.h \
+  ../dap/EncodingType.h ../dap/DODSFilter.h CDFreadAttributes.h \
+  ../dap/debug.h
+CDFArray.o: CDFArray.cc CDFArray.h ../dap/Array.h ../dap/dods-limits.h \
+  ../dap/Vector.h ../dap/BaseType.h ../dap/AttrTable.h \
+  /project/cedar/lib/dap-3.4.6/include/Pix.h \
+  /project/cedar/lib/dap-3.4.6/include/IteratorAdapter.h ../dap/Error.h \
+  ../dap/InternalErr.h ../dap/dods-datatypes.h ../dap/DDS.h ../dap/DAS.h \
+  ../dap/DODSResponseObject.h ../dap/Clause.h ../dap/expr.h \
+  ../dap/RValue.h CDFutilities.h \
+  /project/cedar/src/pwest/cdf/include/cdf.h
+CDFFloat32.o: CDFFloat32.cc CDFFloat32.h ../dap/Float32.h \
+  ../dap/dods-datatypes.h ../dap/BaseType.h ../dap/AttrTable.h \
+  /project/cedar/lib/dap-3.4.6/include/Pix.h \
+  /project/cedar/lib/dap-3.4.6/include/IteratorAdapter.h ../dap/Error.h \
+  ../dap/InternalErr.h
+CDFFloat64.o: CDFFloat64.cc CDFFloat64.h ../dap/Float64.h \
+  ../dap/dods-datatypes.h ../dap/BaseType.h ../dap/AttrTable.h \
+  /project/cedar/lib/dap-3.4.6/include/Pix.h \
+  /project/cedar/lib/dap-3.4.6/include/IteratorAdapter.h ../dap/Error.h \
+  ../dap/InternalErr.h
+CDFInt32.o: CDFInt32.cc CDFInt32.h ../dap/Int32.h ../dap/dods-datatypes.h \
+  ../dap/BaseType.h ../dap/AttrTable.h \
+  /project/cedar/lib/dap-3.4.6/include/Pix.h \
+  /project/cedar/lib/dap-3.4.6/include/IteratorAdapter.h ../dap/Error.h \
+  ../dap/InternalErr.h
+CDFUInt32.o: CDFUInt32.cc CDFUInt32.h ../dap/UInt32.h \
+  ../dap/dods-datatypes.h ../dap/BaseType.h ../dap/AttrTable.h \
+  /project/cedar/lib/dap-3.4.6/include/Pix.h \
+  /project/cedar/lib/dap-3.4.6/include/IteratorAdapter.h ../dap/Error.h \
+  ../dap/InternalErr.h
+CDFByte.o: CDFByte.cc CDFByte.h ../dap/Byte.h ../dap/dods-datatypes.h \
+  ../dap/BaseType.h ../dap/AttrTable.h \
+  /project/cedar/lib/dap-3.4.6/include/Pix.h \
+  /project/cedar/lib/dap-3.4.6/include/IteratorAdapter.h ../dap/Error.h \
+  ../dap/InternalErr.h
+CDFStr.o: CDFStr.cc CDFStr.h ../dap/Str.h ../dap/dods-limits.h \
+  ../dap/BaseType.h ../dap/AttrTable.h \
+  /project/cedar/lib/dap-3.4.6/include/Pix.h \
+  /project/cedar/lib/dap-3.4.6/include/IteratorAdapter.h ../dap/Error.h \
+  ../dap/InternalErr.h ../dap/dods-datatypes.h
 CDFUnused.o: CDFUnused.cc CDFUnused.h
 CDFreadAttributes.o: CDFreadAttributes.cc CDFreadAttributes.h \
-  ../../include/DAS.h ../../include/Pix.h ../../include/IteratorAdapter.h \
-  ../../include/AttrTable.h ../../include/Error.h CDFutilities.h \
-  /twilek/d/pwest/cdf/cdf27-dist/include/cdf.h ../../include/BaseType.h \
-  ../../include/InternalErr.h
+  ../dap/DAS.h /project/cedar/lib/dap-3.4.6/include/Pix.h \
+  /project/cedar/lib/dap-3.4.6/include/IteratorAdapter.h \
+  ../dap/AttrTable.h ../dap/Error.h ../dap/DODSResponseObject.h \
+  CDFutilities.h /project/cedar/src/pwest/cdf/include/cdf.h \
+  ../dap/BaseType.h ../dap/InternalErr.h ../dap/dods-datatypes.h
 CDFreadDescriptors.o: CDFreadDescriptors.cc CDFreadDescriptors.h \
-  ../../include/DDS.h ../../include/Pix.h ../../include/IteratorAdapter.h \
-  ../../include/BaseType.h ../../include/InternalErr.h \
-  ../../include/Error.h ../../include/Clause.h ../../include/expr.h \
-  ../../include/RValue.h ../../include/cgi_util.h \
-  ../../include/ObjectType.h ../../include/EncodingType.h \
-  ../../include/DODSFilter.h ../../include/DAS.h \
-  ../../include/AttrTable.h CDFutilities.h \
-  /twilek/d/pwest/cdf/cdf27-dist/include/cdf.h CDFArray.h \
-  ../../include/Array.h ../../include/dods-limits.h \
-  ../../include/Vector.h ../../include/dods-datatypes.h
+  ../dap/DDS.h /project/cedar/lib/dap-3.4.6/include/Pix.h \
+  /project/cedar/lib/dap-3.4.6/include/IteratorAdapter.h \
+  ../dap/BaseType.h ../dap/AttrTable.h ../dap/Error.h \
+  ../dap/InternalErr.h ../dap/dods-datatypes.h ../dap/DAS.h \
+  ../dap/DODSResponseObject.h ../dap/Clause.h ../dap/expr.h \
+  ../dap/RValue.h ../dap/cgi_util.h ../dap/ObjectType.h \
+  ../dap/EncodingType.h ../dap/DODSFilter.h CDFutilities.h \
+  /project/cedar/src/pwest/cdf/include/cdf.h CDFArray.h ../dap/Array.h \
+  ../dap/dods-limits.h ../dap/Vector.h
 CDFutilities.o: CDFutilities.cc CDFutilities.h \
-  /twilek/d/pwest/cdf/cdf27-dist/include/cdf.h ../../include/BaseType.h \
-  ../../include/InternalErr.h ../../include/Error.h \
-  ../../include/cgi_util.h ../../include/DDS.h ../../include/Pix.h \
-  ../../include/IteratorAdapter.h ../../include/Clause.h \
-  ../../include/expr.h ../../include/RValue.h ../../include/ObjectType.h \
-  ../../include/EncodingType.h CDFByte.h ../../include/Byte.h \
-  ../../include/dods-datatypes.h CDFInt32.h ../../include/Int32.h \
-  CDFUInt32.h ../../include/UInt32.h CDFFloat64.h ../../include/Float64.h \
-  CDFStr.h ../../include/Str.h ../../include/dods-limits.h
+  /project/cedar/src/pwest/cdf/include/cdf.h ../dap/BaseType.h \
+  ../dap/AttrTable.h /project/cedar/lib/dap-3.4.6/include/Pix.h \
+  /project/cedar/lib/dap-3.4.6/include/IteratorAdapter.h ../dap/Error.h \
+  ../dap/InternalErr.h ../dap/dods-datatypes.h CDFByte.h ../dap/Byte.h \
+  CDFInt32.h ../dap/Int32.h CDFUInt32.h ../dap/UInt32.h CDFFloat32.h \
+  ../dap/Float32.h CDFFloat64.h ../dap/Float64.h CDFStr.h ../dap/Str.h \
+  ../dap/dods-limits.h
