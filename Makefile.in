@@ -1,5 +1,5 @@
 
-# $Id: Makefile.in,v 1.5 2004/07/02 20:52:46 pwest Exp $
+# $Id: Makefile.in,v 1.6 2005/02/01 20:24:44 pwest Exp $
 
 @SET_MAKE@
 
@@ -34,14 +34,18 @@ CDFOBJS:=CDFArray.o CDFFloat32.o CDFFloat64.o CDFInt32.o CDFUInt32.o \
 SSRCS:=cdf_handler.cc
 SRVOBJS:=cdf_handler.o
 
+HANDLER:=cdf_handler2
+MODOBJS:=CDFRequestHandler.o cdf_module.o
+
 LIB:=libcdf-dods.a
 PROG:=cdf_handler
-INCS:=-I. @INCS@
+INCS:=-I. -I../dispatch -I../dap @INCS@
 DEFS:=@DEFS@
 CXXFLAGS:=@CXXFLAGS@ -Wall -Wno-deprecated
 CPPFLAGS:=$(CXXFLAGS) $(DEFS) $(INCS)
 
 LIBS:=-L. -lcdf-dods -ldap++ -lcdf-dods -ldap++ -lcdf @LIBS@
+MODLIBS:= -L../dispatch -ldispatch
 
 SHELL = /bin/sh
 version = @VERSION@
@@ -64,12 +68,17 @@ all: $(LIB) $(PROG)
 
 lib: $(LIB)
 
+handler: $(HANDLER)
+
 $(PROG): $(SRVOBJS) $(LIB)
 	$(CXX) -o $(PROG) $(SRVOBJS) $(LIBS)
 
-libcdf-dods.a: $(LIBOBJS) $(CDFOBJS) 
+$(LIB): $(LIBOBJS) $(CDFOBJS) 
 	$(AR) -cru $@ $(LIBOBJS) $(CDFOBJS) 
 	$(RANLIB) $@
+
+$(HANDLER) : $(LIB) $(MODOBJS) $(HANDLER).o ../dispatch/test_authenticator.o ../dispatch/no_aggserver.o
+	g++ -o $(HANDLER) $(HANDLER).o ../dispatch/test_authenticator.o ../dispatch/no_aggserver.o $(MODOBJS) $(LIB) $(MODLIBS) $(LIBS)
 
 # Standard targets with some customization for das-test and dds-test
 
@@ -170,74 +179,64 @@ tags:
 
 # DO NOT DELETE; depend depends on this line.
 cdf_handler.o: cdf_handler.cc config_cdf.h CDFutilities.h \
-  /project/cedar/src/pwest/cdf/include/cdf.h ../dap/BaseType.h \
-  ../dap/AttrTable.h /project/cedar/lib/dap-3.4.6/include/Pix.h \
-  /project/cedar/lib/dap-3.4.6/include/IteratorAdapter.h ../dap/Error.h \
-  ../dap/InternalErr.h ../dap/dods-datatypes.h CDFreadDescriptors.h \
-  ../dap/DDS.h ../dap/DAS.h ../dap/DODSResponseObject.h ../dap/Clause.h \
-  ../dap/expr.h ../dap/RValue.h ../dap/cgi_util.h ../dap/ObjectType.h \
-  ../dap/EncodingType.h ../dap/DODSFilter.h CDFreadAttributes.h \
-  ../dap/debug.h
+  /project/cedar/src/pwest/opendap/cdf27-dist/include/cdf.h \
+  ../dap/BaseType.h ../dap/AttrTable.h ../../include/Pix.h \
+  ../../include/IteratorAdapter.h ../dap/Error.h ../dap/InternalErr.h \
+  ../dap/dods-datatypes.h CDFreadDescriptors.h ../dap/DDS.h \
+  ../dap/Constructor.h ../dap/DAS.h ../dap/DODSResponseObject.h \
+  ../dap/Clause.h ../dap/expr.h ../dap/RValue.h ../dap/cgi_util.h \
+  ../dap/ObjectType.h ../dap/EncodingType.h ../dap/DODSFilter.h \
+  CDFreadAttributes.h ../dap/debug.h
 CDFArray.o: CDFArray.cc CDFArray.h ../dap/Array.h ../dap/dods-limits.h \
   ../dap/Vector.h ../dap/BaseType.h ../dap/AttrTable.h \
-  /project/cedar/lib/dap-3.4.6/include/Pix.h \
-  /project/cedar/lib/dap-3.4.6/include/IteratorAdapter.h ../dap/Error.h \
-  ../dap/InternalErr.h ../dap/dods-datatypes.h ../dap/DDS.h ../dap/DAS.h \
-  ../dap/DODSResponseObject.h ../dap/Clause.h ../dap/expr.h \
-  ../dap/RValue.h CDFutilities.h \
-  /project/cedar/src/pwest/cdf/include/cdf.h
+  ../../include/Pix.h ../../include/IteratorAdapter.h ../dap/Error.h \
+  ../dap/InternalErr.h ../dap/dods-datatypes.h ../dap/DDS.h \
+  ../dap/Constructor.h ../dap/DAS.h ../dap/DODSResponseObject.h \
+  ../dap/Clause.h ../dap/expr.h ../dap/RValue.h CDFutilities.h \
+  /project/cedar/src/pwest/opendap/cdf27-dist/include/cdf.h
 CDFFloat32.o: CDFFloat32.cc CDFFloat32.h ../dap/Float32.h \
   ../dap/dods-datatypes.h ../dap/BaseType.h ../dap/AttrTable.h \
-  /project/cedar/lib/dap-3.4.6/include/Pix.h \
-  /project/cedar/lib/dap-3.4.6/include/IteratorAdapter.h ../dap/Error.h \
+  ../../include/Pix.h ../../include/IteratorAdapter.h ../dap/Error.h \
   ../dap/InternalErr.h
 CDFFloat64.o: CDFFloat64.cc CDFFloat64.h ../dap/Float64.h \
   ../dap/dods-datatypes.h ../dap/BaseType.h ../dap/AttrTable.h \
-  /project/cedar/lib/dap-3.4.6/include/Pix.h \
-  /project/cedar/lib/dap-3.4.6/include/IteratorAdapter.h ../dap/Error.h \
+  ../../include/Pix.h ../../include/IteratorAdapter.h ../dap/Error.h \
   ../dap/InternalErr.h
 CDFInt32.o: CDFInt32.cc CDFInt32.h ../dap/Int32.h ../dap/dods-datatypes.h \
-  ../dap/BaseType.h ../dap/AttrTable.h \
-  /project/cedar/lib/dap-3.4.6/include/Pix.h \
-  /project/cedar/lib/dap-3.4.6/include/IteratorAdapter.h ../dap/Error.h \
-  ../dap/InternalErr.h
+  ../dap/BaseType.h ../dap/AttrTable.h ../../include/Pix.h \
+  ../../include/IteratorAdapter.h ../dap/Error.h ../dap/InternalErr.h
 CDFUInt32.o: CDFUInt32.cc CDFUInt32.h ../dap/UInt32.h \
   ../dap/dods-datatypes.h ../dap/BaseType.h ../dap/AttrTable.h \
-  /project/cedar/lib/dap-3.4.6/include/Pix.h \
-  /project/cedar/lib/dap-3.4.6/include/IteratorAdapter.h ../dap/Error.h \
+  ../../include/Pix.h ../../include/IteratorAdapter.h ../dap/Error.h \
   ../dap/InternalErr.h
 CDFByte.o: CDFByte.cc CDFByte.h ../dap/Byte.h ../dap/dods-datatypes.h \
-  ../dap/BaseType.h ../dap/AttrTable.h \
-  /project/cedar/lib/dap-3.4.6/include/Pix.h \
-  /project/cedar/lib/dap-3.4.6/include/IteratorAdapter.h ../dap/Error.h \
-  ../dap/InternalErr.h
+  ../dap/BaseType.h ../dap/AttrTable.h ../../include/Pix.h \
+  ../../include/IteratorAdapter.h ../dap/Error.h ../dap/InternalErr.h
 CDFStr.o: CDFStr.cc CDFStr.h ../dap/Str.h ../dap/dods-limits.h \
-  ../dap/BaseType.h ../dap/AttrTable.h \
-  /project/cedar/lib/dap-3.4.6/include/Pix.h \
-  /project/cedar/lib/dap-3.4.6/include/IteratorAdapter.h ../dap/Error.h \
-  ../dap/InternalErr.h ../dap/dods-datatypes.h
+  ../dap/BaseType.h ../dap/AttrTable.h ../../include/Pix.h \
+  ../../include/IteratorAdapter.h ../dap/Error.h ../dap/InternalErr.h \
+  ../dap/dods-datatypes.h
 CDFUnused.o: CDFUnused.cc CDFUnused.h
 CDFreadAttributes.o: CDFreadAttributes.cc CDFreadAttributes.h \
-  ../dap/DAS.h /project/cedar/lib/dap-3.4.6/include/Pix.h \
-  /project/cedar/lib/dap-3.4.6/include/IteratorAdapter.h \
+  ../dap/DAS.h ../../include/Pix.h ../../include/IteratorAdapter.h \
   ../dap/AttrTable.h ../dap/Error.h ../dap/DODSResponseObject.h \
-  CDFutilities.h /project/cedar/src/pwest/cdf/include/cdf.h \
+  CDFutilities.h \
+  /project/cedar/src/pwest/opendap/cdf27-dist/include/cdf.h \
   ../dap/BaseType.h ../dap/InternalErr.h ../dap/dods-datatypes.h
 CDFreadDescriptors.o: CDFreadDescriptors.cc CDFreadDescriptors.h \
-  ../dap/DDS.h /project/cedar/lib/dap-3.4.6/include/Pix.h \
-  /project/cedar/lib/dap-3.4.6/include/IteratorAdapter.h \
+  ../dap/DDS.h ../../include/Pix.h ../../include/IteratorAdapter.h \
   ../dap/BaseType.h ../dap/AttrTable.h ../dap/Error.h \
-  ../dap/InternalErr.h ../dap/dods-datatypes.h ../dap/DAS.h \
-  ../dap/DODSResponseObject.h ../dap/Clause.h ../dap/expr.h \
+  ../dap/InternalErr.h ../dap/dods-datatypes.h ../dap/Constructor.h \
+  ../dap/DAS.h ../dap/DODSResponseObject.h ../dap/Clause.h ../dap/expr.h \
   ../dap/RValue.h ../dap/cgi_util.h ../dap/ObjectType.h \
   ../dap/EncodingType.h ../dap/DODSFilter.h CDFutilities.h \
-  /project/cedar/src/pwest/cdf/include/cdf.h CDFArray.h ../dap/Array.h \
-  ../dap/dods-limits.h ../dap/Vector.h
+  /project/cedar/src/pwest/opendap/cdf27-dist/include/cdf.h CDFArray.h \
+  ../dap/Array.h ../dap/dods-limits.h ../dap/Vector.h
 CDFutilities.o: CDFutilities.cc CDFutilities.h \
-  /project/cedar/src/pwest/cdf/include/cdf.h ../dap/BaseType.h \
-  ../dap/AttrTable.h /project/cedar/lib/dap-3.4.6/include/Pix.h \
-  /project/cedar/lib/dap-3.4.6/include/IteratorAdapter.h ../dap/Error.h \
-  ../dap/InternalErr.h ../dap/dods-datatypes.h CDFByte.h ../dap/Byte.h \
-  CDFInt32.h ../dap/Int32.h CDFUInt32.h ../dap/UInt32.h CDFFloat32.h \
+  /project/cedar/src/pwest/opendap/cdf27-dist/include/cdf.h \
+  ../dap/BaseType.h ../dap/AttrTable.h ../../include/Pix.h \
+  ../../include/IteratorAdapter.h ../dap/Error.h ../dap/InternalErr.h \
+  ../dap/dods-datatypes.h CDFByte.h ../dap/Byte.h CDFInt32.h \
+  ../dap/Int32.h CDFUInt32.h ../dap/UInt32.h CDFFloat32.h \
   ../dap/Float32.h CDFFloat64.h ../dap/Float64.h CDFStr.h ../dap/Str.h \
   ../dap/dods-limits.h
