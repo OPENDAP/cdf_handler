@@ -33,9 +33,12 @@
 #include "CDFreadDescriptors.h"
 #include "CDFutilities.h"
 #include "CDFArray.h"
+#include "cgi_util.h"
 
-bool readDescriptors( DDS &dds, string filename )
+bool readDescriptors( DDS &dds, const string &filename, const string &name )
 {
+    dds.set_dataset_name( name ) ;
+
     CDFid id;            /* CDF identifier. */
     CDFstatus status;    /* CDF completion status. */
 
@@ -156,6 +159,9 @@ bool readDescriptors( DDS &dds, string filename )
 }
 
 // $Log: CDFreadDescriptors.cc,v $
+// Revision 1.2  2004/07/02 20:10:19  pwest
+// Added dataset name to the dds, updated the INSTALL, fixed configure.in
+//
 // Revision 1.1  2003/05/08 16:59:20  pwest
 // cdf-dods server implementation
 //

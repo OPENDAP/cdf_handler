@@ -1,7 +1,7 @@
 
-$Id: INSTALL,v 1.1 2003/05/08 20:47:55 pwest Exp $
+$Id: INSTALL,v 1.2 2004/07/02 20:10:19 pwest Exp $
 
-Installing the cdf-dods server software for DODS.
+Installing the CDF server software and client library for DODS.
 
 ---------------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ BUILDING THE SOFTWARE
 1) Type `./configure' at the system prompt. On some systems you may have to
    type `sh configure.'
 
-2) Type `make' to build the three server programs
+2a) Type `make' to build the server program
 
 3a) Install the server components in DODS_ROOT/etc by running `make
     install.'
@@ -24,11 +24,7 @@ BUILDING THE SOFTWARE
 3b) To install the data server, use the new installServer shell script in the
     DODS_ROOT/etc.
 
-4) Optionally run the tests. To run the tests use `make check.' (You must
-   first install the server.) Currently there are no tests to be run, but
-   there will be in the near future.
-
-5) Set the dods.ini file so that the server will know how to handle
+3d) Set the dods.rc file so that the server will know how to handle
     different types of files you are serving.
 
     The nph-dods dispatch script receives a request and dispatches it to the
@@ -38,10 +34,9 @@ BUILDING THE SOFTWARE
     of the configuration file contains a pattern and the name of a "handler"
     to use for files that match that pattern.
 
-    Here is the default configuration file:
+    Here is the default configuration:
 
     .*\.(HDF|hdf)(.Z|.gz)*$ hdf
-    .*\/cdf\/.*\.(cdf|CDF)$ cdf
     .*\.(NC|nc|cdf|CDF)$ nc
     .*\.(mat|Mat|MAT)$ mat
     .*\.(dat|bin)$ ff
@@ -50,29 +45,36 @@ BUILDING THE SOFTWARE
     .*\/[^\.]+$ jg
 
     Each line consists of a regular expression pattern followed by an
-    abbreviation like "cdf". Consider a URL like this:
+    abbreviation like "jg" or "mat". Consider a URL like this:
 
-    http://dods.org/cgi-bin/nph-dods/data/cdf/example.cdf?temp  
+    http://dods.org/cgi-bin/nph-dods/data/ctd.mat?temp  
 
     When the nph-dods script is executed, the "file name" part of the URL is
-    /data/cdf/example.cdf. Testing this against the default initialization
-    file matches the second line, which indicates that the cdf service
+    /data/ctd.mat. Testing this against the default initialization file
+    matches the third line, which indicates that the mat (Matlab) service
     programs are the ones to use to process this request. The request is then
-    dispatched to the cdf_dods (or cdf_dds or cdf_das) programs for
+    dispatched to the mat-dods (or mat-dds or mat-das) programs for
     processing.
 
-    NOTE: The default configuration file is set up so that files without
-    extensions are handled by the JGOFS service programs. If this is not
-    right for your installation, delete the last line shown above.
-
-    NOTE: Also note that CDF and netCDF sometimes have common file
-    extensions, .cdf or .CDF. If you have BOTH CDF and netCDF installed on
-    your machine then you will need to distinguish these by adding more to
-    your regular expression, as in the above example. If you only have CDF
-    data served then remove the third line for nc and replace the cdf line
-    with:
+    To handle cdf files you will need to do one of two things to the default
+    initialization file:
+    1. Remove the line to handle NetCDF files and replace it with one that
+    will handle CDF files. So, in place of line two above you would have:
 
     .*\.(cdf|CDF)$ cdf
+
+    2. Or, if you need to handle both CDF and NetCDF files, put the cdf data
+    files in a cdf directory different from the NetCDF data directory. For
+    example, CDF files might go into the directory data/cdf and the NetCDF
+    files might go into the directory data/nc. Then, replace the second line
+    above with the following two lines:
+
+    .*\/nc\/.*\.(NC|nc|cdf|CDF)$ nc
+    .*\/cdf\/.*\.(NC|nc|cdf|CDF)$ nc
+
+    NOTE: The default configuration is set up so that files without
+    extensions are handled by the JGOFS service programs. If this is not
+    right for your installation, delete the last line shown above.
 
     "Regular expressions", advanced pattern-matching languages, are a
     powerful feature of Perl and many other computer programs. Powerful
@@ -91,10 +93,10 @@ BUILDING THE SOFTWARE
     file.
 
     If these default rules will not work for your installation, you can
-    rewrite them. For example, if all your files are CDF files, you could
+    rewrite them. For example, if all your files are HDF files, you could
     replace the default configuration file with one that looks like this:
 
-    .* cdf
+    .* hdf
 
     The .* pattern matches all possible names, and indicates that whatever
     the name of the file sought, the HDF service programs are the ones to
@@ -115,8 +117,8 @@ BUILDING THE SOFTWARE
 
 REQUIREMENTS
 
-  o You need to have the DAP library, libcurl, libz and librx from the
-    third-party packages installed before building this software.
+  o You need to have the DAP library, libcurl, libz and librx
+    from the third-party packages installed before building this software.
 
 NOTES
 
@@ -125,7 +127,7 @@ NOTES
     dependencies.
 
   o For information about installing secure DODS servers, see the file
-    SECURITY
+    SECURITY in DODS_ROOT.
 
   o DEBUGGING AIDS
 
