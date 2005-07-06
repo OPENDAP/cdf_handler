@@ -23,153 +23,40 @@
 //
 // You can contact OPeNDAP, Inc. at PO Box 112, Saunderstown, RI. 02874-0112.
  
-#include "config_cdf.h"
-
-static char not_used rcsid[]={"$Id: cdf_handler.cc,v 1.2 2004/07/02 20:10:19 pwest Exp $"};
-
 #include <iostream>
-#include <sstream>
-#include <string>
-#include <fstream>
-
-#include "CDFutilities.h"
-#include "CDFreadDescriptors.h"
-#include "CDFreadAttributes.h"
-#include "DDS.h"
-#include "DAS.h"
-#include "DODSFilter.h"
-#include "debug.h"
-#include "cgi_util.h"
-#include "Error.h"
 
 using std::cerr ;
 using std::endl ;
-using std::string ;
-using std::stringstream ;
-using std::ends ;
-using std::fstream ;
-using std::ios ;
 
-//static fstream dbgThing( "cdf_thingy.out", ios::out ) ;
-
-const string cgi_version = DODS_SERVER_VERSION ;
+#include "DODSCgi.h"
+#include "DODSFilter.h"
+#include "DODSGlobalIQ.h"
+#include "DODSException.h"
+#include "config_cdf.h"
 
 int 
-main( int argc, char *argv[] )
+main(int argc, char *argv[])
 {
-    try { 
-	DODSFilter df( argc, argv ) ;
-
-	switch ( df.get_response() ) {
-	  case DODSFilter::DAS_Response: {
-	    DAS das ;
-	    if( !readAttributes( das, df.get_dataset_name() ) )
-	    {
-		stringstream s ;
-		s << "cdf_dods: Failed to build DAS." << ends ;
-		ErrMsgT( s.str( ) ) ;
-		Error e( unknown_error, "Failed to build DAS." ) ;
-		set_mime_text( stdout, dods_error, df.get_cgi_version( ) ) ;
-		e.print( stdout ) ;
-		return 1 ;
-	    }
-	    df.read_ancillary_das( das ) ;
-	    df.send_das( das ) ;
-	    break ;
-	  }
-
-	  case DODSFilter::DDS_Response: {
-	    DDS dds ;
-	    if( !readDescriptors( dds, df.get_dataset_name(),
-				  name_path( df.get_dataset_name() ) ) )
-	    {
-		stringstream s ;
-		s << "cdf_dods: Failed to build DDS." << ends ;
-		ErrMsgT( s.str( ) ) ;
-		Error e( unknown_error, "Failed to build DDS." ) ;
-		set_mime_text( stdout, dods_error, df.get_cgi_version( ) ) ;
-		e.print( stdout ) ;
-		return 1 ;
-	    }
-	    df.read_ancillary_dds( dds ) ;
-	    df.send_dds( dds, true ) ;
-	    break ;
-	  }
-
-	  case DODSFilter::DataDDS_Response: {
-	    DDS dds ;
-	    if( !readDescriptors( dds, df.get_dataset_name() ,
-				  name_path( df.get_dataset_name() ) ) )
-	    {
-		stringstream s ;
-		s << "cdf_dods: Failed to build DataDDS." << ends ;
-		ErrMsgT( s.str( ) ) ;
-		Error e( unknown_error, "Failed to build DataDDS." ) ;
-		set_mime_text( stdout, dods_error, df.get_cgi_version( ) ) ;
-		e.print( stdout ) ;
-		return 1 ;
-	    }
-	    df.read_ancillary_dds( dds ) ;
-	    df.send_data( dds, stdout ) ;
-	    break ;
-	  }
-
-	  case DODSFilter::DDX_Response: {
-	    DDS dds ;
-	    DAS das ;
-
-	    dds.filename( df.get_dataset_name() ) ;
-
-	    if( !readDescriptors( dds, df.get_dataset_name() ,
-				  name_path( df.get_dataset_name() ) ) )
-	    {
-		stringstream s ;
-		s << "cdf_dods: Failed to build DDS." << ends ;
-		ErrMsgT( s.str( ) ) ;
-		Error e( unknown_error, "Failed to build DDS." ) ;
-		set_mime_text( stdout, dods_error, df.get_cgi_version( ) ) ;
-		e.print( stdout ) ;
-		return 1 ;
-	    }
-	    df.read_ancillary_dds( dds ) ;
-
-	    if( !readAttributes( das, df.get_dataset_name() ) )
-	    {
-		stringstream s ;
-		s << "cdf_dods: Failed to build DAS." << ends ;
-		ErrMsgT( s.str( ) ) ;
-		Error e( unknown_error, "Failed to build DAS." ) ;
-		set_mime_text( stdout, dods_error, df.get_cgi_version( ) ) ;
-		e.print( stdout ) ;
-		return 1 ;
-	    }
-	    df.read_ancillary_das( das ) ;
-
-	    dds.transfer_attributes( &das ) ;
-
-	    df.send_ddx( dds, stdout ) ;
-	    break ;
-	  }
-
-	  case DODSFilter::Version_Response: {
-	    if ( df.get_cgi_version() == "" )
-		df.set_cgi_version( cgi_version ) ;
-	    df.send_version_info() ;
-
-	    break ;
-	  }
-
-	  default:
-	    df.print_usage();	// Throws Error
-	}
+    try
+    {
+	putenv( "DODS_INI=/project/cedar/bin/apache_1.3.29/conf/opendap.ini" ) ;
+	DODSGlobalIQ::DODSGlobalInit( argc, argv ) ;
     }
-    catch ( Error &e ) {
-	set_mime_text( cout, dods_error, cgi_version ) ;
-	e.print( cout ) ;
+    catch( DODSException &e )
+    {
+	cerr << "Error initializing application" << endl ;
+	cerr << "    " << e.get_error_description() << endl ;
 	return 1 ;
     }
 
-    return 0 ;
+    DODSFilter df(argc, argv);
+
+    DODSCgi d( "cdf", df ) ;
+    d.execute_request() ;
+
+    DODSGlobalIQ::DODSGlobalQuit() ;
+
+    return 0;
 }
 
 // $Log: cdf_handler.cc,v $

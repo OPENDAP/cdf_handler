@@ -116,7 +116,7 @@ CDFRequestHandler::cdf_build_version( DODSDataHandlerInterface &dhi )
 {
     DODSInfo *info = (DODSInfo *)dhi.response_handler->get_response_object() ;
     info->add_data( (string)"    " + cdf_version() + "\n" ) ;
-    info->add_data( (string)"        libcdf2.7\n" ) ;
+    info->add_data( (string)"        libcdf3.0\n" ) ;
     return true ;
 }
 

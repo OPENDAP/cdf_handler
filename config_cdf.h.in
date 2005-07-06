@@ -50,7 +50,8 @@
 #define not_used 
 #endif
 
-#undef DODS_SERVER_VERSION
+/* handler version */
+#undef CDF_VERSION
 
 /*
   $Log: config_cdf.h.in,v $
