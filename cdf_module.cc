@@ -7,9 +7,8 @@ using std::endl ;
 #include "DODSInitList.h"
 #include "TheRequestHandlerList.h"
 #include "CDFRequestHandler.h"
+#include "CDFResponseNames.h"
 #include "TheDODSLog.h"
-
-#define CDF_NAME "cdf"
 
 static bool
 CDFInit(int, char**)

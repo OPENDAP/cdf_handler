@@ -29,10 +29,10 @@ CDFOBJS:=CDFArray.o CDFFloat32.o CDFFloat64.o CDFInt32.o CDFUInt32.o \
 	CDFreadAttributes.o CDFreadDescriptors.o \
 	CDFutilities.o CDFRequestHandler.o
 
-SSRCS:=cdf_handler.cc
-SRVOBJS:=cdf_handler.o
-
+HANDLER_SRCS:=cdf_handler.cc CDFHandlerApp.cc
+HANDLER_OBJS:=cdf_handler.o CDFHandlerApp.o
 HANDLER:=cdf_handler
+
 MODOBJS:=cdf_module.o
 
 LIB:=libcdf-handler.a
@@ -71,8 +71,8 @@ $(LIB): $(LIBOBJS) $(CDFOBJS)
 	$(AR) -cru $@ $(LIBOBJS) $(CDFOBJS) 
 	$(RANLIB) $@
 
-$(HANDLER) : $(LIB) $(MODOBJS) $(HANDLER).o $(MODS)
-	g++ -o $(HANDLER) $(HANDLER).o $(MODS) $(MODOBJS) $(LIB) $(LIBS)
+$(HANDLER) : $(HANDLER_OBJS) $(LIB) $(MODOBJS) $(MODS)
+	$(CXX) -o $(HANDLER) $(HANDLER_OBJS) $(MODS) $(MODOBJS) $(LIB) $(LIBS)
 
 # Standard targets with some customization for das-test and dds-test
 
@@ -90,7 +90,7 @@ Makefile: Makefile.in
 check:
 	echo "No tests at this time"
 
-install: $(LIB) $(PROG) install-mods install-progs
+install: $(LIB) $(HANDLER) install-mods install-progs
 	-mkdir -p $(libdir)
 	$(INSTALL_DATA) $(LIB) $(libdir)
 	$(RANLIB) $(libdir)/$(LIB)
@@ -105,18 +105,16 @@ install-progs: $(HANDLER)
 	$(INSTALL_PROGRAM) -s $(HANDLER) $(bindir)
 
 clean:	
-	-rm -f *.o *.sum *.log *~ core
-	-rm -f $(PROG) $(LIB)
+	-rm -f *.sum *.log *~ core
+	-rm -f $(HANDLER) $(LIB) $(HANDLER_OBJS) $(CDFOBJS)
 
-distclean:
-	-rm -f *.o *.sum *.log *~ core
-	-rm -f $(PROG) $(LIB)
+distclean: clean
 	-rm -f config.status config.log config.cache
 	-rm -f site.exp config_cdf.h
 
 .PHONY: depend
 depend: 
-	@depend@ -m Makefile.in -- $(CPPFLAGS) -- $(SSRCS) $(CDFSRCS)
+	@depend@ -m Makefile.in -- $(CPPFLAGS) -- $(HANDLER_SRCS) $(CDFSRCS)
 	$(MAKE) $(MFLAGS) Makefile
 
 .PHONY: tar
@@ -181,195 +179,3 @@ tags:
 	$(CXX) -c $(CPPFLAGS) -o $@ $<
 
 # DO NOT DELETE; depend depends on this line.
-cdf_handler.o: cdf_handler.cc \
-  /project/cedar/src/pwest/opendap-g/include/opendap-g/DODSCgi.h \
-  /project/cedar/src/pwest/opendap-g/include/opendap-g/DODS.h \
-  /project/cedar/src/pwest/opendap-g/include/opendap-g/DODSDataHandlerInterface.h \
-  /project/cedar/src/pwest/opendap-g/include/opendap-g/DODSContainer.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/DODSFilter.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/DAS.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Pix.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/IteratorAdapter.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/AttrTable.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Error.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/DODSResponseObject.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/DDS.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/BaseType.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/InternalErr.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/dods-datatypes.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Constructor.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/BaseTypeFactory.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Clause.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/expr.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/RValue.h \
-  /project/cedar/src/pwest/opendap-g/include/opendap-g/DODSGlobalIQ.h \
-  /project/cedar/src/pwest/opendap-g/include/opendap-g/DODSException.h \
-  config_cdf.h
-CDFArray.o: CDFArray.cc CDFArray.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Array.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/dods-limits.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Vector.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/BaseType.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/AttrTable.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Pix.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/IteratorAdapter.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Error.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/InternalErr.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/dods-datatypes.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/DDS.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Constructor.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/BaseTypeFactory.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/DAS.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/DODSResponseObject.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Clause.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/expr.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/RValue.h \
-  CDFutilities.h \
-  /project/cedar/src/pwest/packages/cdf30-dist/include/cdf.h
-CDFFloat32.o: CDFFloat32.cc CDFFloat32.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Float32.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/dods-datatypes.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/BaseType.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/AttrTable.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Pix.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/IteratorAdapter.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Error.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/InternalErr.h
-CDFFloat64.o: CDFFloat64.cc CDFFloat64.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Float64.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/dods-datatypes.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/BaseType.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/AttrTable.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Pix.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/IteratorAdapter.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Error.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/InternalErr.h
-CDFInt32.o: CDFInt32.cc CDFInt32.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Int32.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/dods-datatypes.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/BaseType.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/AttrTable.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Pix.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/IteratorAdapter.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Error.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/InternalErr.h
-CDFUInt32.o: CDFUInt32.cc CDFUInt32.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/UInt32.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/dods-datatypes.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/BaseType.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/AttrTable.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Pix.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/IteratorAdapter.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Error.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/InternalErr.h
-CDFByte.o: CDFByte.cc CDFByte.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Byte.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/dods-datatypes.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/BaseType.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/AttrTable.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Pix.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/IteratorAdapter.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Error.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/InternalErr.h
-CDFStr.o: CDFStr.cc CDFStr.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Str.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/dods-limits.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/BaseType.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/AttrTable.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Pix.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/IteratorAdapter.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Error.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/InternalErr.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/dods-datatypes.h
-CDFUnused.o: CDFUnused.cc CDFUnused.h
-CDFreadAttributes.o: CDFreadAttributes.cc CDFreadAttributes.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/DAS.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Pix.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/IteratorAdapter.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/AttrTable.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Error.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/DODSResponseObject.h \
-  CDFutilities.h \
-  /project/cedar/src/pwest/packages/cdf30-dist/include/cdf.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/BaseType.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/InternalErr.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/dods-datatypes.h
-CDFreadDescriptors.o: CDFreadDescriptors.cc CDFreadDescriptors.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/DDS.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Pix.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/IteratorAdapter.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/BaseType.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/AttrTable.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Error.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/InternalErr.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/dods-datatypes.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Constructor.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/BaseTypeFactory.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/DAS.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/DODSResponseObject.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Clause.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/expr.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/RValue.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/cgi_util.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/ObjectType.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/EncodingType.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/DODSFilter.h \
-  CDFutilities.h \
-  /project/cedar/src/pwest/packages/cdf30-dist/include/cdf.h CDFArray.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Array.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/dods-limits.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Vector.h
-CDFutilities.o: CDFutilities.cc CDFutilities.h \
-  /project/cedar/src/pwest/packages/cdf30-dist/include/cdf.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/BaseType.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/AttrTable.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Pix.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/IteratorAdapter.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Error.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/InternalErr.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/dods-datatypes.h \
-  CDFByte.h /project/cedar/src/pwest/opendap-g/include/libdap/Byte.h \
-  CDFInt32.h /project/cedar/src/pwest/opendap-g/include/libdap/Int32.h \
-  CDFUInt32.h /project/cedar/src/pwest/opendap-g/include/libdap/UInt32.h \
-  CDFFloat32.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Float32.h \
-  CDFFloat64.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Float64.h CDFStr.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Str.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/dods-limits.h
-CDFRequestHandler.o: CDFRequestHandler.cc CDFRequestHandler.h \
-  /project/cedar/src/pwest/opendap-g/include/opendap-g/DODSRequestHandler.h \
-  /project/cedar/src/pwest/opendap-g/include/opendap-g/DODSDataHandlerInterface.h \
-  /project/cedar/src/pwest/opendap-g/include/opendap-g/DODSContainer.h \
-  /project/cedar/src/pwest/opendap-g/include/opendap-g/DODSResponseHandler.h \
-  /project/cedar/src/pwest/opendap-g/include/opendap-g/DODSTransmitter.h \
-  /project/cedar/src/pwest/opendap-g/include/opendap-g/DODSResponseNames.h \
-  CDFreadAttributes.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/DAS.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Pix.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/IteratorAdapter.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/AttrTable.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Error.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/DODSResponseObject.h \
-  CDFreadDescriptors.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/DDS.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/BaseType.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/InternalErr.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/dods-datatypes.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Constructor.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/BaseTypeFactory.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/Clause.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/expr.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/RValue.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/cgi_util.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/ObjectType.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/EncodingType.h \
-  /project/cedar/src/pwest/opendap-g/include/libdap/DODSFilter.h \
-  /project/cedar/src/pwest/opendap-g/include/opendap-g/DODSConstraintFuncs.h \
-  /project/cedar/src/pwest/opendap-g/include/opendap-g/DODSInfo.h \
-  /project/cedar/src/pwest/opendap-g/include/opendap-g/TheDODSKeys.h \
-  /project/cedar/src/pwest/opendap-g/include/opendap-g/DODSKeys.h \
-  /project/cedar/src/pwest/opendap-g/include/opendap-g/DODSResponseException.h \
-  /project/cedar/src/pwest/opendap-g/include/opendap-g/DODSBasicException.h \
-  /project/cedar/src/pwest/opendap-g/include/opendap-g/DODSException.h \
-  cdf_version.h config_cdf.h

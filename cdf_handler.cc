@@ -23,40 +23,13 @@
 //
 // You can contact OPeNDAP, Inc. at PO Box 112, Saunderstown, RI. 02874-0112.
  
-#include <iostream>
-
-using std::cerr ;
-using std::endl ;
-
-#include "DODSCgi.h"
-#include "DODSFilter.h"
-#include "DODSGlobalIQ.h"
-#include "DODSException.h"
-#include "config_cdf.h"
+#include "CDFHandlerApp.h"
 
 int 
 main(int argc, char *argv[])
 {
-    try
-    {
-	putenv( "DODS_INI=/project/cedar/bin/apache_1.3.29/conf/opendap.ini" ) ;
-	DODSGlobalIQ::DODSGlobalInit( argc, argv ) ;
-    }
-    catch( DODSException &e )
-    {
-	cerr << "Error initializing application" << endl ;
-	cerr << "    " << e.get_error_description() << endl ;
-	return 1 ;
-    }
-
-    DODSFilter df(argc, argv);
-
-    DODSCgi d( "cdf", df ) ;
-    d.execute_request() ;
-
-    DODSGlobalIQ::DODSGlobalQuit() ;
-
-    return 0;
+    CDFHandlerApp app ;
+    return app.main( argc, argv ) ;
 }
 
 // $Log: cdf_handler.cc,v $
