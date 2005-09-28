@@ -80,7 +80,7 @@ CDFRequestHandler::cdf_build_help( DODSDataHandlerInterface &dhi )
     info->add_data( (string)"cdf-dods help: " + cdf_version() + "\n" ) ;
     bool found = false ;
     string key = (string)"CDF.Help." + dhi.transmit_protocol ;
-    string file = TheDODSKeys->get_key( key, found ) ;
+    string file = TheDODSKeys::TheKeys()->get_key( key, found ) ;
     if( found == false )
     {
 	info->add_data( "no help information available for cdf-dods\n" ) ;
