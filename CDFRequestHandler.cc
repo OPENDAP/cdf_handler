@@ -8,6 +8,7 @@ using std::cerr ;
 using std::endl ;
 
 #include "CDFRequestHandler.h"
+#include "CDFTypeFactory.h"
 #include "DODSResponseHandler.h"
 #include "DODSResponseNames.h"
 #include "CDFreadAttributes.h"
@@ -49,6 +50,8 @@ bool
 CDFRequestHandler::cdf_build_dds( DODSDataHandlerInterface &dhi )
 {
     DDS *dds = (DDS *)dhi.response_handler->get_response_object() ;
+    CDFTypeFactory *factory = new CDFTypeFactory ;
+    dds->set_factory( factory ) ;
     if( !readDescriptors( *dds, dhi.container->get_real_name(),
 			  dhi.container->get_symbolic_name() ) )
     {
@@ -63,6 +66,8 @@ bool
 CDFRequestHandler::cdf_build_data( DODSDataHandlerInterface &dhi )
 {
     DDS *dds = (DDS *)dhi.response_handler->get_response_object() ;
+    CDFTypeFactory *factory = new CDFTypeFactory ;
+    dds->set_factory( factory ) ;
     if( !readDescriptors( *dds, dhi.container->get_real_name(),
 			  dhi.container->get_symbolic_name() ) )
     {

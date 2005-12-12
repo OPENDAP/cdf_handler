@@ -21,13 +21,11 @@ INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 
 CDFSRCS:=CDFArray.cc CDFFloat32.cc CDFFloat64.cc CDFInt32.cc CDFUInt32.cc \
-	CDFByte.cc CDFStr.cc CDFUnused.cc \
-	CDFreadAttributes.cc CDFreadDescriptors.cc \
-	CDFutilities.cc CDFRequestHandler.cc
+	CDFByte.cc CDFStr.cc CDFreadAttributes.cc CDFreadDescriptors.cc \
+	CDFutilities.cc CDFRequestHandler.cc CDFTypeFactory.cc
 CDFOBJS:=CDFArray.o CDFFloat32.o CDFFloat64.o CDFInt32.o CDFUInt32.o \
-	CDFByte.o CDFStr.o CDFUnused.o \
-	CDFreadAttributes.o CDFreadDescriptors.o \
-	CDFutilities.o CDFRequestHandler.o
+	CDFByte.o CDFStr.o CDFreadAttributes.o CDFreadDescriptors.o \
+	CDFutilities.o CDFRequestHandler.o CDFTypeFactory.o
 
 HANDLER_SRCS:=cdf_handler.cc CDFHandlerApp.cc
 HANDLER_OBJS:=cdf_handler.o CDFHandlerApp.o
