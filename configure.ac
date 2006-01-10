@@ -36,6 +36,14 @@ AC_CHECK_LIBDAP([3.5.3],
  [ AC_MSG_ERROR([Cannot find libdap])
 ])
   
+AC_CHECK_BES([3.1.0],
+ [
+  LDFLAGS="$LDFLAGS $BES_LDFLAGS"
+  CPPFLAGS="$CPPFLAGS $BES_CFLAGS"
+ ],
+ [ AC_MSG_ERROR([Cannot find libdap])
+])
+  
 dnl Check for the cdf library.
 AC_DEFUN([AC_CHECK_CDF],
 [
@@ -108,22 +116,6 @@ dnl     LDFLAGS="$LDFLAGS -L${CDF_PATH}/lib"
 dnl     LIBS="$LIBS -lcdf"
 dnl     CPPFLAGS="$CPPFLAGS -I${CDF_PATH}/include"
 dnl fi
-
-AC_ARG_WITH([bes],
-            [AS_HELP_STRING([--with-bes=PATH],[bes install root directory])],
-            [BES_PATH=${withval}], 
-            [BES_PATH=""])
-
-dnl Simple test for BES. A better test would look something like the libdap
-dnl macro written by Patrice. This will get us going... If --with-bes is not
-dnl given, then don't build the bes code. jhrg 10/3/05
-if test -x "${BES_PATH}/bin/bes-config"
-then
-    CPPFLAGS="${CPPFLAGS} `${BES_PATH}/bin/bes-config --cflags`"
-    LDFLAGS="${LDFLAGS} `${BES_PATH}/bin/bes-config --libs`"
-    BES_MODULE_DIR="`${BES_PATH}/bin/bes-config --prefix`/lib/bes"
-    AC_SUBST([BES_MODULE_DIR])
-fi
 
 OPENDAP_DEBUG_OPTION
 
