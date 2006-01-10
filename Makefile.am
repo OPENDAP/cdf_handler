@@ -24,6 +24,7 @@ HANDLER_SRC = cdf_handler.cc cdf_module.cc CDFHandlerApp.cc \
 	CDFResponseNames.h config_cdf.h
 
 dap_cdf_handler_SOURCES = $(CDFSRCS) $(HANDLER_SRC) $(CDFHDRS)
+dap_cdf_handler_LDADD = $(BES_LDADD)
 
 EXTRA_DIST = COPYRIGHT COPYING cdf_handler.spec
 
