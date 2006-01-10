@@ -12,7 +12,7 @@ using std::string ;
 string
 cdf_version()
 {
-    return (string)CDF_VERSION + ": compiled on " + __DATE__ + ":" + __TIME__ ;
+    return (string)PACKAGE_VERSION + ": compiled on " + __DATE__ + ":" + __TIME__ ;
 }
 
 #endif // E_cdf_version_h
