@@ -2,8 +2,8 @@
 
 // -*- mode: c++; c-basic-offset:4 -*-
 
-// This file is part of cdf-handler, a data handler for the OPeNDAP data
-// server. 
+// This file is part of cdf-handler, a C++ server of OPeNDAP for access to cdf
+// data. 
 
 // Copyright (c) 2004,2005 University Corporation for Atmospheric Research
 // Author: Patrick West <pwest@ucar.edu>
@@ -65,3 +65,4 @@ public:
 
 #endif // cdf_type_factory_h
 
+// $Log: CDFTypeFactory.h,v $

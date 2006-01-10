@@ -1,7 +1,7 @@
 
 // -*- mode: c++; c-basic-offset:4 -*-
 
-// This file is part of cdf-dap, a C++ server of OPeNDAP for access to cdf
+// This file is part of cdf-handler, a C++ server of OPeNDAP for access to cdf
 // data
 
 // Copyright (c) 2002,2003 OPeNDAP, Inc.
@@ -23,8 +23,7 @@
 //
 // You can contact OPeNDAP, Inc. at PO Box 112, Saunderstown, RI. 02874-0112.
  
-// Represents the data model objects that are not used in the cdf-dods
-// implementation of a dods server
+// Represents the data model objects that are not used in the cdf-handler
 //
 // pwest 05/08/03
 

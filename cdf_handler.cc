@@ -1,8 +1,8 @@
 
 // -*- mode: c++; c-basic-offset:4 -*-
 
-// This file is part of libdap, A C++ implementation of the OPeNDAP Data
-// Access Protocol.
+// This file is part of cdf-handler, a C++ server of OPeNDAP for access to cdf
+// data
 
 // Copyright (c) 2002,2003 OPeNDAP, Inc.
 // Author: Patrick West <pwest@ucar.edu>
