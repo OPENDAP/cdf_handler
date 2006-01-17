@@ -32,7 +32,7 @@ main(int argc, char *argv[])
     return app.main( argc, argv ) ;
 }
 
-// $Log: cdf_handler.cc,v $
+// $Log: bes_cdf_handler.cc,v $
 // Revision 1.2  2004/07/02 20:10:19  pwest
 // Added dataset name to the dds, updated the INSTALL, fixed configure.in
 //

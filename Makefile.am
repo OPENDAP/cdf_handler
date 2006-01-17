@@ -1,5 +1,5 @@
 
-# Automake file for cdf-handler
+# Automake file for netcdf-handler
 #
 # 5/17/2005 jhrg
 #
@@ -11,6 +11,10 @@ ACLOCAL_AMFLAGS = -I conf
 
 bin_PROGRAMS = dap_cdf_handler
 
+if OPENDAPSERVER
+    noinst_PROGRAMS = bes_cdf_handler
+endif
+
 CDFSRCS:=CDFArray.cc CDFFloat32.cc CDFFloat64.cc CDFInt32.cc CDFUInt32.cc \
 	CDFByte.cc CDFStr.cc CDFreadAttributes.cc CDFreadDescriptors.cc \
 	CDFutilities.cc CDFTypeFactory.cc
@@ -19,14 +23,22 @@ CDFHDRS:=CDFArray.h CDFFloat32.h CDFFloat64.h CDFInt32.h CDFUInt32.h \
 	CDFByte.h CDFStr.h CDFreadAttributes.h CDFreadDescriptors.h \
 	CDFutilities.h CDFTypeFactory.h
 
-HANDLER_SRC = cdf_handler.cc cdf_module.cc CDFHandlerApp.cc \
+DAP_HANDLER_SRC = dap_cdf_handler.cc config_cdf.h
+
+BES_HANDLER_SRC = bes_cdf_handler.cc cdf_module.cc CDFHandlerApp.cc \
 	CDFRequestHandler.cc CDFHandlerApp.h CDFRequestHandler.h \
 	CDFResponseNames.h config_cdf.h
 
-dap_cdf_handler_SOURCES = $(CDFSRCS) $(HANDLER_SRC) $(CDFHDRS)
-dap_cdf_handler_LDADD = $(BES_LDADD)
+dap_cdf_handler_SOURCES = $(CDFSRCS) $(DAP_HANDLER_SRC) $(CDFHDRS)
 
-EXTRA_DIST = COPYRIGHT COPYING cdf_handler.spec
+bes_cdf_handler_SOURCES = $(CDFSRCS) $(BES_HANDLER_SRC) $(CDFHDRS)
+bes_cdf_handler_CPPFLAGS = $(BES_CPPFLAGS)
+bes_cdf_handler_LDFLAGS = $(BES_LDFLAGS) 
+bes_cdf_handler_LDADD = $(BES_LDADD)
+
+EXTRA_PROGRAMS = bes_cdf_handler
+
+EXTRA_DIST = COPYRIGHT COPYING netcdf_handler.spec
 
 CLEANFILES = *~
 

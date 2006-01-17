@@ -21,64 +21,73 @@
 
 AC_DEFUN([AC_CHECK_BES],
 [
-  AC_PATH_PROG([BES_CONFIG], [bes-config], [no])
-  bes_min_version=m4_if([$1], [], [3.1.0], [$1])
-  AC_MSG_CHECKING([for bes version >= $bes_min_version])
-  bes_no=""
-  if test "$BES_CONFIG" = "no" ; then
-     bes_no=yes
-  else
-     bes_config_major_version=`$BES_CONFIG --version | sed 's/^bes \([[0-9]]\)*\.\([[0-9]]*\)\.\([[0-9]]*\)$/\1/'`
-     bes_config_minor_version=`$BES_CONFIG --version | sed 's/^bes \([[0-9]]\)*\.\([[0-9]]*\)\.\([[0-9]]*\)$/\2/'`
-     bes_config_micro_version=`$BES_CONFIG --version | sed 's/^bes \([[0-9]]\)*\.\([[0-9]]*\)\.\([[0-9]]*\)$/\2/'`
-     bes_min_major_version=`echo $bes_min_version | sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
-     bes_min_minor_version=`echo $bes_min_version | sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/'`
-     bes_min_micro_version=`echo $bes_min_version | sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\3/'`
+  AC_ARG_WITH([bes],
+              [AS_HELP_STRING([--with-bes=PATH],[bes install root directory])],
+              [BES_PATH=${withval}], 
+              [BES_PATH=""])
+  BES_CONFIG=$BES_PATH/bin/bes-config
+  if test -x "${BES_PATH}/bin/bes-config"
+  then
+    AM_CONDITIONAL([OPENDAPSERVER], [true])
+    bes_min_version=m4_if([$1], [], [3.1.0], [$1])
+    AC_MSG_CHECKING([for bes version >= $bes_min_version])
+    bes_no=""
+    bes_config_major_version=`$BES_CONFIG --version | sed 's/^bes \([[0-9]]\)*\.\([[0-9]]*\)\.\([[0-9]]*\)$/\1/'`
+    bes_config_minor_version=`$BES_CONFIG --version | sed 's/^bes \([[0-9]]\)*\.\([[0-9]]*\)\.\([[0-9]]*\)$/\2/'`
+    bes_config_micro_version=`$BES_CONFIG --version | sed 's/^bes \([[0-9]]\)*\.\([[0-9]]*\)\.\([[0-9]]*\)$/\2/'`
+    bes_min_major_version=`echo $bes_min_version | sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
+    bes_min_minor_version=`echo $bes_min_version | sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/'`
+    bes_min_micro_version=`echo $bes_min_version | sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\3/'`
 
-     bes_config_is_lt=""
-     if test $bes_config_major_version -lt $bes_min_major_version ; then
-       bes_config_is_lt=yes
-     else
-       if test $bes_config_major_version -eq $bes_min_major_version ; then
-         if test $bes_config_minor_version -lt $bes_min_minor_version ; then
-           bes_config_is_lt=yes
-         else
-           if test $bes_config_minor_version -eq $bes_min_minor_version ; then
-             if test $bes_config_micro_version -lt $bes_min_micro_version ; then
-               bes_config_is_lt=yes
-             fi
-           fi
-         fi
-       fi
-     fi
-     if test x$bes_config_is_lt = xyes ; then
-       bes_no=yes
-     else
-       BES_LDFLAGS="`$BES_CONFIG --libs`"
-       BES_CFLAGS="`$BES_CONFIG --cflags`"
-       MODULE_DIR="`$BES_CONFIG --prefix`/lib/bes"
-       BES_LDADD="$MODULE_DIR/opendap_commands.o $MODULE_DIR/dods_module.o"
-     fi
-   fi
-   if test x$bes_no = x ; then
-     AC_MSG_RESULT([yes])
-     m4_if([$2], [], [:], [$2])
-   else
-     AC_MSG_RESULT([no])
-     if test "$BES_CONFIG" = "no" ; then
-     AC_MSG_NOTICE([The bes-config script could not be found.])
-     else
-       if test x$bes_config_is_lt = xyes ; then
-         AC_MSG_NOTICE([the installed bes library is too old.])
-       fi
-     fi
-     BES_LDFLAGS=""
-     BES_CFLAGS=""
-     BES_LDADD=""
-     m4_if([$3], [], [:], [$3])
-   fi
-   AC_SUBST([BES_CFLAGS])
-   AC_SUBST([BES_LDFLAGS])
-   AC_SUBST([BES_LDADD])
-]) 
+    bes_config_is_lt=""
+    if test $bes_config_major_version -lt $bes_min_major_version ; then
+      bes_config_is_lt=yes
+    else
+      if test $bes_config_major_version -eq $bes_min_major_version ; then
+        if test $bes_config_minor_version -lt $bes_min_minor_version ; then
+          bes_config_is_lt=yes
+        else
+          if test $bes_config_minor_version -eq $bes_min_minor_version ; then
+            if test $bes_config_micro_version -lt $bes_min_micro_version ; then
+              bes_config_is_lt=yes
+            fi
+          fi
+        fi
+      fi
+    fi
+    if test x$bes_config_is_lt = xyes ; then
+      bes_no=yes
+    else
+      BES_LDFLAGS="`$BES_CONFIG --libs`"
+      BES_CFLAGS="`$BES_CONFIG --cflags`"
+      MODULE_DIR="`$BES_CONFIG --prefix`/lib/bes"
+      BES_LDADD="$MODULE_DIR/opendap_commands.o $MODULE_DIR/dods_module.o"
+    fi
+    if test x$bes_no = x ; then
+      AC_MSG_RESULT([yes])
+      m4_if([$2], [], [:], [$2])
+    else
+      AC_MSG_RESULT([no])
+      if test "$BES_CONFIG" = "no" ; then
+      AC_MSG_NOTICE([The bes-config script could not be found.])
+      else
+        if test x$bes_config_is_lt = xyes ; then
+          AC_MSG_NOTICE([the installed bes library is too old.])
+        fi
+      fi
+      BES_LDFLAGS=""
+      BES_CFLAGS=""
+      BES_LDADD=""
+      m4_if([$3], [], [:], [$3])
+    fi
+  else
+    AM_CONDITIONAL([OPENDAPSERVER], [false])
+    BES_LDFLAGS=""
+    BES_CFLAGS=""
+    BES_LDADD=""
+  fi
+  AC_SUBST([BES_CFLAGS])
+  AC_SUBST([BES_LDFLAGS])
+  AC_SUBST([BES_LDADD])
+])
 
