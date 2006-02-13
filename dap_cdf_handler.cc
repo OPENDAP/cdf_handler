@@ -115,8 +115,8 @@ main(int argc, char *argv[])
     }
     catch (Error &e) {
 	delete cdftf; cdftf = 0;
-	set_mime_text(cout, dods_error, cgi_version);
-	e.print(cout);
+	set_mime_text(stdout, dods_error, cgi_version);
+	e.print(stdout);
 	return 1;
     }
 
