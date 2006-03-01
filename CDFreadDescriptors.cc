@@ -30,14 +30,35 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include <iostream>
+
+using std::cout ;
+using std::endl ;
+
 #include "CDFreadDescriptors.h"
 #include "CDFutilities.h"
 #include "CDFArray.h"
 #include "cgi_util.h"
+#include "CDFDebug.h"
 
-bool readDescriptors( DDS &dds, const string &filename, const string &name )
+/*
+ * Current method of reading the data from  a CDF file:
+ *
+ * The current code stores all variables into a single array, except in the
+ * case where there is only one record and no dimensions. In this case the
+ * variable is a scaler. If there is more than one record and/or one or more
+ * dimensions than the entire variable is stored into a single array.
+ *
+ * If there is more than one record with data for a particular variable then
+ * a dimension is added for the records. So, if a variable has two
+ * dimensions and has data stored in 2 records, then a third dimension is
+ * prepended to the dimension list to represent the records.
+ */
+bool
+readDescriptors( DDS &dds, const string &filename, const string &name )
 {
     dds.set_dataset_name( name ) ;
+    BaseTypeFactory *factory = dds.get_factory() ;
 
     CDFid id;            /* CDF identifier. */
     CDFstatus status;    /* CDF completion status. */
@@ -60,10 +81,14 @@ bool readDescriptors( DDS &dds, const string &filename, const string &name )
     /*************************************************************************
     * Open the CDF.
     *************************************************************************/
+    if( CDFDebug::debug() )
+    {
+	cout << "Opening CDF file " << filename << endl ;
+    }
     status = CDFopen ( filename.c_str(), &id ) ;
     if ( status != CDF_OK )
     {
-	if( StatusHandler ( status ) == false )
+	if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
 	{
 	    return false ;
 	}
@@ -73,12 +98,12 @@ bool readDescriptors( DDS &dds, const string &filename, const string &name )
     * Set to readonly and zmode
     *************************************************************************/
     status = CDFlib( SELECT_, CDF_READONLY_MODE_, READONLYon,
-			      CDF_zMODE_, zMODEon1,
+			      CDF_zMODE_, zMODEon2,
 		     NULL_ ) ;
 
     if ( status != CDF_OK )
     {
-	if( StatusHandler ( status ) == false )
+	if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
 	{
 	    return false ;
 	}
@@ -91,10 +116,14 @@ bool readDescriptors( DDS &dds, const string &filename, const string &name )
 		     NULL_ ) ;
     if ( status != CDF_OK )
     {
-	if( StatusHandler ( status ) == false )
+	if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
 	{
 	    return false ;
 	}
+    }
+    if( CDFDebug::debug() )
+    {
+	cout << "  numVars = " << numVars << endl ;
     }
 
     /*************************************************************************
@@ -106,7 +135,7 @@ bool readDescriptors( DDS &dds, const string &filename, const string &name )
 			 NULL_ ) ;
 	if ( status != CDF_OK )
 	{
-	    if( StatusHandler ( status ) == false )
+	    if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
 	    {
 		return false ;
 	    }
@@ -125,28 +154,60 @@ bool readDescriptors( DDS &dds, const string &filename, const string &name )
 			     NULL_ ) ;
 	    if ( status != CDF_OK )
 	    {
-		if( StatusHandler ( status ) == false )
+		if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
 		{
 		    return false ;
 		}
 	    }
 
-	    Array *ar = NewArray( varName ) ;
-	    ar->add_var( DodsBaseType( varName, varType ) ) ;
-	    if( recVary )
-		ar->append_dim( numRecs, "RecDim" ) ;
-
-	    for( subindex = 0; subindex < numDims; subindex++ )
+	    if( CDFDebug::debug() )
 	    {
-		if( dimVarys[subindex] )
+		cout << "varName: " << varName << endl ;
+		cout << "  varType = " << CDFutilities::DataType( varType )
+		     << endl ;
+		cout << "  numDims = " << numDims << endl ;
+		unsigned int i_numDims = 0 ;
+		for( i_numDims = 0; i_numDims < numDims; i_numDims++ )
 		{
-		    char dimName[64] ;
-		    sprintf( dimName, "Dim%ld", subindex ) ;
-		    ar->append_dim( dimSizes[subindex], dimName ) ;
+		    cout << "    dimSizes[" << i_numDims << "] = "
+			 << dimSizes[i_numDims] << endl ;
+		    cout << "    dimVarys[" << i_numDims << "] = "
+			 << dimVarys[i_numDims] << endl ;
+		}
+		cout << "  numRecs = " << numRecs << endl ;
+		cout << "  recVary = " << recVary << endl ;
+		cout << "  numElems = " << numElems << endl ;
+	    }
+
+	    BaseType *var = 0 ;
+	    // if numDims is 0  AND numRecs less than 2 then it is a scaler,
+	    // otherwise it's an array
+	    if( numDims == 0 && numRecs < 2 )
+	    {
+		var = CDFutilities::DodsBaseType( factory, varName, varType ) ;
+	    }
+	    else
+	    {
+		Array *ar = dds.get_factory()->NewArray( varName ) ;
+		var = ar ;
+		ar->add_var( CDFutilities::DodsBaseType( factory, varName, varType ) ) ;
+		if( recVary && numRecs > 0 )
+		{
+		    ar->append_dim( numRecs, "RecDim" ) ;
+		}
+
+		for( subindex = 0; subindex < numDims; subindex++ )
+		{
+		    if( dimVarys[subindex] )
+		    {
+			char dimName[64] ;
+			sprintf( dimName, "Dim%ld", subindex ) ;
+			ar->append_dim( dimSizes[subindex], dimName ) ;
+		    }
 		}
 	    }
 
-	    dds.add_var( ar ) ;
+	    dds.add_var( var ) ;
 	}
     }
 
@@ -158,10 +219,3 @@ bool readDescriptors( DDS &dds, const string &filename, const string &name )
     return true ;
 }
 
-// $Log: CDFreadDescriptors.cc,v $
-// Revision 1.2  2004/07/02 20:10:19  pwest
-// Added dataset name to the dds, updated the INSTALL, fixed configure.in
-//
-// Revision 1.1  2003/05/08 16:59:20  pwest
-// cdf-dods server implementation
-//

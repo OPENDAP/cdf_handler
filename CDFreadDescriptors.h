@@ -39,10 +39,3 @@ bool readDescriptors( DDS &dds, const string &filename, const string &name ) ;
 
 #endif // CDFreadDescriptors_h_
 
-// $Log: CDFreadDescriptors.h,v $
-// Revision 1.2  2004/07/02 20:10:19  pwest
-// Added dataset name to the dds, updated the INSTALL, fixed configure.in
-//
-// Revision 1.1  2003/05/08 16:59:20  pwest
-// cdf-dods server implementation
-//

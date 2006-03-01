@@ -1,7 +1,7 @@
 
 // -*- mode: c++; c-basic-offset:4 -*-
 
-// This file is part of nc_handler, a data handler for the OPeNDAP data
+// This file is part of cdf_handler, a data handler for the OPeNDAP data
 // server. 
 
 // Copyright (c) 2002,2003 OPeNDAP, Inc.
@@ -39,12 +39,15 @@
 #include "CDFTypeFactory.h"
 #include "CDFreadAttributes.h"
 #include "CDFreadDescriptors.h"
+#include "CDFDebug.h"
 
 const string cgi_version = PACKAGE_VERSION;
 
 int 
 main(int argc, char *argv[])
 {
+    CDFDebug::off() ;
+
     CDFTypeFactory *cdftf = new CDFTypeFactory;
 
     try { 

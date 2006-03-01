@@ -53,7 +53,3 @@ public:
 
 #endif // CDFnamePath_h_
 
-// $Log: CDFnamePath.h,v $
-// Revision 1.1  2003/05/08 16:59:20  pwest
-// cdf-dods server implementation
-//

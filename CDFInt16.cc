@@ -2,43 +2,41 @@
 
 #include <cdf.h>
 
-#include "CDFUInt32.h"
+#include "CDFInt16.h"
 #include "CDFutilities.h"
 #include "CDFDebug.h"
 
-CDFUInt32::CDFUInt32(const string &n) : UInt32(n)
+CDFInt16::CDFInt16(const string &n) : Int16(n)
 {
 }
 
-CDFUInt32::CDFUInt32(const CDFUInt32 &rhs) : UInt32(rhs)
+CDFInt16::CDFInt16(const CDFInt16 &rhs) : Int16(rhs)
 {
 }
 
-CDFUInt32::~CDFUInt32()
+CDFInt16::~CDFInt16()
 {
 }
 
-CDFUInt32 &
-CDFUInt32::operator=(const CDFUInt32 &rhs)
+CDFInt16 &
+CDFInt16::operator=(const CDFInt16 &rhs)
 {
     if (this == &rhs)
         return *this;
 
-    dynamic_cast<CDFUInt32&>(*this) = rhs;
-
+    dynamic_cast<CDFInt16&>(*this) = rhs;
 
     return *this;
 }
 
 BaseType *
-CDFUInt32::ptr_duplicate()
+CDFInt16::ptr_duplicate()
 {
-    return new CDFUInt32(*this);
+    return new CDFInt16(*this);
 }
 
-
 bool
-CDFUInt32::read(const string &dataset)
+CDFInt16::read(const string &dataset)
 {
     if( read_p( ) )
     {
@@ -80,7 +78,7 @@ CDFUInt32::read(const string &dataset)
     *************************************************************************/
     if( CDFDebug::debug() )
     {
-	cout << "CDFUInt32: " << name() << ": Opening " << dataset << endl ;
+	cout << "CDFInt16: " << name() << ": Opening " << dataset << endl ;
     }
     status = CDFopen ( dataset.c_str(), &id ) ;
     if ( status != CDF_OK )
@@ -155,20 +153,20 @@ CDFUInt32::read(const string &dataset)
 	cout << "  numElems = " << numElems << endl ;
     }
 
-    if( varType != CDF_UINT4 )
+    if( varType != CDF_INT2 )
     {
-	cerr << "CDFUInt32: the type of data should be CDF_UINT4," << endl ;
+	cerr << "CDFInt16: the type of data should be CDF_INT2," << endl ;
     }
 
     if( numDims != 0 )
     {
-	cerr << "CDFUInt32: number of dimensions should be 0" << endl ;
+	cerr << "CDFInt16: number of dimensions should be 0" << endl ;
 	return false ;
     }
 
     if( numRecs != 1 )
     {
-	cerr << "CDFUInt32: number of records should be 1" << endl ;
+	cerr << "CDFInt16: number of records should be 1" << endl ;
 	return false ;
     }
 

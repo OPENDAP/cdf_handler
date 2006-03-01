@@ -15,13 +15,17 @@ if OPENDAPSERVER
     noinst_PROGRAMS = bes_cdf_handler
 endif
 
-CDFSRCS:=CDFArray.cc CDFFloat32.cc CDFFloat64.cc CDFInt32.cc CDFUInt32.cc \
-	CDFByte.cc CDFStr.cc CDFreadAttributes.cc CDFreadDescriptors.cc \
-	CDFutilities.cc CDFTypeFactory.cc
+CDFSRCS:= CDFArray.cc CDFByte.cc CDFFloat32.cc CDFFloat64.cc CDFGrid.cc \
+	  CDFInt16.cc CDFInt32.cc CDFSequence.cc CDFStr.cc CDFStructure.cc \
+	  CDFTypeFactory.cc CDFUInt16.cc CDFUInt32.cc CDFUrl.cc \
+	  CDFreadAttributes.cc CDFreadDescriptors.cc CDFutilities.cc \
+	  CDFDebug.cc
 
-CDFHDRS:=CDFArray.h CDFFloat32.h CDFFloat64.h CDFInt32.h CDFUInt32.h \
-	CDFByte.h CDFStr.h CDFreadAttributes.h CDFreadDescriptors.h \
-	CDFutilities.h CDFTypeFactory.h
+CDFHDRS:= CDFArray.h CDFByte.h CDFFloat32.h CDFFloat64.h CDFGrid.h \
+	  CDFInt16.h CDFInt32.h CDFSequence.h CDFStr.h CDFStructure.h \
+	  CDFTypeFactory.h CDFUInt16.h CDFUInt32.h CDFUrl.h CDFnamePath.h \
+	  CDFreadAttributes.h CDFreadDescriptors.h CDFutilities.h \
+	  CDFDebug.h
 
 DAP_HANDLER_SRC = dap_cdf_handler.cc config_cdf.h
 
@@ -51,3 +55,4 @@ srpm:
 
 rpm:
 	rpmbuild -tb cdf_handler-@PACKAGE_VERSION@.tar.gz
+

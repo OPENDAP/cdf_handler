@@ -31,19 +31,34 @@
 #ifndef CDFutilities_h_
 #define CDFutilities_h_
 
+#include <string>
+
+using std::string ;
+
 #include "cdf.h"
-#include "BaseType.h"
 
-bool StatusHandler ( CDFstatus status ) ;
+class BaseType ;
+class BaseTypeFactory ;
 
-char *DataType( long attrDataType ) ;
-char *DodsDataType( long attrDataType ) ;
+class CDFutilities {
+public:
+    static bool		StatusHandler( CDFstatus status,
+				       const string &file, long line ) ;
 
-BaseType *DodsBaseType( char *varName, long cdfDataType ) ;
+    static char *	DataType( long attrDataType ) ;
+    static char *	DodsDataType( long attrDataType ) ;
+
+    static BaseType *	DodsBaseType( BaseTypeFactory *factory,
+				      char *varName, long cdfDataType ) ;
+
+    static void		read_record( void *cdf_buf, void *arrbuf,
+				     unsigned int &arrindex,
+				     long numElements, long varType,
+				     long charSize ) ;
+    static void		write_record( void *arrbuf,
+                                      unsigned int numElements,
+				      long varType ) ;
+} ;
 
 #endif // CDFutilities_h_
 
-// $Log: CDFutilities.h,v $
-// Revision 1.1  2003/05/08 16:59:20  pwest
-// cdf-dods server implementation
-//

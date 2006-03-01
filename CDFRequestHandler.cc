@@ -47,10 +47,10 @@ using std::endl ;
 #include "CDFreadDescriptors.h"
 #include "DDS.h"
 #include "DODSConstraintFuncs.h"
-#include "DODSInfo.h"
+#include "DODSVersionInfo.h"
 #include "TheDODSKeys.h"
 #include "DODSResponseException.h"
-#include "cdf_version.h"
+#include "config_cdf.h"
 
 CDFRequestHandler::CDFRequestHandler( string name )
     : DODSRequestHandler( name )
@@ -113,7 +113,7 @@ bool
 CDFRequestHandler::cdf_build_help( DODSDataHandlerInterface &dhi )
 {
     DODSInfo *info = (DODSInfo *)dhi.response_handler->get_response_object() ;
-    info->add_data( (string)"cdf-handler help: " + cdf_version() + "\n" ) ;
+    info->add_data( (string)PACKAGE_NAME + PACKAGE_VERSION + "\n" ) ;
     bool found = false ;
     string key = (string)"CDF.Help." + dhi.transmit_protocol ;
     string file = TheDODSKeys::TheKeys()->get_key( key, found ) ;
@@ -150,10 +150,8 @@ CDFRequestHandler::cdf_build_help( DODSDataHandlerInterface &dhi )
 bool
 CDFRequestHandler::cdf_build_version( DODSDataHandlerInterface &dhi )
 {
-    DODSInfo *info = (DODSInfo *)dhi.response_handler->get_response_object() ;
-    info->add_data( (string)"    " + cdf_version() + "\n" ) ;
-    info->add_data( (string)"        libcdf3.0\n" ) ;
+    DODSVersionInfo *info = dynamic_cast<DODSVersionInfo *>(dhi.response_handler->get_response_object() ) ;
+    info->addHandlerVersion( PACKAGE_NAME, PACKAGE_VERSION ) ;
     return true ;
 }
 
-// $Log: CDFRequestHandler.cc,v $

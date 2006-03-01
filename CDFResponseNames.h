@@ -36,4 +36,3 @@
 
 #endif // E_CDFResponseNames_H
 
-// $Log: CDFResponseNames.h,v $

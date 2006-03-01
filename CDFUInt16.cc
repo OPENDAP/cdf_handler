@@ -2,43 +2,43 @@
 
 #include <cdf.h>
 
-#include "CDFUInt32.h"
+#include "CDFUInt16.h"
 #include "CDFutilities.h"
 #include "CDFDebug.h"
 
-CDFUInt32::CDFUInt32(const string &n) : UInt32(n)
+CDFUInt16::CDFUInt16(const string &n) : UInt16(n)
 {
 }
 
-CDFUInt32::CDFUInt32(const CDFUInt32 &rhs) : UInt32(rhs)
+CDFUInt16::CDFUInt16(const CDFUInt16 &rhs) : UInt16(rhs)
 {
 }
 
-CDFUInt32::~CDFUInt32()
+CDFUInt16::~CDFUInt16()
 {
 }
 
-CDFUInt32 &
-CDFUInt32::operator=(const CDFUInt32 &rhs)
+CDFUInt16 &
+CDFUInt16::operator=(const CDFUInt16 &rhs)
 {
     if (this == &rhs)
         return *this;
 
-    dynamic_cast<CDFUInt32&>(*this) = rhs;
-
+    dynamic_cast<CDFUInt16&>(*this) = rhs;
 
     return *this;
 }
 
+
 BaseType *
-CDFUInt32::ptr_duplicate()
+CDFUInt16::ptr_duplicate()
 {
-    return new CDFUInt32(*this);
+    return new CDFUInt16(*this);
 }
 
 
 bool
-CDFUInt32::read(const string &dataset)
+CDFUInt16::read(const string &dataset)
 {
     if( read_p( ) )
     {
@@ -80,7 +80,7 @@ CDFUInt32::read(const string &dataset)
     *************************************************************************/
     if( CDFDebug::debug() )
     {
-	cout << "CDFUInt32: " << name() << ": Opening " << dataset << endl ;
+	cout << "CDFUInt16: " << name() << ": Opening " << dataset << endl ;
     }
     status = CDFopen ( dataset.c_str(), &id ) ;
     if ( status != CDF_OK )
@@ -155,20 +155,20 @@ CDFUInt32::read(const string &dataset)
 	cout << "  numElems = " << numElems << endl ;
     }
 
-    if( varType != CDF_UINT4 )
+    if( varType != CDF_UINT2 )
     {
-	cerr << "CDFUInt32: the type of data should be CDF_UINT4," << endl ;
+	cerr << "CDFUInt16: the type of data should be CDF_UINT2," << endl ;
     }
 
     if( numDims != 0 )
     {
-	cerr << "CDFUInt32: number of dimensions should be 0" << endl ;
+	cerr << "CDFUInt16: number of dimensions should be 0" << endl ;
 	return false ;
     }
 
     if( numRecs != 1 )
     {
-	cerr << "CDFUInt32: number of records should be 1" << endl ;
+	cerr << "CDFUInt16: number of records should be 1" << endl ;
 	return false ;
     }
 

@@ -46,7 +46,7 @@ bool readAttributes( DAS &das, string filename )
     status = CDFopen ( filename.c_str(), &id ) ;
     if ( status != CDF_OK )
     {
-	if( StatusHandler ( status ) == false )
+	if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
 	{
 	    return false ;
 	}
@@ -56,12 +56,12 @@ bool readAttributes( DAS &das, string filename )
     * Set to readonly and zmode
     *************************************************************************/
     status = CDFlib( SELECT_, CDF_READONLY_MODE_, READONLYon,
-			      CDF_zMODE_, zMODEon1,
+			      CDF_zMODE_, zMODEon2,
 		     NULL_ ) ;
 
     if ( status != CDF_OK )
     {
-	if( StatusHandler ( status ) == false )
+	if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
 	{
 	    return false ;
 	}
@@ -74,7 +74,7 @@ bool readAttributes( DAS &das, string filename )
 		     NULL_ ) ;
     if ( status != CDF_OK )
     {
-	if( StatusHandler ( status ) == false )
+	if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
 	{
 	    return false ;
 	}
@@ -104,7 +104,7 @@ bool readAttributes( DAS &das, string filename )
 			 NULL_ ) ;
 	if ( status != CDF_OK )
 	{
-	    if( StatusHandler ( status ) == false )
+	    if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
 	    {
 		return false ;
 	    }
@@ -117,13 +117,13 @@ bool readAttributes( DAS &das, string filename )
 			     NULL_ ) ;
 	    if ( status != CDF_OK )
 	    {
-		if( StatusHandler ( status ) == false )
+		if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
 		{
 		    return false ;
 		}
 	    }
 
-	    strcpy( varName, "NC_GLOBAL" ) ;
+	    strcpy( varName, "CDF_GLOBAL" ) ;
 
 	    for( subindex = 0; subindex < maxEntry+1; subindex++ )
 	    {
@@ -135,7 +135,7 @@ bool readAttributes( DAS &das, string filename )
 		if( status == NO_SUCH_ENTRY ) continue ;
 		if ( status != CDF_OK )
 		{
-		    if( StatusHandler ( status ) == false )
+		    if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
 		    {
 			return false ;
 		    }
@@ -152,7 +152,7 @@ bool readAttributes( DAS &das, string filename )
 			     NULL_ ) ;
 	    if ( status != CDF_OK )
 	    {
-		if( StatusHandler ( status ) == false )
+		if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
 		{
 		    return false ;
 		}
@@ -170,7 +170,7 @@ bool readAttributes( DAS &das, string filename )
 		if( status == NO_SUCH_ENTRY ) continue ;
 		if ( status != CDF_OK )
 		{
-		    if( StatusHandler ( status ) == false )
+		    if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
 		    {
 			return false ;
 		    }
@@ -220,7 +220,7 @@ bool AddValue( DAS &das, char *attrName, void *attrData, long attrDataType,
 			 NULL_ ) ;
 	if ( status != CDF_OK )
 	{
-	    if( StatusHandler ( status ) == false )
+	    if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
 	    {
 		return false ;
 	    }
@@ -229,7 +229,7 @@ bool AddValue( DAS &das, char *attrName, void *attrData, long attrDataType,
 	int loc = anindex * attrDataTypeSize ;
 	char *stringVal = ValToString( attrDataType, (char *)attrData + loc ) ;
 	attrTable->append_attr( attrName,
-				DodsDataType( attrDataType ),
+				CDFutilities::DodsDataType( attrDataType ),
 				stringVal ) ;
 	delete stringVal ;
     }
@@ -314,7 +314,3 @@ char *ValToString( long attrDataType, void *attrData )
     return retVal ;
 }
 
-// $Log: CDFreadAttributes.cc,v $
-// Revision 1.1  2003/05/08 16:59:20  pwest
-// cdf-dods server implementation
-//

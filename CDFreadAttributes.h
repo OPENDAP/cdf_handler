@@ -46,7 +46,3 @@ char *ValToString( long attrDataType, void *attrData ) ;
 
 #endif // CDFreadAttributes_h_
 
-// $Log: CDFreadAttributes.h,v $
-// Revision 1.1  2003/05/08 16:59:20  pwest
-// cdf-dods server implementation
-//

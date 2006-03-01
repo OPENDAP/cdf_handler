@@ -1,66 +1,224 @@
+#include "config_cdf.h"
 
-// -*- mode: c++; c-basic-offset:4 -*-
-
-// This file is part of cdf-handler, a C++ server of OPeNDAP for access to cdf
-// data
-
-// Copyright (c) 2002,2003 OPeNDAP, Inc.
-// Author: Patrick West <pwest@ucar.edu>
-//
-// This library is free software; you can redistribute it and/or
-// modify it under the terms of the GNU Lesser General Public
-// License as published by the Free Software Foundation; either
-// version 2.1 of the License, or (at your option) any later version.
-// 
-// This library is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-// Lesser General Public License for more details.
-// 
-// You should have received a copy of the GNU Lesser General Public
-// License along with this library; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-//
-// You can contact OPeNDAP, Inc. at PO Box 112, Saunderstown, RI. 02874-0112.
- 
-// Implementation for CDFInt32.
-//
-// pwest 05/08/03
-
-#ifdef __GNUG__
-#pragma implementation
-#endif
+#include <cdf.h>
 
 #include "CDFInt32.h"
+#include "CDFutilities.h"
+#include "CDFDebug.h"
 
-Int32 *NewInt32( const string &n )
-{
-    return new CDFInt32( n ) ;
-}
-
-CDFInt32::CDFInt32( const string &n ) : Int32( n )
+CDFInt32::CDFInt32(const string &n) : Int32(n)
 {
 }
 
-CDFInt32::~CDFInt32( )
+CDFInt32::CDFInt32(const CDFInt32 &rhs) : Int32(rhs)
 {
 }
 
-BaseType *CDFInt32::ptr_duplicate( )
+CDFInt32::~CDFInt32()
 {
-    return new CDFInt32( *this ) ;
 }
 
-bool CDFInt32::read( const string &dataset )
+CDFInt32 &
+CDFInt32::operator=(const CDFInt32 &rhs)
 {
-    if ( read_p( ) )
-	return true ;
+    if (this == &rhs)
+        return *this;
 
-    set_read_p( true ) ;  
-    return true ;
+    dynamic_cast<CDFInt32&>(*this) = rhs;
+
+    return *this;
 }
 
-// $Log: CDFInt32.cc,v $
-// Revision 1.2  2003/05/08 16:59:20  pwest
-// cdf-dods server implementation
-//
+BaseType *
+CDFInt32::ptr_duplicate()
+{
+    return new CDFInt32(*this);
+}
+
+bool
+CDFInt32::read(const string &dataset)
+{
+    if( read_p( ) )
+    {
+	return false ;
+    }
+
+    CDFid id;            /* CDF identifier. */
+    CDFstatus status;    /* CDF completion status. */
+
+    long anindex = 0 ;
+
+    long varNum = 0 ;
+    long varType = 0 ;
+    long varTypeSize = 0 ;
+    long numDims = 0 ;
+    long dimSizes[CDF_MAX_DIMS] ;
+    long dimVarys[CDF_MAX_DIMS] ;
+    long maxRec = 0 ;
+    long numRecs = 0 ;
+    long recVary = 0 ;
+    long numElems = 0 ;
+
+    void *cdf_buf = 0 ;
+    void *arrbuf = 0 ;
+
+    long indices[CDF_MAX_DIMS] ;
+    long intervals[CDF_MAX_DIMS] ;
+    long counts[CDF_MAX_DIMS] ;
+
+    for( anindex = 0; anindex < CDF_MAX_DIMS; anindex++ )
+    {
+	indices[anindex] = 0 ;
+	intervals[anindex] = 1 ;
+	counts[anindex] = 0 ;
+    }
+
+    /*************************************************************************
+    * Open the CDF.
+    *************************************************************************/
+    if( CDFDebug::debug() )
+    {
+	cout << "CDFInt32: " << name() << ": Opening " << dataset << endl ;
+    }
+    status = CDFopen ( dataset.c_str(), &id ) ;
+    if ( status != CDF_OK )
+    {
+	if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
+	{
+	    return false ;
+	}
+    }
+
+    /*************************************************************************
+    * Set to readonly and zmode
+    *************************************************************************/
+    status = CDFlib( SELECT_, CDF_READONLY_MODE_, READONLYon,
+			      CDF_zMODE_, zMODEon2,
+		     NULL_ ) ;
+
+    if ( status != CDF_OK )
+    {
+	if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
+	{
+	    return false ;
+	}
+    }
+
+    /*************************************************************************
+    * Read variables by hyper read
+    *************************************************************************/
+    status = CDFlib( GET_, zVAR_NUMBER_, name().c_str(), &varNum,
+		     NULL_ ) ;
+    if ( status != CDF_OK )
+    {
+	if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
+	{
+	    return false ;
+	}
+    }
+
+    status = CDFlib( SELECT_, zVAR_, varNum,
+		     NULL_ ) ;
+    if ( status != CDF_OK )
+    {
+	if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
+	{
+	    return false ;
+	}
+    }
+
+    status = CDFlib( GET_, zVAR_DATATYPE_, &varType,
+			   zVAR_NUMDIMS_, &numDims,
+			   zVAR_DIMSIZES_, dimSizes,
+			   zVAR_DIMVARYS_, dimVarys,
+			   zVAR_MAXREC_, &maxRec,
+			   zVAR_NUMRECS_, &numRecs,
+			   zVAR_RECVARY_, &recVary,
+			   zVAR_NUMELEMS_, &numElems,
+		     NULL_ ) ;
+    if ( status != CDF_OK )
+    {
+	if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
+	{
+	    return false ;
+	}
+    }
+    if( CDFDebug::debug() )
+    {
+	cout << "  varType = " << CDFutilities::DataType( varType ) << endl ;
+	cout << "  numDims = " << numDims << endl ;
+	cout << "  maxRec = " << maxRec << endl ;
+	cout << "  numRecs = " << numRecs << endl ;
+	cout << "  recVary = " << recVary << endl ;
+	cout << "  numElems = " << numElems << endl ;
+    }
+
+    if( varType != CDF_INT4 )
+    {
+	cerr << "CDFInt32: the type of data should be CDF_INT4," << endl ;
+    }
+
+    if( numDims != 0 )
+    {
+	cerr << "CDFInt32: number of dimensions should be 0" << endl ;
+	return false ;
+    }
+
+    if( numRecs != 1 )
+    {
+	cerr << "CDFInt32: number of records should be 1" << endl ;
+	return false ;
+    }
+
+    status = CDFlib( GET_, DATATYPE_SIZE_, varType, &varTypeSize,
+		     NULL_ ) ;
+    if ( status != CDF_OK )
+    {
+	if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
+	{
+	    return false ;
+	}
+    }
+
+    cdf_buf = malloc( varTypeSize ) ;
+    arrbuf = (void *)&_buf ;
+
+    status = CDFlib( SELECT_, zVAR_RECCOUNT_, (long)1,
+			      zVARs_RECNUMBER_, anindex,
+			      zVAR_RECINTERVAL_, (long)1,
+			      zVAR_DIMINDICES_, indices,
+			      zVAR_DIMCOUNTS_, counts,
+			      zVAR_DIMINTERVALS_, intervals,
+		     NULL_ ) ;
+    if ( status != CDF_OK )
+    {
+	if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
+	{
+	    return false ;
+	}
+    }
+
+    status = CDFlib( GET_, zVAR_HYPERDATA_, cdf_buf,
+		     NULL_ ) ;
+    if ( status != CDF_OK )
+    {
+	if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
+	{
+	    return false ;
+	}
+    }
+
+    unsigned int arrindex = 0 ;
+    CDFutilities::read_record( cdf_buf, arrbuf, arrindex, 1, varType, 1 ) ;
+
+    val2buf( arrbuf ) ;
+
+    /*************************************************************************
+    * Close CDF.
+    *************************************************************************/
+    CDFclose ( id ) ;
+
+    set_read_p( true ) ;
+    return false ;
+}
+

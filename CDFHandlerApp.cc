@@ -81,4 +81,3 @@ CDFHandlerApp::run()
     return 0 ;
 }
 
-// $Log: CDFHandlerApp.cc,v $
