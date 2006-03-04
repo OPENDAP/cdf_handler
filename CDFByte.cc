@@ -109,7 +109,6 @@ CDFByte::read(const string &dataset)
     /*************************************************************************
     * Read variables by hyper read
     *************************************************************************/
-    cout << "reading " << name() << endl ;
     status = CDFlib( GET_, zVAR_NUMBER_, name().c_str(), &varNum,
 		     NULL_ ) ;
     if ( status != CDF_OK )
@@ -156,11 +155,9 @@ CDFByte::read(const string &dataset)
 	cout << "  numElems = " << numElems << endl ;
     }
 
-    if( varType != CDF_BYTE && varType != CDF_INT1 && varType != CDF_UINT1 )
+    if( varType != CDF_BYTE )
     {
-	cerr << "CDFByte: the type of data should be either CDF_BYTE, "
-	     << "CDF_INT1 or CDF_UINT1"
-	     << endl ;
+	cerr << "CDFByte: the type of data should be CDF_BYTE" << endl ;
     }
 
     if( numDims != 0 )
@@ -183,6 +180,10 @@ CDFByte::read(const string &dataset)
 	{
 	    return false ;
 	}
+    }
+    if( CDFDebug::debug() )
+    {
+	cout << "  varTypeSize = " << varTypeSize << endl ;
     }
 
     cdf_buf = malloc( varTypeSize ) ;
@@ -215,8 +216,10 @@ CDFByte::read(const string &dataset)
 
     unsigned int arrindex = 0 ;
     CDFutilities::read_record( cdf_buf, arrbuf, arrindex, 1, varType, 1 ) ;
-
-    val2buf( arrbuf ) ;
+    if( CDFDebug::debug() )
+    {
+	cout << "  _buf = " << (int)_buf << endl ;
+    }
 
     /*************************************************************************
     * Close CDF.

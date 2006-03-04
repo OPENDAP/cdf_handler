@@ -181,6 +181,10 @@ CDFUInt32::read(const string &dataset)
 	    return false ;
 	}
     }
+    if( CDFDebug::debug() )
+    {
+	cout << "  varTypeSize = " << varTypeSize << endl ;
+    }
 
     cdf_buf = malloc( varTypeSize ) ;
     arrbuf = (void *)&_buf ;
@@ -212,8 +216,10 @@ CDFUInt32::read(const string &dataset)
 
     unsigned int arrindex = 0 ;
     CDFutilities::read_record( cdf_buf, arrbuf, arrindex, 1, varType, 1 ) ;
-
-    val2buf( arrbuf ) ;
+    if( CDFDebug::debug() )
+    {
+	cout << "  _buf = " << _buf << endl ;
+    }
 
     /*************************************************************************
     * Close CDF.

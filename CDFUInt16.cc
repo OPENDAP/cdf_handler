@@ -155,9 +155,10 @@ CDFUInt16::read(const string &dataset)
 	cout << "  numElems = " << numElems << endl ;
     }
 
-    if( varType != CDF_UINT2 )
+    if( varType != CDF_UINT2 && varType != CDF_UINT1)
     {
-	cerr << "CDFUInt16: the type of data should be CDF_UINT2," << endl ;
+	cerr << "CDFUInt16: the type of data should be CDF_UINT2 or CDF_UINT1"
+	     << endl ;
     }
 
     if( numDims != 0 )
@@ -180,6 +181,10 @@ CDFUInt16::read(const string &dataset)
 	{
 	    return false ;
 	}
+    }
+    if( CDFDebug::debug() )
+    {
+	cout << "  varTypeSize = " << varTypeSize << endl ;
     }
 
     cdf_buf = malloc( varTypeSize ) ;
@@ -212,8 +217,10 @@ CDFUInt16::read(const string &dataset)
 
     unsigned int arrindex = 0 ;
     CDFutilities::read_record( cdf_buf, arrbuf, arrindex, 1, varType, 1 ) ;
-
-    val2buf( arrbuf ) ;
+    if( CDFDebug::debug() )
+    {
+	cout << "  _buf = " << _buf << endl ;
+    }
 
     /*************************************************************************
     * Close CDF.

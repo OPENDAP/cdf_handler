@@ -102,13 +102,13 @@ CDFutilities::DodsDataType( long cdfDataType )
 	    return "STRING" ;
 	    break ;
 	case CDF_BYTE:
-	case CDF_INT1:
-	case CDF_UINT1:
 	    return "BYTE" ;
 	    break ;
+	case CDF_INT1:
 	case CDF_INT2:
 	    return "INT16" ;
 	    break ;
+	case CDF_UINT1:
 	case CDF_UINT2:
 	    return "UINT16" ;
 	    break ;
@@ -208,17 +208,17 @@ CDFutilities::DodsBaseType( BaseTypeFactory *factory,
     switch( cdfDataType )
     {
 	case CDF_BYTE:
-	case CDF_INT1:
-	case CDF_UINT1:
 	    return factory->NewByte( varName ) ;
 	    break ;
 	case CDF_UCHAR:
 	case CDF_CHAR:
 	    return factory->NewStr( varName ) ;
 	    break ;
+	case CDF_INT1:
 	case CDF_INT2:
 	    return factory->NewInt16( varName ) ;
 	    break ;
+	case CDF_UINT1:
 	case CDF_UINT2:
 	    return factory->NewUInt16( varName ) ;
 	    break ;
@@ -270,7 +270,6 @@ CDFutilities::read_record( void *cdf_buf, void *arrbuf,
 		{
 		    memcpy(buf, my_buf, charSize ) ;
 		    buf[charSize] = '\0' ;
-		    //dbgStrm << "val = " << buf << endl ;
 		    my_buf += charSize ;
 		    vbuf[arrindex] = buf ;
 		    arrindex++ ;
@@ -280,35 +279,54 @@ CDFutilities::read_record( void *cdf_buf, void *arrbuf,
 	case CDF_BYTE:
 	    {
 		dods_byte *my_buf = (dods_byte *)arrbuf ;
-		char *my_cdf = (char *)cdf_buf ;
+		unsigned char *my_cdf = (unsigned char *)cdf_buf ;
 		for( anindex = 0; anindex < numElements; anindex++ )
 		{
 		    my_buf[arrindex] = my_cdf[anindex] ;
-		    //dbgStrm << "val = " << my_buf[arrindex] << endl ;
 		    arrindex++ ;
 		}
 	    }
 	    break ;
 	case CDF_INT1:
 	    {
-		dods_int32 *my_buf = (dods_int32 *)arrbuf ;
+		dods_int16 *my_buf = (dods_int16 *)arrbuf ;
 		char *my_cdf = (char *)cdf_buf ;
 		for( anindex = 0; anindex < numElements; anindex++ )
 		{
-		    my_buf[arrindex] = my_cdf[anindex] ;
-		    //dbgStrm << "val = " << my_buf[arrindex] << endl ;
+		    my_buf[arrindex] = (dods_int16)my_cdf[anindex] ;
+		    arrindex++ ;
+		}
+	    }
+	    break ;
+	case CDF_UINT1:
+	    {
+		dods_uint16 *my_buf = (dods_uint16 *)arrbuf ;
+		unsigned char *my_cdf = (unsigned char *)cdf_buf ;
+		for( anindex = 0; anindex < numElements; anindex++ )
+		{
+		    my_buf[arrindex] = (dods_uint16)my_cdf[anindex] ;
 		    arrindex++ ;
 		}
 	    }
 	    break ;
 	case CDF_INT2:
 	    {
-		dods_int32 *my_buf = (dods_int32 *)arrbuf ;
+		dods_int16 *my_buf = (dods_int16 *)arrbuf ;
 		short *my_cdf = (short *)cdf_buf ;
 		for( anindex = 0; anindex < numElements; anindex++ )
 		{
 		    my_buf[arrindex] = my_cdf[anindex] ;
-		    //dbgStrm << "val = " << my_buf[arrindex] << endl ;
+		    arrindex++ ;
+		}
+	    }
+	    break ;
+	case CDF_UINT2:
+	    {
+		dods_uint16 *my_buf = (dods_uint16 *)arrbuf ;
+		unsigned short *my_cdf = (unsigned short *)cdf_buf ;
+		for( anindex = 0; anindex < numElements; anindex++ )
+		{
+		    my_buf[arrindex] = my_cdf[anindex] ;
 		    arrindex++ ;
 		}
 	    }
@@ -320,31 +338,6 @@ CDFutilities::read_record( void *cdf_buf, void *arrbuf,
 		for( anindex = 0; anindex < numElements; anindex++ )
 		{
 		    my_buf[arrindex] = my_cdf[anindex] ;
-		    //dbgStrm << "val = " << my_buf[arrindex] << endl ;
-		    arrindex++ ;
-		}
-	    }
-	    break ;
-	case CDF_UINT1:
-	    {
-		dods_uint32 *my_buf = (dods_uint32 *)arrbuf ;
-		unsigned char *my_cdf = (unsigned char *)cdf_buf ;
-		for( anindex = 0; anindex < numElements; anindex++ )
-		{
-		    my_buf[arrindex] = my_cdf[anindex] ;
-		    //dbgStrm << "val = " << my_buf[arrindex] << endl ;
-		    arrindex++ ;
-		}
-	    }
-	    break ;
-	case CDF_UINT2:
-	    {
-		dods_uint32 *my_buf = (dods_uint32 *)arrbuf ;
-		unsigned short *my_cdf = (unsigned short *)cdf_buf ;
-		for( anindex = 0; anindex < numElements; anindex++ )
-		{
-		    my_buf[arrindex] = my_cdf[anindex] ;
-		    //dbgStrm << "val = " << my_buf[arrindex] << endl ;
 		    arrindex++ ;
 		}
 	    }
@@ -356,7 +349,6 @@ CDFutilities::read_record( void *cdf_buf, void *arrbuf,
 		for( anindex = 0; anindex < numElements; anindex++ )
 		{
 		    my_buf[arrindex] = my_cdf[anindex] ;
-		    //dbgStrm << "val = " << my_buf[arrindex] << endl ;
 		    arrindex++ ;
 		}
 	    }
@@ -369,7 +361,6 @@ CDFutilities::read_record( void *cdf_buf, void *arrbuf,
 		for( anindex = 0; anindex < numElements; anindex++ )
 		{
 		    my_buf[arrindex] = my_cdf[anindex] ;
-		    //dbgStrm << "val = " << my_buf[arrindex] << endl ;
 		    arrindex++ ;
 		}
 	    }
@@ -383,7 +374,6 @@ CDFutilities::read_record( void *cdf_buf, void *arrbuf,
 		for( anindex = 0; anindex < numElements; anindex++ )
 		{
 		    my_buf[arrindex] = my_cdf[anindex] ;
-		    //dbgStrm << "val = " << my_buf[arrindex] << endl ;
 		    arrindex++ ;
 		}
 	    }
