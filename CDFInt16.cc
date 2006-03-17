@@ -143,6 +143,7 @@ CDFInt16::read(const string &dataset)
 	    return false ;
 	}
     }
+
     if( CDFDebug::debug() )
     {
 	cout << "  varType = " << CDFutilities::DataType( varType ) << endl ;
@@ -188,8 +189,9 @@ CDFInt16::read(const string &dataset)
     cdf_buf = malloc( varTypeSize ) ;
     arrbuf = (void *)&_buf ;
 
+    if( numRecs == 0 ) numRecs = 1 ;
     status = CDFlib( SELECT_, zVAR_RECCOUNT_, (long)1,
-			      zVARs_RECNUMBER_, anindex,
+			      zVARs_RECNUMBER_, 0,
 			      zVAR_RECINTERVAL_, (long)1,
 			      zVAR_DIMINDICES_, indices,
 			      zVAR_DIMCOUNTS_, counts,
@@ -213,8 +215,10 @@ CDFInt16::read(const string &dataset)
 	}
     }
 
+    numElems = numRecs*numElems ;
     unsigned int arrindex = 0 ;
-    CDFutilities::read_record( cdf_buf, arrbuf, arrindex, 1, varType, 1 ) ;
+    CDFutilities::read_record( cdf_buf, arrbuf, arrindex,
+                               numElems, varType, numElems ) ;
     if( CDFDebug::debug() )
     {
 	cout << "  _buf = " << _buf << endl ;

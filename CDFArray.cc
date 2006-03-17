@@ -178,6 +178,10 @@ CDFArray::read(const string &dataset)
 	    }
 	}
     }
+    if( CDFDebug::debug() )
+    {
+	cout << "  varTypeSize = " << varTypeSize << endl ;
+    }
 
     unsigned long relements = 1 ;
     for( anindex = 0; anindex < numDims; anindex++ )

@@ -266,13 +266,21 @@ CDFutilities::read_record( void *cdf_buf, void *arrbuf,
 		char *my_buf = (char *)cdf_buf ;
 		char buf[charSize+1] ;
 		string *vbuf = (string *)arrbuf ;
-		for( anindex = 0; anindex < numElements; anindex++ )
+		if( numElements == 0 )
 		{
-		    memcpy(buf, my_buf, charSize ) ;
-		    buf[charSize] = '\0' ;
-		    my_buf += charSize ;
-		    vbuf[arrindex] = buf ;
+		    vbuf[arrindex] = "" ;
 		    arrindex++ ;
+		}
+		else
+		{
+		    for( anindex = 0; anindex < numElements; anindex++ )
+		    {
+			memcpy(buf, my_buf, charSize ) ;
+			buf[charSize] = '\0' ;
+			my_buf += charSize ;
+			vbuf[arrindex] = buf ;
+			arrindex++ ;
+		    }
 		}
 	    }
 	    break ;
@@ -280,10 +288,18 @@ CDFutilities::read_record( void *cdf_buf, void *arrbuf,
 	    {
 		dods_byte *my_buf = (dods_byte *)arrbuf ;
 		unsigned char *my_cdf = (unsigned char *)cdf_buf ;
-		for( anindex = 0; anindex < numElements; anindex++ )
+		if( numElements == 0 )
 		{
-		    my_buf[arrindex] = my_cdf[anindex] ;
+		    my_buf[arrindex] = 0 ;
 		    arrindex++ ;
+		}
+		else
+		{
+		    for( anindex = 0; anindex < numElements; anindex++ )
+		    {
+			my_buf[arrindex] = my_cdf[anindex] ;
+			arrindex++ ;
+		    }
 		}
 	    }
 	    break ;
@@ -291,10 +307,18 @@ CDFutilities::read_record( void *cdf_buf, void *arrbuf,
 	    {
 		dods_int16 *my_buf = (dods_int16 *)arrbuf ;
 		char *my_cdf = (char *)cdf_buf ;
-		for( anindex = 0; anindex < numElements; anindex++ )
+		if( numElements == 0 )
 		{
-		    my_buf[arrindex] = (dods_int16)my_cdf[anindex] ;
+		    my_buf[arrindex] = 0 ;
 		    arrindex++ ;
+		}
+		else
+		{
+		    for( anindex = 0; anindex < numElements; anindex++ )
+		    {
+			my_buf[arrindex] = (dods_int16)my_cdf[anindex] ;
+			arrindex++ ;
+		    }
 		}
 	    }
 	    break ;
@@ -302,10 +326,18 @@ CDFutilities::read_record( void *cdf_buf, void *arrbuf,
 	    {
 		dods_uint16 *my_buf = (dods_uint16 *)arrbuf ;
 		unsigned char *my_cdf = (unsigned char *)cdf_buf ;
-		for( anindex = 0; anindex < numElements; anindex++ )
+		if( numElements == 0 )
 		{
-		    my_buf[arrindex] = (dods_uint16)my_cdf[anindex] ;
+		    my_buf[arrindex] = 0 ;
 		    arrindex++ ;
+		}
+		else
+		{
+		    for( anindex = 0; anindex < numElements; anindex++ )
+		    {
+			my_buf[arrindex] = (dods_uint16)my_cdf[anindex] ;
+			arrindex++ ;
+		    }
 		}
 	    }
 	    break ;
@@ -313,10 +345,18 @@ CDFutilities::read_record( void *cdf_buf, void *arrbuf,
 	    {
 		dods_int16 *my_buf = (dods_int16 *)arrbuf ;
 		short *my_cdf = (short *)cdf_buf ;
-		for( anindex = 0; anindex < numElements; anindex++ )
+		if( numElements == 0 )
 		{
-		    my_buf[arrindex] = my_cdf[anindex] ;
+		    my_buf[arrindex] = 0 ;
 		    arrindex++ ;
+		}
+		else
+		{
+		    for( anindex = 0; anindex < numElements; anindex++ )
+		    {
+			my_buf[arrindex] = my_cdf[anindex] ;
+			arrindex++ ;
+		    }
 		}
 	    }
 	    break ;
@@ -324,10 +364,18 @@ CDFutilities::read_record( void *cdf_buf, void *arrbuf,
 	    {
 		dods_uint16 *my_buf = (dods_uint16 *)arrbuf ;
 		unsigned short *my_cdf = (unsigned short *)cdf_buf ;
-		for( anindex = 0; anindex < numElements; anindex++ )
+		if( numElements == 0 )
 		{
-		    my_buf[arrindex] = my_cdf[anindex] ;
+		    my_buf[arrindex] = 0 ;
 		    arrindex++ ;
+		}
+		else
+		{
+		    for( anindex = 0; anindex < numElements; anindex++ )
+		    {
+			my_buf[arrindex] = my_cdf[anindex] ;
+			arrindex++ ;
+		    }
 		}
 	    }
 	    break ;
@@ -335,10 +383,18 @@ CDFutilities::read_record( void *cdf_buf, void *arrbuf,
 	    {
 		dods_int32 *my_buf = (dods_int32 *)arrbuf ;
 		long *my_cdf = (long *)cdf_buf ;
-		for( anindex = 0; anindex < numElements; anindex++ )
+		if( numElements == 0 )
 		{
-		    my_buf[arrindex] = my_cdf[anindex] ;
+		    my_buf[arrindex] = 0 ;
 		    arrindex++ ;
+		}
+		else
+		{
+		    for( anindex = 0; anindex < numElements; anindex++ )
+		    {
+			my_buf[arrindex] = my_cdf[anindex] ;
+			arrindex++ ;
+		    }
 		}
 	    }
 	    break ;
@@ -346,10 +402,18 @@ CDFutilities::read_record( void *cdf_buf, void *arrbuf,
 	    {
 		dods_uint32 *my_buf = (dods_uint32 *)arrbuf ;
 		unsigned long *my_cdf = (unsigned long *)cdf_buf ;
-		for( anindex = 0; anindex < numElements; anindex++ )
+		if( numElements == 0 )
 		{
-		    my_buf[arrindex] = my_cdf[anindex] ;
+		    my_buf[arrindex] = 0 ;
 		    arrindex++ ;
+		}
+		else
+		{
+		    for( anindex = 0; anindex < numElements; anindex++ )
+		    {
+			my_buf[arrindex] = my_cdf[anindex] ;
+			arrindex++ ;
+		    }
 		}
 	    }
 	    break ;
@@ -358,10 +422,18 @@ CDFutilities::read_record( void *cdf_buf, void *arrbuf,
 	    {
 		dods_float32 *my_buf = (dods_float32 *)arrbuf ;
 		float *my_cdf = (float *)cdf_buf ;
-		for( anindex = 0; anindex < numElements; anindex++ )
+		if( numElements == 0 )
 		{
-		    my_buf[arrindex] = my_cdf[anindex] ;
+		    my_buf[arrindex] = 0.0 ;
 		    arrindex++ ;
+		}
+		else
+		{
+		    for( anindex = 0; anindex < numElements; anindex++ )
+		    {
+			my_buf[arrindex] = my_cdf[anindex] ;
+			arrindex++ ;
+		    }
 		}
 	    }
 	    break ;
@@ -371,10 +443,18 @@ CDFutilities::read_record( void *cdf_buf, void *arrbuf,
 	    {
 		dods_float64 *my_buf = (dods_float64 *)arrbuf ;
 		double *my_cdf = (double *)cdf_buf ;
-		for( anindex = 0; anindex < numElements; anindex++ )
+		if( numElements == 0 )
 		{
-		    my_buf[arrindex] = my_cdf[anindex] ;
+		    my_buf[arrindex] = 0.0 ;
 		    arrindex++ ;
+		}
+		else
+		{
+		    for( anindex = 0; anindex < numElements; anindex++ )
+		    {
+			my_buf[arrindex] = my_cdf[anindex] ;
+			arrindex++ ;
+		    }
 		}
 	    }
 	    break ;
