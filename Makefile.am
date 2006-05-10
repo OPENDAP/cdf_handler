@@ -12,7 +12,10 @@ ACLOCAL_AMFLAGS = -I conf
 bin_PROGRAMS = dap_cdf_handler
 
 if OPENDAPSERVER
+    lib_LTLIBRARIES = libcdf_handler.la libcdf_module.la
     noinst_PROGRAMS = bes_cdf_handler
+else
+    lib_LTLIBRARIES = libcdf_handler.la
 endif
 
 CDFSRCS:= CDFArray.cc CDFByte.cc CDFFloat32.cc CDFFloat64.cc CDFGrid.cc \
@@ -25,20 +28,25 @@ CDFHDRS:= CDFArray.h CDFByte.h CDFFloat32.h CDFFloat64.h CDFGrid.h \
 	  CDFInt16.h CDFInt32.h CDFSequence.h CDFStr.h CDFStructure.h \
 	  CDFTypeFactory.h CDFUInt16.h CDFUInt32.h CDFUrl.h CDFnamePath.h \
 	  CDFreadAttributes.h CDFreadDescriptors.h CDFutilities.h \
-	  CDFDebug.h
+	  CDFDebug.h config_cdf.h
 
-DAP_HANDLER_SRC = dap_cdf_handler.cc config_cdf.h
+libcdf_handler_la_SOURCES = $(CDFSRCS) $(CDFHDRS)
 
-BES_HANDLER_SRC = bes_cdf_handler.cc cdf_module.cc CDFHandlerApp.cc \
-	CDFRequestHandler.cc CDFHandlerApp.h CDFRequestHandler.h \
-	CDFResponseNames.h config_cdf.h
+SERVER_SRC:=CDFRequestHandler.cc CDFModule.cc CDFRequestHandler.h \
+		CDFModule.h CDFResponseNames.h
 
-dap_cdf_handler_SOURCES = $(CDFSRCS) $(DAP_HANDLER_SRC) $(CDFHDRS)
+libcdf_module_la_SOURCES = $(SERVER_SRC)
+libcdf_module_la_CPPFLAGS = $(BES_CFLAGS)
+libcdf_module_la_LDFLAGS = libcdf_handler.la $(BES_LDFLAGS)
 
-bes_cdf_handler_SOURCES = $(CDFSRCS) $(BES_HANDLER_SRC) $(CDFHDRS)
-bes_cdf_handler_CPPFLAGS = $(BES_CPPFLAGS)
-bes_cdf_handler_LDFLAGS = $(BES_LDFLAGS) 
-bes_cdf_handler_LDADD = $(BES_LDADD)
+dap_cdf_handler_SOURCES = dap_cdf_handler.cc
+dap_cdf_handler_LDADD = libcdf_handler.la
+
+BES_HANDLER_SRC = bes_cdf_handler.cc CDFHandlerApp.cc CDFHandlerApp.h
+
+bes_cdf_handler_SOURCES = $(BES_HANDLER_SRC)
+bes_cdf_handler_CPPFLAGS = $(BES_CFLAGS)
+bes_cdf_handler_LDFLAGS = libcdf_module.la libcdf_handler.la $(BES_LDFLAGS) 
 
 EXTRA_PROGRAMS = bes_cdf_handler
 

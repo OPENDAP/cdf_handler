@@ -60,8 +60,6 @@ AC_DEFUN([AC_CHECK_BES],
     else
       BES_LDFLAGS="`$BES_CONFIG --libs`"
       BES_CFLAGS="`$BES_CONFIG --cflags`"
-      MODULE_DIR="`$BES_CONFIG --prefix`/lib/bes"
-      BES_LDADD="$MODULE_DIR/opendap_commands.o $MODULE_DIR/dods_module.o"
     fi
     if test x$bes_no = x ; then
       AC_MSG_RESULT([yes])
@@ -77,17 +75,15 @@ AC_DEFUN([AC_CHECK_BES],
       fi
       BES_LDFLAGS=""
       BES_CFLAGS=""
-      BES_LDADD=""
       m4_if([$3], [], [:], [$3])
     fi
   else
     AM_CONDITIONAL([OPENDAPSERVER], [false])
     BES_LDFLAGS=""
     BES_CFLAGS=""
-    BES_LDADD=""
   fi
+  AC_SUBST([BES_PATH])
   AC_SUBST([BES_CFLAGS])
   AC_SUBST([BES_LDFLAGS])
-  AC_SUBST([BES_LDADD])
 ])
 

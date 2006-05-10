@@ -13,6 +13,7 @@ AC_CONFIG_HEADER([config_cdf.h])
 # Checks for programs.
 AC_PROG_CXX
 AC_PROG_CC
+AC_PROG_LIBTOOL
 
 # Checks for header files.
 AC_HEADER_STDC
@@ -37,13 +38,9 @@ AC_CHECK_LIBDAP([3.5.3],
 ])
   
 AC_CHECK_BES([3.1.0],
- [
-  LDFLAGS="$LDFLAGS $BES_LDFLAGS"
-  CPPFLAGS="$CPPFLAGS $BES_CFLAGS"
-  LDADD="$LDADD $BES_LDADD"
- ],
- [ AC_MSG_ERROR([Cannot find libdap])
-])
+ [ AC_MSG_RESULT([$BES_PATH]) ],
+ [ AC_MSG_ERROR([Cannot find libdap]) ]
+)
   
 dnl Check for the cdf library.
 AC_DEFUN([AC_CHECK_CDF],

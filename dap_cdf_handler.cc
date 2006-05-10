@@ -35,6 +35,7 @@
 
 #include "ObjectType.h"
 #include "cgi_util.h"
+#include "ConstraintEvaluator.h"
 
 #include "CDFTypeFactory.h"
 #include "CDFreadAttributes.h"
@@ -67,28 +68,31 @@ main(int argc, char *argv[])
 
 	  case DODSFilter::DDS_Response: {
 	    DDS dds(cdftf);
+	    ConstraintEvaluator ce ;
 
 	    string dsn = df.get_dataset_name();
 	    readDescriptors( dds, dsn, name_path( dsn ) ) ;
 	    df.read_ancillary_dds(dds);
-	    df.send_dds(dds, true);
+	    df.send_dds(dds, ce, true);
 	    break;
 	  }
 
 	  case DODSFilter::DataDDS_Response: {
 	    DDS dds(cdftf);
+	    ConstraintEvaluator ce ;
 
 	    string dsn = df.get_dataset_name();
 	    dds.filename( dsn ) ;
 	    readDescriptors( dds, dsn, name_path( dsn ) ) ;
 	    df.read_ancillary_dds(dds);
-	    df.send_data(dds, stdout);
+	    df.send_data(dds, ce, stdout);
 	    break;
 	  }
 
 	  case DODSFilter::DDX_Response: {
 	    DDS dds(cdftf);
 	    DAS das;
+	    ConstraintEvaluator ce ;
 
 	    string dsn = df.get_dataset_name();
 
@@ -102,7 +106,7 @@ main(int argc, char *argv[])
 
 	    dds.transfer_attributes(&das);
 
-	    df.send_ddx(dds, stdout);
+	    df.send_ddx(dds, ce, stdout);
 	    break;
 	  }
 
