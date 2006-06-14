@@ -1,11 +1,11 @@
-#ifndef I_OPeNDAPBaseApp_h
-#define I_OPeNDAPBaseApp_h 1
+#ifndef I_CDFHandlerApp_h
+#define I_CDFHandlerApp_h 1
 
-#include "OPeNDAPBaseApp.h"
+#include "BESBaseApp.h"
 
 class DODSFilter ;
 
-class CDFHandlerApp : public OPeNDAPBaseApp
+class CDFHandlerApp : public BESBaseApp
 {
 private:
     DODSFilter *		_df ;
@@ -16,5 +16,5 @@ public:
     virtual int			run() ;
 } ;
 
-#endif // I_OPeNDAPBaseApp_h
+#endif // I_CDFHandlerApp_h
 

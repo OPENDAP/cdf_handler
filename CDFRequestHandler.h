@@ -33,18 +33,18 @@
 #ifndef I_CDFRequestHandler_H
 #define I_CDFRequestHandler_H 1
 
-#include "DODSRequestHandler.h"
+#include "BESRequestHandler.h"
 
-class CDFRequestHandler : public DODSRequestHandler {
+class CDFRequestHandler : public BESRequestHandler {
 public:
 			CDFRequestHandler( string name ) ;
     virtual		~CDFRequestHandler( void ) ;
 
-    static bool		cdf_build_das( DODSDataHandlerInterface &dhi ) ;
-    static bool		cdf_build_dds( DODSDataHandlerInterface &dhi ) ;
-    static bool		cdf_build_data( DODSDataHandlerInterface &dhi ) ;
-    static bool		cdf_build_help( DODSDataHandlerInterface &dhi ) ;
-    static bool		cdf_build_version( DODSDataHandlerInterface &dhi ) ;
+    static bool		cdf_build_das( BESDataHandlerInterface &dhi ) ;
+    static bool		cdf_build_dds( BESDataHandlerInterface &dhi ) ;
+    static bool		cdf_build_data( BESDataHandlerInterface &dhi ) ;
+    static bool		cdf_build_help( BESDataHandlerInterface &dhi ) ;
+    static bool		cdf_build_version( BESDataHandlerInterface &dhi ) ;
 };
 
 #endif

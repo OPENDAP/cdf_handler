@@ -34,34 +34,34 @@
 using std::endl ;
 
 #include "CDFModule.h"
-#include "DODSRequestHandlerList.h"
+#include "BESRequestHandlerList.h"
 #include "CDFRequestHandler.h"
 #include "CDFResponseNames.h"
-#include "DODSLog.h"
+#include "BESLog.h"
 
 void
 CDFModule::initialize()
 {
-    if( DODSLog::TheLog()->is_verbose() )
-	(*DODSLog::TheLog()) << "Initializing CDF:" << endl ;
+    if( BESLog::TheLog()->is_verbose() )
+	(*BESLog::TheLog()) << "Initializing CDF:" << endl ;
 
-    if( DODSLog::TheLog()->is_verbose() )
-	(*DODSLog::TheLog()) << "    adding " << CDF_NAME << " request handler" << endl ;
-    DODSRequestHandlerList::TheList()->add_handler( CDF_NAME, new CDFRequestHandler( CDF_NAME ) ) ;
+    if( BESLog::TheLog()->is_verbose() )
+	(*BESLog::TheLog()) << "    adding " << CDF_NAME << " request handler" << endl ;
+    BESRequestHandlerList::TheList()->add_handler( CDF_NAME, new CDFRequestHandler( CDF_NAME ) ) ;
 }
 
 void
 CDFModule::terminate()
 {
-    if( DODSLog::TheLog()->is_verbose() )
-	(*DODSLog::TheLog()) << "Removing CDF Handlers" << endl;
-    DODSRequestHandler *rh = DODSRequestHandlerList::TheList()->remove_handler( CDF_NAME ) ;
+    if( BESLog::TheLog()->is_verbose() )
+	(*BESLog::TheLog()) << "Removing CDF Handlers" << endl;
+    BESRequestHandler *rh = BESRequestHandlerList::TheList()->remove_handler( CDF_NAME ) ;
     if( rh ) delete rh ;
 }
 
 extern "C"
 {
-    OPeNDAPAbstractModule *maker()
+    BESAbstractModule *maker()
     {
 	return new CDFModule ;
     }

@@ -40,20 +40,20 @@ using std::endl ;
 
 #include "CDFRequestHandler.h"
 #include "CDFTypeFactory.h"
-#include "DODSResponseHandler.h"
-#include "DODSResponseNames.h"
+#include "BESResponseHandler.h"
+#include "BESResponseNames.h"
 #include "CDFreadAttributes.h"
 #include "DAS.h"
 #include "CDFreadDescriptors.h"
 #include "DDS.h"
-#include "DODSConstraintFuncs.h"
-#include "DODSVersionInfo.h"
-#include "TheDODSKeys.h"
-#include "DODSResponseException.h"
+#include "BESConstraintFuncs.h"
+#include "BESVersionInfo.h"
+#include "TheBESKeys.h"
+#include "BESResponseException.h"
 #include "config_cdf.h"
 
 CDFRequestHandler::CDFRequestHandler( string name )
-    : DODSRequestHandler( name )
+    : BESRequestHandler( name )
 {
     add_handler( DAS_RESPONSE, CDFRequestHandler::cdf_build_das ) ;
     add_handler( DDS_RESPONSE, CDFRequestHandler::cdf_build_dds ) ;
@@ -67,18 +67,18 @@ CDFRequestHandler::~CDFRequestHandler()
 }
 
 bool
-CDFRequestHandler::cdf_build_das( DODSDataHandlerInterface &dhi )
+CDFRequestHandler::cdf_build_das( BESDataHandlerInterface &dhi )
 {
     DAS *das = (DAS *)dhi.response_handler->get_response_object() ;
     if( !readAttributes( *das, dhi.container->get_real_name() ) )
     {
-	throw DODSResponseException( "CDF could not build the DAS response" ) ;
+	throw BESResponseException( "CDF could not build the DAS response" ) ;
     }
     return true ;
 }
 
 bool
-CDFRequestHandler::cdf_build_dds( DODSDataHandlerInterface &dhi )
+CDFRequestHandler::cdf_build_dds( BESDataHandlerInterface &dhi )
 {
     DDS *dds = (DDS *)dhi.response_handler->get_response_object() ;
     CDFTypeFactory *factory = new CDFTypeFactory ;
@@ -86,15 +86,15 @@ CDFRequestHandler::cdf_build_dds( DODSDataHandlerInterface &dhi )
     if( !readDescriptors( *dds, dhi.container->get_real_name(),
 			  dhi.container->get_symbolic_name() ) )
     {
-	throw DODSResponseException( "CDF could not build the DDS response" ) ;
+	throw BESResponseException( "CDF could not build the DDS response" ) ;
     }
-    DODSConstraintFuncs::post_append( dhi ) ;
+    BESConstraintFuncs::post_append( dhi ) ;
 
     return true ;
 }
 
 bool
-CDFRequestHandler::cdf_build_data( DODSDataHandlerInterface &dhi )
+CDFRequestHandler::cdf_build_data( BESDataHandlerInterface &dhi )
 {
     DDS *dds = (DDS *)dhi.response_handler->get_response_object() ;
     CDFTypeFactory *factory = new CDFTypeFactory ;
@@ -102,21 +102,21 @@ CDFRequestHandler::cdf_build_data( DODSDataHandlerInterface &dhi )
     if( !readDescriptors( *dds, dhi.container->get_real_name(),
 			  dhi.container->get_symbolic_name() ) )
     {
-	throw DODSResponseException( "CDF could not build the DDS response" ) ;
+	throw BESResponseException( "CDF could not build the DDS response" ) ;
     }
-    DODSConstraintFuncs::post_append( dhi ) ;
+    BESConstraintFuncs::post_append( dhi ) ;
 
     return true ;
 }
 
 bool
-CDFRequestHandler::cdf_build_help( DODSDataHandlerInterface &dhi )
+CDFRequestHandler::cdf_build_help( BESDataHandlerInterface &dhi )
 {
-    DODSInfo *info = (DODSInfo *)dhi.response_handler->get_response_object() ;
+    BESInfo *info = (BESInfo *)dhi.response_handler->get_response_object() ;
     info->add_data( (string)PACKAGE_NAME + PACKAGE_VERSION + "\n" ) ;
     bool found = false ;
     string key = (string)"CDF.Help." + dhi.transmit_protocol ;
-    string file = TheDODSKeys::TheKeys()->get_key( key, found ) ;
+    string file = TheBESKeys::TheKeys()->get_key( key, found ) ;
     if( found == false )
     {
 	info->add_data( "no help information available for cdf-handler\n" ) ;
@@ -148,9 +148,9 @@ CDFRequestHandler::cdf_build_help( DODSDataHandlerInterface &dhi )
 }
 
 bool
-CDFRequestHandler::cdf_build_version( DODSDataHandlerInterface &dhi )
+CDFRequestHandler::cdf_build_version( BESDataHandlerInterface &dhi )
 {
-    DODSVersionInfo *info = dynamic_cast<DODSVersionInfo *>(dhi.response_handler->get_response_object() ) ;
+    BESVersionInfo *info = dynamic_cast<BESVersionInfo *>(dhi.response_handler->get_response_object() ) ;
     info->addHandlerVersion( PACKAGE_NAME, PACKAGE_VERSION ) ;
     return true ;
 }

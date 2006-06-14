@@ -32,9 +32,9 @@
 #ifndef A_CDFModule_H
 #define A_CDFModule_H 1
 
-#include "OPeNDAPAbstractModule.h"
+#include "BESAbstractModule.h"
 
-class CDFModule : public OPeNDAPAbstractModule
+class CDFModule : public BESAbstractModule
 {
 public:
     				CDFModule() {}

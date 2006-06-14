@@ -11,11 +11,11 @@ ACLOCAL_AMFLAGS = -I conf
 
 bin_PROGRAMS = dap_cdf_handler
 
+lib_LTLIBRARIES = libcdf_handler.la
 if OPENDAPSERVER
-    lib_LTLIBRARIES = libcdf_handler.la libcdf_module.la
+    lib_besdir=$(prefix)/lib/bes
+    lib_bes_LTLIBRARIES = libcdf_module.la
     noinst_PROGRAMS = bes_cdf_handler
-else
-    lib_LTLIBRARIES = libcdf_handler.la
 endif
 
 CDFSRCS:= CDFArray.cc CDFByte.cc CDFFloat32.cc CDFFloat64.cc CDFGrid.cc \

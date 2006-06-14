@@ -46,7 +46,7 @@ using std::flush ;
 #include "CDFHandlerApp.h"
 #include "CDFResponseNames.h"
 #include "DODSFilter.h"
-#include "DODSCgi.h"
+#include "BESCgiInterface.h"
 #include "default_module.h"
 #include "opendap_commands.h"
 
@@ -70,7 +70,7 @@ CDFHandlerApp::initialize( int argc, char **argv )
     default_module::initialize( argc, argv ) ;
     opendap_commands::initialize( argc, argv ) ;
 
-    OPeNDAPBaseApp::initialize( argc, argv ) ;
+    BESBaseApp::initialize( argc, argv ) ;
 
     _df = new DODSFilter( argc, argv ) ;
 
@@ -80,7 +80,7 @@ CDFHandlerApp::initialize( int argc, char **argv )
 int
 CDFHandlerApp::run()
 {
-    DODSCgi d( CDF_NAME, *_df ) ;
+    BESCgiInterface d( CDF_NAME, *_df ) ;
     d.execute_request() ;
 
     return 0 ;
