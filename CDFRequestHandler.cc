@@ -72,7 +72,8 @@ CDFRequestHandler::cdf_build_das( BESDataHandlerInterface &dhi )
     DAS *das = (DAS *)dhi.response_handler->get_response_object() ;
     if( !readAttributes( *das, dhi.container->get_real_name() ) )
     {
-	throw BESResponseException( "CDF could not build the DAS response" ) ;
+	string s = "CDF could not build the DAS response" ;
+	throw BESResponseException( s, __FILE__, __LINE__ ) ;
     }
     return true ;
 }
@@ -86,7 +87,8 @@ CDFRequestHandler::cdf_build_dds( BESDataHandlerInterface &dhi )
     if( !readDescriptors( *dds, dhi.container->get_real_name(),
 			  dhi.container->get_symbolic_name() ) )
     {
-	throw BESResponseException( "CDF could not build the DDS response" ) ;
+	string s = "CDF could not build the DDS response" ;
+	throw BESResponseException( s, __FILE__, __LINE__ ) ;
     }
     BESConstraintFuncs::post_append( dhi ) ;
 
@@ -102,7 +104,8 @@ CDFRequestHandler::cdf_build_data( BESDataHandlerInterface &dhi )
     if( !readDescriptors( *dds, dhi.container->get_real_name(),
 			  dhi.container->get_symbolic_name() ) )
     {
-	throw BESResponseException( "CDF could not build the DDS response" ) ;
+	string s = "CDF could not build the Data DDS response" ;
+	throw BESResponseException( s, __FILE__, __LINE__ ) ;
     }
     BESConstraintFuncs::post_append( dhi ) ;
 
@@ -112,38 +115,14 @@ CDFRequestHandler::cdf_build_data( BESDataHandlerInterface &dhi )
 bool
 CDFRequestHandler::cdf_build_help( BESDataHandlerInterface &dhi )
 {
-    BESInfo *info = (BESInfo *)dhi.response_handler->get_response_object() ;
-    info->add_data( (string)PACKAGE_NAME + PACKAGE_VERSION + "\n" ) ;
-    bool found = false ;
-    string key = (string)"CDF.Help." + dhi.transmit_protocol ;
-    string file = TheBESKeys::TheKeys()->get_key( key, found ) ;
-    if( found == false )
-    {
-	info->add_data( "no help information available for cdf-handler\n" ) ;
-    }
-    else
-    {
-	ifstream ifs( file.c_str() ) ;
-	if( !ifs )
-	{
-	    info->add_data( "cdf-handler help file not found, help information not available\n" ) ;
-	}
-	else
-	{
-	    char line[4096] ;
-	    while( !ifs.eof() )
-	    {
-		ifs.getline( line, 4096 ) ;
-		if( !ifs.eof() )
-		{
-		    info->add_data( line ) ;
-		    info->add_data( "\n" ) ;
-		}
-	    }
-	    ifs.close() ;
-	}
-    }
-
+    BESInfo *info = dynamic_cast<BESInfo *>(dhi.response_handler->get_response_object());
+    string handles = (string)DAS_RESPONSE
+                     + "," + DDS_RESPONSE
+                     + "," + DATA_RESPONSE
+                     + "," + HELP_RESPONSE
+                     + "," + VERS_RESPONSE ;
+    info->add_tag( "handles", handles ) ;
+    info->add_tag( "version", PACKAGE_STRING ) ;
     return true ;
 }
 
