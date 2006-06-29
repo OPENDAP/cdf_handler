@@ -50,7 +50,7 @@ bes_cdf_handler_LDFLAGS = libcdf_module.la libcdf_handler.la $(BES_LDFLAGS)
 
 EXTRA_PROGRAMS = bes_cdf_handler
 
-EXTRA_DIST = COPYRIGHT COPYING netcdf_handler.spec
+EXTRA_DIST = COPYRIGHT COPYING
 
 CLEANFILES = *~
 
