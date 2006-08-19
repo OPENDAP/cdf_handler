@@ -70,7 +70,7 @@ bool
 CDFRequestHandler::cdf_build_das( BESDataHandlerInterface &dhi )
 {
     DAS *das = (DAS *)dhi.response_handler->get_response_object() ;
-    if( !readAttributes( *das, dhi.container->get_real_name() ) )
+    if( !readAttributes( *das, dhi.container->access() ) )
     {
 	string s = "CDF could not build the DAS response" ;
 	throw BESResponseException( s, __FILE__, __LINE__ ) ;
@@ -84,7 +84,7 @@ CDFRequestHandler::cdf_build_dds( BESDataHandlerInterface &dhi )
     DDS *dds = (DDS *)dhi.response_handler->get_response_object() ;
     CDFTypeFactory *factory = new CDFTypeFactory ;
     dds->set_factory( factory ) ;
-    if( !readDescriptors( *dds, dhi.container->get_real_name(),
+    if( !readDescriptors( *dds, dhi.container->access(),
 			  dhi.container->get_symbolic_name() ) )
     {
 	string s = "CDF could not build the DDS response" ;
@@ -101,7 +101,7 @@ CDFRequestHandler::cdf_build_data( BESDataHandlerInterface &dhi )
     DDS *dds = (DDS *)dhi.response_handler->get_response_object() ;
     CDFTypeFactory *factory = new CDFTypeFactory ;
     dds->set_factory( factory ) ;
-    if( !readDescriptors( *dds, dhi.container->get_real_name(),
+    if( !readDescriptors( *dds, dhi.container->access(),
 			  dhi.container->get_symbolic_name() ) )
     {
 	string s = "CDF could not build the Data DDS response" ;
