@@ -39,8 +39,8 @@ class CDFModule : public BESAbstractModule
 public:
     				CDFModule() {}
     virtual		    	~CDFModule() {}
-    virtual void		initialize() ;
-    virtual void		terminate() ;
+    virtual void		initialize( const string &modname ) ;
+    virtual void		terminate( const string &modname ) ;
 } ;
 
 #endif // A_CDFModule_H

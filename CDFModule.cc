@@ -40,22 +40,22 @@ using std::endl ;
 #include "BESLog.h"
 
 void
-CDFModule::initialize()
+CDFModule::initialize( const string &modname )
 {
     if( BESLog::TheLog()->is_verbose() )
 	(*BESLog::TheLog()) << "Initializing CDF:" << endl ;
 
     if( BESLog::TheLog()->is_verbose() )
-	(*BESLog::TheLog()) << "    adding " << CDF_NAME << " request handler" << endl ;
-    BESRequestHandlerList::TheList()->add_handler( CDF_NAME, new CDFRequestHandler( CDF_NAME ) ) ;
+	(*BESLog::TheLog()) << "    adding " << modname << " request handler" << endl ;
+    BESRequestHandlerList::TheList()->add_handler( modname, new CDFRequestHandler( modname ) ) ;
 }
 
 void
-CDFModule::terminate()
+CDFModule::terminate( const string &modname )
 {
     if( BESLog::TheLog()->is_verbose() )
 	(*BESLog::TheLog()) << "Removing CDF Handlers" << endl;
-    BESRequestHandler *rh = BESRequestHandlerList::TheList()->remove_handler( CDF_NAME ) ;
+    BESRequestHandler *rh = BESRequestHandlerList::TheList()->remove_handler( modname ) ;
     if( rh ) delete rh ;
 }
 
