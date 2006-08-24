@@ -42,6 +42,7 @@ using std::endl ;
 #include "CDFTypeFactory.h"
 #include "BESResponseHandler.h"
 #include "BESResponseNames.h"
+#include "BESDataNames.h"
 #include "CDFreadAttributes.h"
 #include "DAS.h"
 #include "CDFreadDescriptors.h"
@@ -90,7 +91,7 @@ CDFRequestHandler::cdf_build_dds( BESDataHandlerInterface &dhi )
 	string s = "CDF could not build the DDS response" ;
 	throw BESResponseException( s, __FILE__, __LINE__ ) ;
     }
-    BESConstraintFuncs::post_append( dhi ) ;
+    dhi.data[POST_CONSTRAINT] = dhi.container->get_constraint();
 
     return true ;
 }
@@ -107,7 +108,7 @@ CDFRequestHandler::cdf_build_data( BESDataHandlerInterface &dhi )
 	string s = "CDF could not build the Data DDS response" ;
 	throw BESResponseException( s, __FILE__, __LINE__ ) ;
     }
-    BESConstraintFuncs::post_append( dhi ) ;
+    dhi.data[POST_CONSTRAINT] = dhi.container->get_constraint();
 
     return true ;
 }
