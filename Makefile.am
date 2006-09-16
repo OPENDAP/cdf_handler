@@ -13,9 +13,8 @@ bin_PROGRAMS = dap_cdf_handler
 
 lib_LTLIBRARIES = libcdf_handler.la
 if OPENDAPSERVER
-    lib_besdir=$(prefix)/lib/bes
+    lib_besdir=$(libdir)/bes
     lib_bes_LTLIBRARIES = libcdf_module.la
-    noinst_PROGRAMS = bes_cdf_handler
 endif
 
 CDFSRCS:= CDFArray.cc CDFByte.cc CDFFloat32.cc CDFFloat64.cc CDFGrid.cc \
@@ -36,19 +35,20 @@ SERVER_SRC:=CDFRequestHandler.cc CDFModule.cc CDFRequestHandler.h \
 		CDFModule.h CDFResponseNames.h
 
 libcdf_module_la_SOURCES = $(SERVER_SRC)
-libcdf_module_la_CPPFLAGS = $(BES_CFLAGS)
-libcdf_module_la_LDFLAGS = libcdf_handler.la $(BES_LDFLAGS)
+libcdf_module_la_CPPFLAGS = $(BES_CPPFLAGS)
+libcdf_module_la_LDFLAGS = -avoid-version -module 
+libcdf_module_la_LIBADD = libcdf_handler.la $(BES_LIBS)
 
 dap_cdf_handler_SOURCES = dap_cdf_handler.cc
 dap_cdf_handler_LDADD = libcdf_handler.la
 
-BES_HANDLER_SRC = bes_cdf_handler.cc CDFHandlerApp.cc CDFHandlerApp.h
-
-bes_cdf_handler_SOURCES = $(BES_HANDLER_SRC)
-bes_cdf_handler_CPPFLAGS = $(BES_CFLAGS)
-bes_cdf_handler_LDFLAGS = libcdf_module.la libcdf_handler.la $(BES_LDFLAGS) 
-
-EXTRA_PROGRAMS = bes_cdf_handler
+#BES_HANDLER_SRC = bes_cdf_handler.cc CDFHandlerApp.cc CDFHandlerApp.h
+#
+#bes_cdf_handler_SOURCES = $(BES_HANDLER_SRC)
+#bes_cdf_handler_CPPFLAGS = $(BES_CPPFLAGS)
+#bes_cdf_handler_LDFLAGS = libcdf_handler.la $(BES_LIBS) 
+#
+#EXTRA_PROGRAMS = bes_cdf_handler
 
 EXTRA_DIST = COPYRIGHT COPYING
 
