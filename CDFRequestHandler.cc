@@ -44,13 +44,14 @@ using std::endl ;
 #include "BESResponseNames.h"
 #include "BESDataNames.h"
 #include "CDFreadAttributes.h"
-#include "DAS.h"
+#include "BESDASResponse.h"
 #include "CDFreadDescriptors.h"
-#include "DDS.h"
+#include "BESDDSResponse.h"
+#include "BESDataDDSResponse.h"
 #include "BESConstraintFuncs.h"
 #include "BESVersionInfo.h"
 #include "TheBESKeys.h"
-#include "BESResponseException.h"
+#include "BESHandlerException.h"
 #include "config_cdf.h"
 
 CDFRequestHandler::CDFRequestHandler( string name )
@@ -70,11 +71,14 @@ CDFRequestHandler::~CDFRequestHandler()
 bool
 CDFRequestHandler::cdf_build_das( BESDataHandlerInterface &dhi )
 {
-    DAS *das = (DAS *)dhi.response_handler->get_response_object() ;
+    BESDASResponse *bdas =
+	dynamic_cast<BESDASResponse *>(dhi.response_handler->get_response_object() ) ;
+    DAS *das = bdas->get_das() ;
+
     if( !readAttributes( *das, dhi.container->access() ) )
     {
 	string s = "CDF could not build the DAS response" ;
-	throw BESResponseException( s, __FILE__, __LINE__ ) ;
+	throw BESHandlerException( s, __FILE__, __LINE__ ) ;
     }
     return true ;
 }
@@ -82,14 +86,17 @@ CDFRequestHandler::cdf_build_das( BESDataHandlerInterface &dhi )
 bool
 CDFRequestHandler::cdf_build_dds( BESDataHandlerInterface &dhi )
 {
-    DDS *dds = (DDS *)dhi.response_handler->get_response_object() ;
+    BESDDSResponse *bdds =
+	dynamic_cast<BESDDSResponse *>( dhi.response_handler->get_response_object() ) ;
+    DDS *dds = bdds->get_dds() ;
+
     CDFTypeFactory *factory = new CDFTypeFactory ;
     dds->set_factory( factory ) ;
     if( !readDescriptors( *dds, dhi.container->access(),
 			  dhi.container->get_symbolic_name() ) )
     {
 	string s = "CDF could not build the DDS response" ;
-	throw BESResponseException( s, __FILE__, __LINE__ ) ;
+	throw BESHandlerException( s, __FILE__, __LINE__ ) ;
     }
     dhi.data[POST_CONSTRAINT] = dhi.container->get_constraint();
 
@@ -99,14 +106,17 @@ CDFRequestHandler::cdf_build_dds( BESDataHandlerInterface &dhi )
 bool
 CDFRequestHandler::cdf_build_data( BESDataHandlerInterface &dhi )
 {
-    DDS *dds = (DDS *)dhi.response_handler->get_response_object() ;
+    BESDataDDSResponse *bdds =
+	dynamic_cast<BESDataDDSResponse *>( dhi.response_handler->get_response_object() ) ;
+    DataDDS *dds = bdds->get_dds() ;
+
     CDFTypeFactory *factory = new CDFTypeFactory ;
     dds->set_factory( factory ) ;
     if( !readDescriptors( *dds, dhi.container->access(),
 			  dhi.container->get_symbolic_name() ) )
     {
 	string s = "CDF could not build the Data DDS response" ;
-	throw BESResponseException( s, __FILE__, __LINE__ ) ;
+	throw BESHandlerException( s, __FILE__, __LINE__ ) ;
     }
     dhi.data[POST_CONSTRAINT] = dhi.container->get_constraint();
 

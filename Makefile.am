@@ -42,14 +42,6 @@ libcdf_module_la_LIBADD = libcdf_handler.la $(BES_LIBS)
 dap_cdf_handler_SOURCES = dap_cdf_handler.cc
 dap_cdf_handler_LDADD = libcdf_handler.la
 
-#BES_HANDLER_SRC = bes_cdf_handler.cc CDFHandlerApp.cc CDFHandlerApp.h
-#
-#bes_cdf_handler_SOURCES = $(BES_HANDLER_SRC)
-#bes_cdf_handler_CPPFLAGS = $(BES_CPPFLAGS)
-#bes_cdf_handler_LDFLAGS = libcdf_handler.la $(BES_LIBS) 
-#
-#EXTRA_PROGRAMS = bes_cdf_handler
-
 EXTRA_DIST = COPYRIGHT COPYING
 
 CLEANFILES = *~
