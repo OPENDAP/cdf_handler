@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT([cdf-handler], [1.0.0], [dods-tech@unidata.ucar.edu])
+AC_INIT([cdf-handler], [1.0.1], [dods-tech@unidata.ucar.edu])
 AC_CONFIG_AUX_DIR([conf])
 
 AM_INIT_AUTOMAKE
@@ -67,57 +67,6 @@ then
 else
     AM_CONDITIONAL([OPENDAPSERVER], [false])
 fi
-
-dnl Check for the cdf library.
-AC_DEFUN([AC_CHECK_CDF],
-[
-AC_ARG_WITH([cdf],
-            [AS_HELP_STRING([--with-cdf=ARG],[cdf directory])],
-            [CDF_PATH=${withval}], 
-            [CDF_PATH="/usr/local/cdf"])
-
-AC_ARG_WITH([cdf_inc],
-            [AS_HELP_STRING([--with-cdf-include=ARG],[cdf include directory])],
-            [CDF_PATH_INC=${withval}], 
-            [CDF_PATH_INC=""])
-
-AC_ARG_WITH([cdf_libdir],
-            [AS_HELP_STRING([--with-cdf-libdir=ARG],[cdf library directory])],
-            [CDF_PATH_LIBDIR=${withval}], 
-            [CDF_PATH_LIBDIR=""])
-
-AS_IF([test "z$CDF_PATH_LIBDIR" = "z"],[CDF_PATH_LIBDIR="$CDF_PATH/lib"])
-
-AS_IF([test "z$CDF_PATH_INC" = "z"],[CDF_PATH_INC="$CDF_PATH/include"])
-
-ac_cdf_ok='yes'
-CDF_LIBS="-lcdf"
-CDF_LDFLAGS="-L${CDF_PATH_LIBDIR}" 
-
-AC_SUBST([CDF_LDFLAGS])
-AC_SUBST([CDF_LIBS])
-
-CDF_CPPFLAGS=
-ac_cdf_h='no'
-ac_cdf_save_CPPFLAGS="$CPPFLAGS"
-CPPFLAGS="$CPPFLAGS -I$CDF_PATH_INC"
-AC_CHECK_HEADERS([cdf.h],
-  [ac_cdf_h='yes'],
-  [ac_cdf_h='no']
-)
-CPPFLAGS=$ac_cdf_save_CPPFLAGS
-
-AS_IF([test "$ac_cdf_h" = 'yes' ],
-  [CDF_CPPFLAGS="-I$CDF_PATH_INC"]
-)
-AC_SUBST([CDF_CPPFLAGS])
-
-AS_IF([test "$ac_cdf_ok" = 'no' -o "$ac_cdf_h" = 'no'],
-  [m4_if([$2], [], [:], [$2])],
-  [m4_if([$1], [], [:], [$1])]
-)
-
-])
 
 AC_CHECK_CDF(
    [

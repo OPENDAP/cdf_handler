@@ -37,7 +37,13 @@ using std::endl ;
 #include "BESRequestHandlerList.h"
 #include "CDFRequestHandler.h"
 #include "CDFResponseNames.h"
+#include "BESContainerStorageList.h"
+#include "BESContainerStorageCatalog.h"
+#include "BESCatalogDirectory.h"
+#include "BESCatalogList.h"
 #include "BESLog.h"
+
+#define CDF_CATALOG "catalog"
 
 void
 CDFModule::initialize( const string &modname )
@@ -48,6 +54,16 @@ CDFModule::initialize( const string &modname )
     if( BESLog::TheLog()->is_verbose() )
 	(*BESLog::TheLog()) << "    adding " << modname << " request handler" << endl ;
     BESRequestHandlerList::TheList()->add_handler( modname, new CDFRequestHandler( modname ) ) ;
+
+    if( BESLog::TheLog()->is_verbose() )
+	(*BESLog::TheLog()) << "    adding " << CDF_CATALOG << " catalog" 
+		      << endl ;
+    BESCatalogList::TheCatalogList()->add_catalog( new BESCatalogDirectory( CDF_CATALOG) ) ;
+
+    if( BESLog::TheLog()->is_verbose() )
+	(*BESLog::TheLog()) << "Adding Catalog Container Storage" << endl;
+    BESContainerStorageCatalog *csc = new BESContainerStorageCatalog( CDF_CATALOG ) ;
+    BESContainerStorageList::TheList()->add_persistence( csc ) ;
 }
 
 void

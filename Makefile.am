@@ -37,7 +37,7 @@ SERVER_SRC:=CDFRequestHandler.cc CDFModule.cc CDFRequestHandler.h \
 libcdf_module_la_SOURCES = $(SERVER_SRC)
 libcdf_module_la_CPPFLAGS = $(BES_CPPFLAGS)
 libcdf_module_la_LDFLAGS = -avoid-version -module 
-libcdf_module_la_LIBADD = libcdf_handler.la $(BES_LIBS) -L${CDF_PATH_LIBDIR} -lcdf
+libcdf_module_la_LIBADD = libcdf_handler.la $(BES_LIBS)
 
 dap_cdf_handler_SOURCES = dap_cdf_handler.cc
 dap_cdf_handler_LDADD = libcdf_handler.la

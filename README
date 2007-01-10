@@ -1,110 +1,14 @@
 
-	$Id$
+$Id$
 
-For information about building the DODS CDF source code, see the INSTALL
-file.
+This is the OPeNDAP cdf Data Handler. It is used along with the OPeNDAP
+DAP Server3 and Server4 1.2 beta.
 
-This file provides basic information about the DODS CDF server and its
-configuration. For more detailed information, see the Server Installation
-Guide at http://www.unidata.ucar.edu/packages/dods/user/install-html/.
+For information about building the OPeNDAP cdf Data Handler, see the
+INSTALL file.
 
-The information that follows is mostly up to date, but the Server Install
-Guide is probably a better source of information for most users.
-
-----------------------------------------------------------------------------
-
-DODS data servers make it simple to provide others with direct,
-over-the-network, access to your data. There is no need to reformat
-your data so that a new system can read it. Instead DODS uses the http server
-along with a dispatch script and a set of three server programs (Data
-Attribute Server, Data Structure Server, and Data Server) to make your
-existing data files available to anyone who has access to a program rebuilt
-with DODS components.
-
-For more information about DODS, see the URL
-
-    http://unidata.ucar.edu/packages/dods/
-
-cdf-dods is a server implementation of The National Space Science Data
-Center's CDF (Common Data Format), based on the Distributed Oceanographic 
-Data System (DODS). The software contains data servers that can be used
-along with any DODS client program to process data served by the cdf-dods
-server.
-
-The server can only read row major cdf files. It converts all variables into
-z-variables for processing (easier than doing both z and r variables.) It
-can read all CDF data types, representing EPOCH as a Float64. The data in
-the data file is read then served using the appropriate DODS data type.
-
-In short, all the data and attributes are processed. The data is reformatted
-to the Dods data model and served. The user can refer to the entire data
-using a URL and/or the local file name. Furthermore, if the user wants to
-work only with a small part of the data set, a constraint expression can
-be supplied along with the URL to save on network data transmission time.
-
-You can obtain a copy of the latest version of cdf-dods software from
-http://unidata.ucar.edu/packages/dods/.
-
-You can obtain a copy of the latest version of CDF software and learn more
-about CDF from http://nssdc.gsfc.nasa.gov/cdf/cdf_home.html.
-
-Included in this distribution are: 
-
- - Server program and its dispatch script (cdf_dods with links from cdf_das
- and cdf_dds)
- - Test datasets and sample format files
-
-Questions about cdf-dods may be sent to support@unidata.ucar.edu.
-
-SETTING UP A DATA SERVER
-
-Note: this discussion assumes that Apache World Wide Web server is
-installed on the workstation which is to be used to serve data. You do not
-need to use this particular web server, any server that supports CGI 1.1
-(Netscape, Apache, CERN, ...) will work. If you do not have a web server
-installed, first install one and then continue installing the DODS server.
-For information on various servers, see: 
-
-NCSA		http://hoohoo.ncsa.uiuc.edu/
-Apache		http://www.apache.org/
-CERN/W3C	http://www.w3c.org/
-
-To set up a DODS data server using the CDF server implementation, first
-follow the instructions in the INSTALL document. Four programs comprise the
-data server: a CGI (nph-dods) which is used to dispatch each data request to
-the correct filter program, and three filter programs (cdf_das, cdf_dds,
-cdf_dods). Really there is only one program, cdf_dods, with links from
-cdf_das and cdf_dds to cdf_dods. Make sure that the CGI module `nph-dods'
-is somewhere where the http server can run CGI modules.
-
-Files that are to be served by the DODS server must either be within the http
-server's document root directory or they must be accessible from the document
-root directory using links. To find out which directory is the http server's
-document root, look in the httpd configuration file.
-
-For example, to make the file example.cdf available to users, it must be
-either placed or linked within the document root directory. On my
-workstation the document root directory is /usr/local/apache/htdocs so the
-file must be moved or copied to that directory or one of its subdirectories
-or I must create a symbolic link in that directory or one of its
-subdirectories to the files. I have created a directory `data/cdf' in the
-http server's document root directory and copied the file example.cdf. The
-URL to that data file is:
-
-	http://twilek.hao.ucar.edu/cgi-bin/nph-dods/data/cdf/example.cdf
-
-Note that after the machine name (twilek.hao.ucar.edu) the URL contains the
-path to the DODS data server CGI and that the path to the data (relative to
-the document root directory) *follows* the CGI name.
-
-Also note that to limit access to the server to a specific set of machines,
-place the CGI within the document root directory (this works for NCSA version
-1.5 and later and also for Apache 1.1.1 and later). See the file SECURITY for
-a detailed description of the types of security DODS provides for data and
-how to install servers to take advantage of those features.
-
-For more examples see the test files in the tests subdirectory.         
-
-Good Luck :-)
-Patrick West
+This data handler is a component of the OPeNDAP DAP Server; the server base
+software is designed to allow any number of handlers to be configured easily.
+See the DAP Server README and INSTALL files for information about
+configuration, including how to use this handler.
 

@@ -1,3 +1,221 @@
+2006-11-23  Patrick West <pwest@ucar.edu>
+
+	Added a dump method to CDFModule for BES debugging.
+	M    cdf-handler/CDFModule.cc
+	M    cdf-handler/CDFModule.h
+	M    cdf-handler/opendap.ini
+	M    cdf-handler/Makefile.am
+
+2006-11-06  Patrick West <pwest@ucar.edu>
+
+	Was setting BES_LDFLAGS and using BES_LIBS. Now seting and using just
+	BES_LIBS.
+	M    conf/bes.m4
+	M    configure.ac
+
+2006-11-02  Patrick West <pwest@ucar.edu>
+
+	Any Error excpetions are now caught and converted into
+	BESHandlerExceptions.  Removed the building of a bes style cgi
+	application, just building the dap version.
+	D    cdf-handler/CDFHandlerApp.cc
+	D    cdf-handler/CDFHandlerApp.h
+	M    cdf-handler/CDFRequestHandler.cc
+	D    cdf-handler/bes_cdf_handler.cc
+	D    cdf-handler/cdf_module.cc
+	M    cdf-handler/Makefile.am
+
+2006-09-27  Patrick West <pwest@ucar.edu>
+
+	--without-bes now works for the different handler directories as
+	well as for the dap-server directory. cedar-handler requires bes. If
+	--without-bes is not specified then either --with-bes is looked at
+	if specified, or the bes-config script is looked for.
+	M    fits-handler/configure.ac
+	M    netcdf_handler/configure.ac
+	M    freeform_handler/configure.ac
+	M    hdf4_handler/configure.ac
+	M    hdf5_handler/configure.ac
+	M    jgofs_handler/configure.ac
+	M    cdf-handler/configure.ac
+	M    dap-server/configure.ac
+	M    fits-handler/configure.ac
+	M    netcdf_handler/configure.ac
+	M    freeform_handler/configure.ac
+	M    hdf4_handler/configure.ac
+	M    hdf5_handler/configure.ac
+	M    jgofs_handler/configure.ac
+	M    cdf-handler/configure.ac
+	M    dap-server/configure.ac
+
+2006-09-15  Patrick West <pwest@ucar.edu>
+
+	Using the same bes.m4 that the other handlers are now using. The
+	_module library is built with the -avoid-version flag and the
+	-module flag to remove version information. No bes cgi hanlder is
+	built now, no need.
+	M    conf/bes.m4
+	M    configure.ac
+	M    Makefile.am
+
+2006-08-24  Patrick West <pwest@ucar.edu>
+
+	Setting the post constraint variable in the data handler interface
+	for use when sending the response object.
+	M    CDFRequestHandler.cc
+
+2006-08-19  Patrick West <pwest@ucar.edu>
+
+	Passing the name of the module to the initialize and terminate
+	methods of the Module class so that it is set in the bes
+	configuration file instead of hard-coded
+
+2006-08-19  Patrick West <pwest@ucar.edu>
+
+	changed access to file to use access method on Container and added
+	compression parameters to the BES configuraiton file
+
+2006-07-06  Patrick West <pwest@ucar.edu>
+
+	dap_cmdmodule library renamed to dap_cmd_module so that all loaded
+	module libraries are named <something>_module
+
+2006-06-30  Patrick West <pwest@ucar.edu>
+
+	In the help response added begin and end tags called handler to
+	separate the different hander help responses and added a tag called
+	name within the handler tag to say which handler this help is for
+
+2006-06-29  Patrick West <pwest@ucar.edu>
+
+	distribution check
+
+2006-06-28  Patrick West <pwest@ucar.edu>
+
+	bes exception updates, cleaned up configuration file
+
+2006-06-14  Patrick West <pwest@ucar.edu>
+
+	configuration updates, bes modules in lib/bes
+
+2006-05-24  Patrick West <pwest@ucar.edu>
+
+	bes module updates
+
+2006-05-10  Patrick West <pwest@ucar.edu>
+
+	default modules loaded in handler app
+
+2006-05-10  Patrick West <pwest@ucar.edu>
+
+	bes enabled build
+
+2006-03-17  Patrick West <pwest@ucar.edu>
+
+	recnum 0 fix
+
+2006-03-03  Patrick West <pwest@ucar.edu>
+
+	changed int1 to int32, uint1 to uint32, fixed byte problem and
+	string problem
+
+2006-03-01  Patrick West <pwest@ucar.edu>
+
+	updated cdf handling
+
+2006-02-13  Patrick West <pwest@ucar.edu>
+
+	changed printing to use stdout instead of iostream
+
+2006-01-17  Patrick West <pwest@ucar.edu>
+
+	moved cdf_handler.cc to bes_cdf_handler.cc
+
+2006-01-11  James Gallagher <jgallagher@opendap.org>
+
+	Updated the file properties for this project.
+
+2006-01-10  Patrick West <pwest@ucar.edu>
+
+	added bes modules required to run
+
+2006-01-10  Patrick West <pwest@ucar.edu>
+
+	updated copywrite header information
+
+2006-01-10  Patrick West <pwest@ucar.edu>
+
+	created bes.m4 to configure with bes
+
+2006-01-10  Patrick West <pwest@ucar.edu>
+
+	configuration upgrade to match libdap, bes, and other handlers
+
+2005-12-12  Patrick West <pwest@ucar.edu>
+
+	update to latest libdap and bes
+
+2005-09-28  Patrick West <pwest@ucar.edu>
+
+	up to date with latest bes code
+
+2005-08-31  Patrick West <pwest@ucar.edu>
+
+	updating configuration to include versioning. Copied etc scripts
+	into this directory
+
+2005-08-31  Patrick West <pwest@ucar.edu>
+
+	macro for request and response names specific to cdf-handler
+
+2005-08-22  Patrick West <pwest@ucar.edu>
+
+	using App class to build handler, cleaned up Makefile for building
+	handler
+
+2005-08-08  root
+
+	Auto reset of Subversion properties
+
+2005-08-01  Patrick West <pwest@ucar.edu>
+
+	no need to link in aggregation handler
+
+2005-07-06  Patrick West <pwest@ucar.edu>
+
+	Handler installed into cgi-bin directory instead of bin
+
+2005-07-06  Patrick West <pwest@ucar.edu>
+
+	Merged this cdf.m4 file with the configure.in file.
+
+2005-07-06  Patrick West <pwest@ucar.edu>
+
+	Adding built configure script to svn trunk
+
+2005-07-06  Patrick West <pwest@ucar.edu>
+
+	Default prefix is OPENDAP_ROOT. RequestHandler building version
+	accurately now using cdf_version function. cdf_handler now using
+	DODSCgi. Installing module cdf_module.o and library, but not
+	headers. Added configuration for dap and daemon code.
+
+2005-07-05  Rob Morris <Robert.O.Morris@jpl.nasa.gov>
+
+	Set eol-style to native on all text file in the trunk
+
+2005-07-05  Patrick West <pwest@ucar.edu>
+
+	Moving cdf-dods from DODS/src directory to top-level directory and
+	renaming to cdf-handler.
+
+2005-02-01  Patrick West <pwest@ucar.edu>
+
+	integration with BES
+
+;; Local Variables:
+;; coding: utf-8
+;; End:
 2003-05-08  Patrick West  <pwest@ucar.edu>
 
 	* Introduced cdf-dods into DODS distribution

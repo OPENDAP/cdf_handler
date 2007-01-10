@@ -100,6 +100,8 @@ CDFRequestHandler::cdf_build_dds( BESDataHandlerInterface &dhi )
     }
     dhi.data[POST_CONSTRAINT] = dhi.container->get_constraint();
 
+    dds->set_factory( NULL ) ;
+
     return true ;
 }
 
@@ -119,6 +121,8 @@ CDFRequestHandler::cdf_build_data( BESDataHandlerInterface &dhi )
 	throw BESHandlerException( s, __FILE__, __LINE__ ) ;
     }
     dhi.data[POST_CONSTRAINT] = dhi.container->get_constraint();
+
+    dds->set_factory( NULL ) ;
 
     return true ;
 }
@@ -146,5 +150,22 @@ CDFRequestHandler::cdf_build_version( BESDataHandlerInterface &dhi )
     BESVersionInfo *info = dynamic_cast<BESVersionInfo *>(dhi.response_handler->get_response_object() ) ;
     info->addHandlerVersion( PACKAGE_NAME, PACKAGE_VERSION ) ;
     return true ;
+}
+
+/** @brief dumps information about this object
+ *
+ * Displays the pointer value of this instance, the name of the request
+ * handler, and the names of all registered handler functions
+ *
+ * @param strm C++ i/o stream to dump the information to
+ */
+void
+CDFRequestHandler::dump( ostream &strm ) const
+{
+    strm << BESIndent::LMarg << "CDFRequestHandler::dump - ("
+			     << (void *)this << ")" << endl ;
+    BESIndent::Indent() ;
+    BESRequestHandler::dump( strm ) ;
+    BESIndent::UnIndent() ;
 }
 

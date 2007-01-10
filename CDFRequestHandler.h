@@ -40,6 +40,8 @@ public:
 			CDFRequestHandler( string name ) ;
     virtual		~CDFRequestHandler( void ) ;
 
+    virtual void	dump( ostream &strm ) const ;
+
     static bool		cdf_build_das( BESDataHandlerInterface &dhi ) ;
     static bool		cdf_build_dds( BESDataHandlerInterface &dhi ) ;
     static bool		cdf_build_data( BESDataHandlerInterface &dhi ) ;

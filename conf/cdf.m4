@@ -50,22 +50,22 @@ AC_DEFUN([AC_CHECK_CDF],
   ac_cdf_save_LDFLAGS=$LDFLAGS
   ac_cdf_save_LIBS=$LIBS
   AS_IF([test "z$CDF_PATH_LIBDIR" != "z"],[LDFLAGS="$LDFLAGS -L$CDF_PATH_LIBDIR"])
-  LDFLAGS="$LDFLAGS -L${CDF_PATH_LIBDIR}"
-  ac_check_func_checked='ncopen'
+  LDFLAGS="$LDFLAGS -L$CDF_PATH_LIBDIR"
+  ac_check_func_checked='CDFlib'
   ac_check_interface=
 dnl the interface number isn't quoted with "" otherwise a newline 
 dnl following the number isn't stripped.
   m4_if([$3],[],[:],[ac_check_interface=$3])
   AS_IF([test "z$ac_check_interface" = 'z3'],
-    [ac_check_func_checked='CDFopen'])
+    [ac_check_func_checked='CDFlib'])
 dnl the autoconf internal cache isn't avoided because we really check for
 dnl libcdf, other libraries that implement the same api have other names
 dnl  AC_LINK_IFELSE([AC_LANG_CALL([],[$ac_check_func_checked])],
   AC_CHECK_LIB([cdf],[$ac_check_func_checked],
     [
       ac_cdf_ok='yes'
-      CDF_LIBS="-lcdf"
       CDF_LDFLAGS="-L$CDF_PATH_LIBDIR" 
+      CDF_LIBS="-lcdf"
     ],
     [
       ac_cdf_ok='no'
