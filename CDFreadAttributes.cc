@@ -1,11 +1,12 @@
+// CDFreadAttributes.cc
 
 // -*- mode: c++; c-basic-offset:4 -*-
 
-// This file is part of cdf-handler, a C++ server of OPeNDAP for access to cdf
+// This file is part of cdf_handler, a C++ server of OPeNDAP for access to cdf
 // data
 
-// Copyright (c) 2002,2003 OPeNDAP, Inc.
-// Author: Patrick West <pwest@ucar.edu>
+// Copyright (c) 2004,2005 University Corporation for Atmospheric Research
+// Author: Patrick West <pwest@ucar.org>
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -21,12 +22,15 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
-// You can contact OPeNDAP, Inc. at PO Box 112, Saunderstown, RI. 02874-0112.
+// You can contact University Corporation for Atmospheric Research at
+// 3080 Center Green Drive, Boulder, CO 80301
  
-// Implementation for CDFreadAttributes.
+// (c) COPYRIGHT University Corporation for Atmostpheric Research 2004-2005
+// Please read the full copyright statement in the file COPYRIGHT_UCAR.
 //
-// pwest 05/08/03
-
+// Authors:
+//      pwest       Patrick West <pwest@ucar.edu>
+ 
 #include <stdlib.h>
 #include <stdio.h>
 

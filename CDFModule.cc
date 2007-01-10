@@ -1,7 +1,7 @@
 // CDFModule.cc
 
-// This file is part of bes, A C++ back-end server implementation framework
-// for the OPeNDAP Data Access Protocol.
+// This file is part of cdf_handler, a C++ server of OPeNDAP for access to cdf
+// data
 
 // Copyright (c) 2004,2005 University Corporation for Atmospheric Research
 // Author: Patrick West <pwest@ucar.org>

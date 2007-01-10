@@ -1,5 +1,5 @@
 
-# Automake file for netcdf-handler
+# Automake file for cdf_handler
 #
 # 5/17/2005 jhrg
 #
