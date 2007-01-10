@@ -1,3 +1,92 @@
+2007-01-10  Patrick West <pwest@ucar.edu>
+
+	Changed handler name from cdf-handler to cdf_handler. Made
+	appropriate changes in configure. Release number is 1.0.1. Updated
+	the comment headers in the source and header files.
+	M    CDFFloat64.h
+	M    CDFreadAttributes.cc
+	M    CDFUInt32.cc
+	M    CDFResponseNames.h
+	M    CDFreadAttributes.h
+	M    CDFModule.cc
+	M    CDFGrid.cc
+	M    CDFUInt16.cc
+	M    CDFRequestHandler.cc
+	M    CDFUInt32.h
+	M    CDFUInt16.h
+	M    CDFRequestHandler.h
+	M    CDFreadDescriptors.cc
+	M    CDFInt32.cc
+	M    CDFInt16.cc
+	M    configure.ac
+	M    CDFByte.cc
+	M    CDFSequence.cc
+	M    CDFFloat32.cc
+	M    CDFSequence.h
+	M    CDFutilities.cc
+	M    CDFTypeFactory.h
+	M    CDFFloat32.h
+	M    CDFArray.cc
+	M    CDFFloat64.cc
+	M    CDFArray.h
+	M    CDFDebug.cc
+	D    cdf_version.h
+	M    CDFModule.h
+	M    CDFGrid.h
+	M    CDFDebug.h
+	M    CDFnamePath.h
+	M    CDFreadDescriptors.h
+	M    CDFStructure.cc
+	M    dap_cdf_handler.cc
+	M    CDFInt32.h
+	M    CDFStructure.h
+	M    CDFUrl.cc
+	M    CDFInt16.h
+	M    opendap.ini
+	M    CDFUrl.h
+	M    CDFByte.h
+	M    CDFStr.cc
+	M    Makefile.am
+	M    CDFTypeFactory.cc
+	M    CDFStr.h
+	M    CDFutilities.h
+
+2007-01-10  Patrick West <pwest@ucar.edu>
+
+	Renaming directory to be in line with naming convention of other data
+	handlers.
+	A    http://scm.opendap.org:8090/svn/trunk/cdf_handler
+	D    http://scm.opendap.org:8090/svn/trunk/cdf-handler
+
+2007-01-10  Patrick West <pwest@ucar.edu>
+
+	Moved the cdf configuration back to the cdf.m4 file to keep
+	consistency with other handlers. Added catalog initialization to the
+	module. Added the dump method to the request handler to aid in
+	debugging. Updated the INSTALL, NEWS, ChangeLog, and README files.
+	The SECURITY file is in dap-server and is referenced in the INSTALL
+	script (or README), so removed it. Updated the test .ini file to
+	include ascii, www, and usage and set up the RootDirectory parameter
+	for non-catalog containers. Version is now 1.0.1. This is a beta
+	release.
+	M    cdf-handler/conf/cdf.m4
+	M    cdf-handler/CDFModule.cc
+	M    cdf-handler/CDFRequestHandler.cc
+	M    cdf-handler/CDFRequestHandler.h
+	M    cdf-handler/configure.ac
+	M    cdf-handler/INSTALL
+	M    cdf-handler/config_cdf.h.in
+	M    cdf-handler/NEWS
+	A    cdf-handler/cdf_handler.spec
+	M    cdf-handler/ChangeLog
+	M    cdf-handler/README
+	M    cdf-handler/opendap.ini
+	D    cdf-handler/SECURITY
+	M    cdf-handler/Makefile.am
+
+;; Local Variables:
+;; coding: utf-8
+;; End:
 2006-11-23  Patrick West <pwest@ucar.edu>
 
 	Added a dump method to CDFModule for BES debugging.
