@@ -58,7 +58,7 @@ using std::endl ;
 #include "BESHandlerException.h"
 #include "config_cdf.h"
 
-CDFRequestHandler::CDFRequestHandler( string name )
+CDFRequestHandler::CDFRequestHandler( const string &name )
     : BESRequestHandler( name )
 {
     add_handler( DAS_RESPONSE, CDFRequestHandler::cdf_build_das ) ;

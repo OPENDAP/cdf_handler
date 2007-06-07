@@ -38,7 +38,7 @@
 
 class CDFRequestHandler : public BESRequestHandler {
 public:
-			CDFRequestHandler( string name ) ;
+			CDFRequestHandler( const string &name ) ;
     virtual		~CDFRequestHandler( void ) ;
 
     virtual void	dump( ostream &strm ) const ;
