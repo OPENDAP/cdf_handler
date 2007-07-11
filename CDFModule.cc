@@ -41,38 +41,45 @@ using std::endl ;
 #include "BESContainerStorageCatalog.h"
 #include "BESCatalogDirectory.h"
 #include "BESCatalogList.h"
-#include "BESLog.h"
+#include "BESDebug.h"
 
 #define CDF_CATALOG "catalog"
 
 void
 CDFModule::initialize( const string &modname )
 {
-    if( BESLog::TheLog()->is_verbose() )
-	(*BESLog::TheLog()) << "Initializing CDF:" << endl ;
+    BESDEBUG( "Initializing CDF module " << modname << endl )
 
-    if( BESLog::TheLog()->is_verbose() )
-	(*BESLog::TheLog()) << "    adding " << modname << " request handler" << endl ;
-    BESRequestHandlerList::TheList()->add_handler( modname, new CDFRequestHandler( modname ) ) ;
+    BESDEBUG( "    adding " << modname << " request handler" << endl )
+    BESRequestHandler *handler = new CDFRequestHandler( modname ) ;
+    BESRequestHandlerList::TheList()->add_handler( modname, handler ) ;
 
-    if( BESLog::TheLog()->is_verbose() )
-	(*BESLog::TheLog()) << "    adding " << CDF_CATALOG << " catalog" 
-		      << endl ;
+    BESDEBUG( "    adding " << CDF_CATALOG << " catalog" << endl )
     BESCatalogList::TheCatalogList()->add_catalog( new BESCatalogDirectory( CDF_CATALOG) ) ;
 
-    if( BESLog::TheLog()->is_verbose() )
-	(*BESLog::TheLog()) << "Adding Catalog Container Storage" << endl;
+    BESDEBUG( "    adding catalog container storage " << CDF_CATALOG << endl )
     BESContainerStorageCatalog *csc = new BESContainerStorageCatalog( CDF_CATALOG ) ;
     BESContainerStorageList::TheList()->add_persistence( csc ) ;
+
+    BESDEBUG( "Done Initializing CDF module " << modname << endl )
 }
 
 void
 CDFModule::terminate( const string &modname )
 {
-    if( BESLog::TheLog()->is_verbose() )
-	(*BESLog::TheLog()) << "Removing CDF Handlers" << endl;
+    BESDEBUG( "Cleaning CDF module " << modname << endl )
+
+    BESDEBUG( "    removing CDF Handler" << modname << endl )
     BESRequestHandler *rh = BESRequestHandlerList::TheList()->remove_handler( modname ) ;
     if( rh ) delete rh ;
+
+    BESDEBUG( "    removing catalog container storage" << CDF_CATALOG << endl )
+    BESContainerStorageList::TheList()->del_persistence( CDF_CATALOG ) ;
+
+    BESDEBUG( "    removing " << CDF_CATALOG << " catalog" << endl )
+    BESCatalogList::TheCatalogList()->del_catalog( CDF_CATALOG ) ;
+
+    BESDEBUG( "Done Cleaning CDF module " << modname << endl )
 }
 
 /** @brief dumps information about this object
