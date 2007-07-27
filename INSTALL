@@ -51,7 +51,7 @@ REQUIREMENTS
   o You also need a recent copy of the cdf api. We've tested this server with
     cdf31-dist, although any recent version should work fine. If the
     configure script cannot find your copy of libcdf, use the
-    --with-netcdf options to tell it where to look (see configure --help).
+    --with-cdf options to tell it where to look (see configure --help).
 
 NOTES
 
