@@ -39,11 +39,11 @@
 using std::cout ;
 using std::endl ;
 
+#include "config_cdf.h"
 #include "CDFreadDescriptors.h"
 #include "CDFutilities.h"
 #include "CDFArray.h"
 #include "cgi_util.h"
-#include "CDFDebug.h"
 
 /*
  * Current method of reading the data from  a CDF file:
@@ -85,10 +85,7 @@ readDescriptors( DDS &dds, const string &filename, const string &name )
     /*************************************************************************
     * Open the CDF.
     *************************************************************************/
-    if( CDFDebug::debug() )
-    {
-	cout << "Opening CDF file " << filename << endl ;
-    }
+    BESDEBUG( "Opening CDF file " << filename << endl )
     status = CDFopen ( filename.c_str(), &id ) ;
     if ( status != CDF_OK )
     {
@@ -125,10 +122,7 @@ readDescriptors( DDS &dds, const string &filename, const string &name )
 	    return false ;
 	}
     }
-    if( CDFDebug::debug() )
-    {
-	cout << "  numVars = " << numVars << endl ;
-    }
+    BESDEBUG( "  numVars = " << numVars << endl )
 
     /*************************************************************************
     * Get and display variable information
@@ -164,23 +158,20 @@ readDescriptors( DDS &dds, const string &filename, const string &name )
 		}
 	    }
 
-	    if( CDFDebug::debug() )
+	    if( BESISDEBUG )
 	    {
-		cout << "varName: " << varName << endl ;
-		cout << "  varType = " << CDFutilities::DataType( varType )
-		     << endl ;
-		cout << "  numDims = " << numDims << endl ;
+		BESDEBUG( "varName: " << varName << endl )
+		BESDEBUG( "  varType = " << CDFutilities::DataType( varType ) << endl )
+		BESDEBUG( "  numDims = " << numDims << endl )
 		unsigned int i_numDims = 0 ;
 		for( i_numDims = 0; i_numDims < numDims; i_numDims++ )
 		{
-		    cout << "    dimSizes[" << i_numDims << "] = "
-			 << dimSizes[i_numDims] << endl ;
-		    cout << "    dimVarys[" << i_numDims << "] = "
-			 << dimVarys[i_numDims] << endl ;
+		    BESDEBUG( "    dimSizes[" << i_numDims << "] = " << dimSizes[i_numDims] << endl )
+		    BESDEBUG( "    dimVarys[" << i_numDims << "] = " << dimVarys[i_numDims] << endl )
 		}
-		cout << "  numRecs = " << numRecs << endl ;
-		cout << "  recVary = " << recVary << endl ;
-		cout << "  numElems = " << numElems << endl ;
+		BESDEBUG( "  numRecs = " << numRecs << endl )
+		BESDEBUG( "  recVary = " << recVary << endl )
+		BESDEBUG( "  numElems = " << numElems << endl )
 	    }
 
 	    BaseType *var = 0 ;

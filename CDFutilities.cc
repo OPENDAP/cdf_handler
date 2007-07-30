@@ -41,6 +41,7 @@ using std::ios ;
 
 #include <stdio.h>
 
+#include "config_cdf.h"
 #include "CDFutilities.h"
 #include "BaseTypeFactory.h"
 #include "CDFByte.h"
@@ -479,7 +480,7 @@ CDFutilities::write_record( void *arrbuf,
 	    dods_int32 *my_buf = (dods_int32 *)arrbuf ;
 	    for( anindex = 0; anindex < numElements; anindex++ )
 	    {
-		cout << "    val = " << my_buf[anindex] << endl ;
+		BESDEBUG( "    val = " << my_buf[anindex] << endl )
 	    }
 	}
 	break ;

@@ -20,24 +20,25 @@ endif
 CDFSRCS:= CDFArray.cc CDFByte.cc CDFFloat32.cc CDFFloat64.cc CDFGrid.cc \
 	  CDFInt16.cc CDFInt32.cc CDFSequence.cc CDFStr.cc CDFStructure.cc \
 	  CDFTypeFactory.cc CDFUInt16.cc CDFUInt32.cc CDFUrl.cc \
-	  CDFreadAttributes.cc CDFreadDescriptors.cc CDFutilities.cc \
-	  CDFDebug.cc
+	  CDFreadAttributes.cc CDFreadDescriptors.cc CDFutilities.cc
 
 CDFHDRS:= CDFArray.h CDFByte.h CDFFloat32.h CDFFloat64.h CDFGrid.h \
 	  CDFInt16.h CDFInt32.h CDFSequence.h CDFStr.h CDFStructure.h \
 	  CDFTypeFactory.h CDFUInt16.h CDFUInt32.h CDFUrl.h CDFnamePath.h \
 	  CDFreadAttributes.h CDFreadDescriptors.h CDFutilities.h \
-	  CDFDebug.h config_cdf.h
+	  config_cdf.h
 
 libcdf_handler_la_SOURCES = $(CDFSRCS) $(CDFHDRS)
+libcdf_handler_la_CPPFLAGS = $(BES_CPPFLAGS)
+libcdf_handler_la_LIBADD = $(BES_LIBS)
 
 SERVER_SRC:=CDFRequestHandler.cc CDFModule.cc CDFRequestHandler.h \
 		CDFModule.h CDFResponseNames.h
 
-libcdf_module_la_SOURCES = $(SERVER_SRC)
-libcdf_module_la_CPPFLAGS = $(BES_CPPFLAGS)
+libcdf_module_la_SOURCES = $(SERVER_SRC) $(CDFSRCS) $(CDFHDRS)
+libcdf_module_la_CPPFLAGS = -DHAVE_BES=1 $(BES_CPPFLAGS)
 libcdf_module_la_LDFLAGS = -avoid-version -module 
-libcdf_module_la_LIBADD = libcdf_handler.la $(BES_LIBS)
+libcdf_module_la_LIBADD = $(BES_LIBS)
 
 dap_cdf_handler_SOURCES = dap_cdf_handler.cc
 dap_cdf_handler_LDADD = libcdf_handler.la

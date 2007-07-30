@@ -96,12 +96,23 @@ CDFRequestHandler::cdf_build_dds( BESDataHandlerInterface &dhi )
 
     CDFTypeFactory *factory = new CDFTypeFactory ;
     dds->set_factory( factory ) ;
-    if( !readDescriptors( *dds, dhi.container->access(),
-			  dhi.container->get_symbolic_name() ) )
+    string accessed = dhi.container->access() ;
+    string symbolic = dhi.container->get_symbolic_name() ;
+    dds->filename( accessed );
+    if( !readDescriptors( *dds, accessed, symbolic ) )
     {
 	string s = "CDF could not build the DDS response" ;
 	throw BESHandlerException( s, __FILE__, __LINE__ ) ;
     }
+
+    DAS das;
+    if( !readAttributes( das, dhi.container->access() ) )
+    {
+	string s = "CDF could not build the DAS response" ;
+	throw BESHandlerException( s, __FILE__, __LINE__ ) ;
+    }
+    dds->transfer_attributes(&das);
+
     dhi.data[POST_CONSTRAINT] = dhi.container->get_constraint();
 
     dds->set_factory( NULL ) ;
@@ -118,12 +129,23 @@ CDFRequestHandler::cdf_build_data( BESDataHandlerInterface &dhi )
 
     CDFTypeFactory *factory = new CDFTypeFactory ;
     dds->set_factory( factory ) ;
-    if( !readDescriptors( *dds, dhi.container->access(),
-			  dhi.container->get_symbolic_name() ) )
+    string accessed = dhi.container->access() ;
+    string symbolic = dhi.container->get_symbolic_name() ;
+    dds->filename( accessed );
+    if( !readDescriptors( *dds, accessed, symbolic ) )
     {
 	string s = "CDF could not build the Data DDS response" ;
 	throw BESHandlerException( s, __FILE__, __LINE__ ) ;
     }
+
+    DAS das;
+    if( !readAttributes( das, dhi.container->access() ) )
+    {
+	string s = "CDF could not build the DAS response" ;
+	throw BESHandlerException( s, __FILE__, __LINE__ ) ;
+    }
+    dds->transfer_attributes(&das);
+
     dhi.data[POST_CONSTRAINT] = dhi.container->get_constraint();
 
     dds->set_factory( NULL ) ;

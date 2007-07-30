@@ -37,7 +37,6 @@
 
 #include "CDFByte.h"
 #include "CDFutilities.h"
-#include "CDFDebug.h"
 
 CDFByte::CDFByte(const string &n) : Byte(n)
 {
@@ -111,10 +110,7 @@ CDFByte::read(const string &dataset)
     /*************************************************************************
     * Open the CDF.
     *************************************************************************/
-    if( CDFDebug::debug() )
-    {
-	cout << "CDFByte: " << name() << ": Opening " << dataset << endl ;
-    }
+    BESDEBUG( "CDFByte: " << name() << ": Opening " << dataset << endl )
     status = CDFopen ( dataset.c_str(), &id ) ;
     if ( status != CDF_OK )
     {
@@ -179,14 +175,14 @@ CDFByte::read(const string &dataset)
 	}
     }
 
-    if( CDFDebug::debug() )
+    if( BESISDEBUG )
     {
-	cout << "  varType = " << CDFutilities::DataType( varType ) << endl ;
-	cout << "  numDims = " << numDims << endl ;
-	cout << "  maxRec = " << maxRec << endl ;
-	cout << "  numRecs = " << numRecs << endl ;
-	cout << "  recVary = " << recVary << endl ;
-	cout << "  numElems = " << numElems << endl ;
+	BESDEBUG( "  varType = " << CDFutilities::DataType( varType ) << endl )
+	BESDEBUG( "  numDims = " << numDims << endl )
+	BESDEBUG( "  maxRec = " << maxRec << endl )
+	BESDEBUG( "  numRecs = " << numRecs << endl )
+	BESDEBUG( "  recVary = " << recVary << endl )
+	BESDEBUG( "  numElems = " << numElems << endl )
     }
 
     if( varType != CDF_BYTE )
@@ -200,7 +196,7 @@ CDFByte::read(const string &dataset)
 	return false ;
     }
 
-    if( numRecs != 1 )
+    if( numRecs > 1 )
     {
 	cerr << "CDFByte: number of records should be 1" << endl ;
 	return false ;
@@ -215,10 +211,7 @@ CDFByte::read(const string &dataset)
 	    return false ;
 	}
     }
-    if( CDFDebug::debug() )
-    {
-	cout << "  varTypeSize = " << varTypeSize << endl ;
-    }
+    BESDEBUG( "  varTypeSize = " << varTypeSize << endl )
 
     cdf_buf = malloc( varTypeSize ) ;
     arrbuf = (void *)&_buf ;
@@ -253,10 +246,7 @@ CDFByte::read(const string &dataset)
     unsigned int arrindex = 0 ;
     CDFutilities::read_record( cdf_buf, arrbuf, arrindex,
                                numElems, varType, numElems ) ;
-    if( CDFDebug::debug() )
-    {
-	cout << "  _buf = " << (int)_buf << endl ;
-    }
+    BESDEBUG( "  _buf = " << (int)_buf << endl )
 
     /*************************************************************************
     * Close CDF.

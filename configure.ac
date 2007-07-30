@@ -92,5 +92,18 @@ dnl fi
 
 OPENDAP_DEBUG_OPTION
 
+AH_TOP([#ifndef _config_cdf_h
+#define _config_cdf_h])
+
+AH_BOTTOM([/* Shorthand for gcc's unused attribute feature */
+#ifdef HAVE_BES
+#include "BESDebug.h"
+#else
+#define BESDEBUG( x ) ;
+#define BESISDEBUG false
+#endif /* HAVE_BES */
+
+#endif /* _config_cdf_h */])
+
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT

@@ -37,7 +37,6 @@
 
 #include "CDFArray.h"
 #include "CDFutilities.h"
-#include "CDFDebug.h"
 
 BaseType *
 CDFArray::ptr_duplicate()
@@ -107,10 +106,7 @@ CDFArray::read(const string &dataset)
     /*************************************************************************
     * Open the CDF.
     *************************************************************************/
-    if( CDFDebug::debug() )
-    {
-	cout << "CDFArray: " << name() << ": Opening " << dataset << endl ;
-    }
+    BESDEBUG( "CDFArray: " << name() << ": Opening " << dataset << endl )
     status = CDFopen ( dataset.c_str(), &id ) ;
     if ( status != CDF_OK )
     {
@@ -174,23 +170,24 @@ CDFArray::read(const string &dataset)
 	    return false ;
 	}
     }
-    if( CDFDebug::debug() )
+
+    if( BESISDEBUG )
     {
-	cout << "  varType = " << CDFutilities::DataType( varType ) << endl ;
-	cout << "  numDims = " << numDims << endl ;
+	BESDEBUG( "  varType = " << CDFutilities::DataType( varType ) << endl )
+	BESDEBUG( "  numDims = " << numDims << endl )
 	for( unsigned int i_numDims = 0; i_numDims < numDims; i_numDims++ )
 	{
-	    cout << "    dimSizes[" << i_numDims << "] = " << dimSizes[i_numDims] << endl ;
+	    BESDEBUG( "    dimSizes[" << i_numDims << "] = " << dimSizes[i_numDims] << endl )
 	    if( dimVarys[i_numDims] == VARY )
-		cout << "    dimVarys[" << i_numDims << "] = VARY" << endl ;
+		BESDEBUG( "    dimVarys[" << i_numDims << "] = VARY" << endl )
 	    else
-		cout << "    dimVarys[" << i_numDims << "] = NOVARY" << endl ;
+		BESDEBUG( "    dimVarys[" << i_numDims << "] = NOVARY" << endl )
 	}
-	cout << "  maxRec = " << maxRec << endl ;
-	cout << "  numRecs = " << numRecs << endl ;
-	if( recVary == VARY ) cout << "  recVary = VARY" << endl ;
-	else cout << "  recVary = VARY" << endl ;
-	cout << "  numElems = " << numElems << endl ;
+	BESDEBUG( "  maxRec = " << maxRec << endl )
+	BESDEBUG( "  numRecs = " << numRecs << endl )
+	if( recVary == VARY ) BESDEBUG( "  recVary = VARY" << endl )
+	else BESDEBUG( "  recVary = VARY" << endl )
+	BESDEBUG( "  numElems = " << numElems << endl )
     }
     if( numRecs == 0 )
     {
@@ -211,10 +208,7 @@ CDFArray::read(const string &dataset)
 	    }
 	}
     }
-    if( CDFDebug::debug() )
-    {
-	cout << "  varTypeSize = " << varTypeSize << endl ;
-    }
+    BESDEBUG( "  varTypeSize = " << varTypeSize << endl )
 
     unsigned long relements = 1 ;
     for( anindex = 0; anindex < numDims; anindex++ )
@@ -227,31 +221,19 @@ CDFArray::read(const string &dataset)
 	{
 	    counts[anindex] = 1 ;
 	}
-	if( CDFDebug::debug() )
-	{
-	    cout << "  counts[" << anindex << "] = " << counts[anindex] << endl;
-	}
+	BESDEBUG( "  counts[" << anindex << "] = " << counts[anindex] << endl )
 	relements = relements * counts[anindex] ;
     }
-    if( CDFDebug::debug() )
-    {
-	cout << "  relements = " << relements << endl ;
-    }
+    BESDEBUG( "  relements = " << relements << endl )
 
     // telements is the total number of elements to read
     unsigned long telements = relements * numRecs ;
-    if( CDFDebug::debug() )
-    {
-	cout << "  telements = " << telements << endl ;
-    }
+    BESDEBUG( "  telements = " << telements << endl )
 
     // rsize is the record size given the number of elements per record and
     // the size of each element
     unsigned long rsize = relements * varTypeSize ;
-    if( CDFDebug::debug() )
-    {
-	cout << "  rsize = " << rsize << endl ;
-    }
+    BESDEBUG( "  rsize = " << rsize << endl )
 
     // allocate the buffer that will read each of the records
     cdf_buf = malloc( rsize+1 ) ;
@@ -321,7 +303,7 @@ CDFArray::read(const string &dataset)
 				   varType, numElems ) ;
     }
 
-    if( CDFDebug::debug() )
+    if( BESISDEBUG )
     {
 	CDFutilities::write_record( arrbuf, telements, varType ) ;
     }

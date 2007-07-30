@@ -48,15 +48,12 @@
 #include "CDFTypeFactory.h"
 #include "CDFreadAttributes.h"
 #include "CDFreadDescriptors.h"
-#include "CDFDebug.h"
 
 const string cgi_version = PACKAGE_VERSION;
 
 int 
 main(int argc, char *argv[])
 {
-    CDFDebug::off() ;
-
     CDFTypeFactory *cdftf = new CDFTypeFactory;
 
     try { 

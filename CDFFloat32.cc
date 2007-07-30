@@ -37,7 +37,6 @@
 
 #include "CDFFloat32.h"
 #include "CDFutilities.h"
-#include "CDFDebug.h"
 
 CDFFloat32::CDFFloat32(const string &n) : Float32(n)
 {
@@ -111,10 +110,7 @@ CDFFloat32::read(const string &dataset)
     /*************************************************************************
     * Open the CDF.
     *************************************************************************/
-    if( CDFDebug::debug() )
-    {
-	cout << "CDFFloat32: " << name() << ": Opening " << dataset << endl ;
-    }
+    BESDEBUG( "CDFFloat32: " << name() << ": Opening " << dataset << endl )
     status = CDFopen ( dataset.c_str(), &id ) ;
     if ( status != CDF_OK )
     {
@@ -178,14 +174,14 @@ CDFFloat32::read(const string &dataset)
 	    return false ;
 	}
     }
-    if( CDFDebug::debug() )
+    if( BESISDEBUG )
     {
-	cout << "  varType = " << CDFutilities::DataType( varType ) << endl ;
-	cout << "  numDims = " << numDims << endl ;
-	cout << "  maxRec = " << maxRec << endl ;
-	cout << "  numRecs = " << numRecs << endl ;
-	cout << "  recVary = " << recVary << endl ;
-	cout << "  numElems = " << numElems << endl ;
+	BESDEBUG( "  varType = " << CDFutilities::DataType( varType ) << endl )
+	BESDEBUG( "  numDims = " << numDims << endl )
+	BESDEBUG( "  maxRec = " << maxRec << endl )
+	BESDEBUG( "  numRecs = " << numRecs << endl )
+	BESDEBUG( "  recVary = " << recVary << endl )
+	BESDEBUG( "  numElems = " << numElems << endl )
     }
 
     if( varType != CDF_REAL4 && varType != CDF_FLOAT )
@@ -196,13 +192,13 @@ CDFFloat32::read(const string &dataset)
 
     if( numDims != 0 )
     {
-	cerr << "CDFFloat32: number of dimensions should be 0" << endl ;
+	cerr << "CDFFloat32: number of dimensions should be 0, actually is " << numDims << endl ;
 	return false ;
     }
 
-    if( numRecs != 1 )
+    if( numRecs > 1 )
     {
-	cerr << "CDFFloat32: number of records should be 1" << endl ;
+	cerr << "CDFFloat32: number of records should be 1, actually is " << numRecs << endl ;
 	return false ;
     }
 
@@ -215,10 +211,7 @@ CDFFloat32::read(const string &dataset)
 	    return false ;
 	}
     }
-    if( CDFDebug::debug() )
-    {
-	cout << "  varTypeSize = " << varTypeSize << endl ;
-    }
+    BESDEBUG( "  varTypeSize = " << varTypeSize << endl )
 
     cdf_buf = malloc( varTypeSize ) ;
     arrbuf = (void *)&_buf ;
@@ -253,10 +246,7 @@ CDFFloat32::read(const string &dataset)
     unsigned int arrindex = 0 ;
     CDFutilities::read_record( cdf_buf, arrbuf, arrindex,
 			       numElems, varType, numElems ) ;
-    if( CDFDebug::debug() )
-    {
-	cout << "  _buf = " << _buf << endl ;
-    }
+    BESDEBUG( "  _buf = " << _buf << endl )
 
     /*************************************************************************
     * Close CDF.
