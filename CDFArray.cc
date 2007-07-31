@@ -106,7 +106,7 @@ CDFArray::read(const string &dataset)
     /*************************************************************************
     * Open the CDF.
     *************************************************************************/
-    BESDEBUG( "CDFArray: " << name() << ": Opening " << dataset << endl )
+    BESDEBUG( "cdf", "CDFArray: " << name() << ": Opening " << dataset << endl )
     status = CDFopen ( dataset.c_str(), &id ) ;
     if ( status != CDF_OK )
     {
@@ -171,23 +171,23 @@ CDFArray::read(const string &dataset)
 	}
     }
 
-    if( BESISDEBUG )
+    if( BESISDEBUG( "cdf" ) )
     {
-	BESDEBUG( "  varType = " << CDFutilities::DataType( varType ) << endl )
-	BESDEBUG( "  numDims = " << numDims << endl )
+	BESDEBUG( "cdf", "  varType = " << CDFutilities::DataType( varType ) << endl )
+	BESDEBUG( "cdf", "  numDims = " << numDims << endl )
 	for( unsigned int i_numDims = 0; i_numDims < numDims; i_numDims++ )
 	{
-	    BESDEBUG( "    dimSizes[" << i_numDims << "] = " << dimSizes[i_numDims] << endl )
+	    BESDEBUG( "cdf", "    dimSizes[" << i_numDims << "] = " << dimSizes[i_numDims] << endl )
 	    if( dimVarys[i_numDims] == VARY )
-		BESDEBUG( "    dimVarys[" << i_numDims << "] = VARY" << endl )
+		BESDEBUG( "cdf", "    dimVarys[" << i_numDims << "] = VARY" << endl )
 	    else
-		BESDEBUG( "    dimVarys[" << i_numDims << "] = NOVARY" << endl )
+		BESDEBUG( "cdf", "    dimVarys[" << i_numDims << "] = NOVARY" << endl )
 	}
-	BESDEBUG( "  maxRec = " << maxRec << endl )
-	BESDEBUG( "  numRecs = " << numRecs << endl )
-	if( recVary == VARY ) BESDEBUG( "  recVary = VARY" << endl )
-	else BESDEBUG( "  recVary = VARY" << endl )
-	BESDEBUG( "  numElems = " << numElems << endl )
+	BESDEBUG( "cdf", "  maxRec = " << maxRec << endl )
+	BESDEBUG( "cdf", "  numRecs = " << numRecs << endl )
+	if( recVary == VARY ) BESDEBUG( "cdf", "  recVary = VARY" << endl )
+	else BESDEBUG( "cdf", "  recVary = VARY" << endl )
+	BESDEBUG( "cdf", "  numElems = " << numElems << endl )
     }
     if( numRecs == 0 )
     {
@@ -208,7 +208,7 @@ CDFArray::read(const string &dataset)
 	    }
 	}
     }
-    BESDEBUG( "  varTypeSize = " << varTypeSize << endl )
+    BESDEBUG( "cdf", "  varTypeSize = " << varTypeSize << endl )
 
     unsigned long relements = 1 ;
     for( anindex = 0; anindex < numDims; anindex++ )
@@ -221,19 +221,19 @@ CDFArray::read(const string &dataset)
 	{
 	    counts[anindex] = 1 ;
 	}
-	BESDEBUG( "  counts[" << anindex << "] = " << counts[anindex] << endl )
+	BESDEBUG( "cdf", "  counts[" << anindex << "] = " << counts[anindex] << endl )
 	relements = relements * counts[anindex] ;
     }
-    BESDEBUG( "  relements = " << relements << endl )
+    BESDEBUG( "cdf", "  relements = " << relements << endl )
 
     // telements is the total number of elements to read
     unsigned long telements = relements * numRecs ;
-    BESDEBUG( "  telements = " << telements << endl )
+    BESDEBUG( "cdf", "  telements = " << telements << endl )
 
     // rsize is the record size given the number of elements per record and
     // the size of each element
     unsigned long rsize = relements * varTypeSize ;
-    BESDEBUG( "  rsize = " << rsize << endl )
+    BESDEBUG( "cdf", "  rsize = " << rsize << endl )
 
     // allocate the buffer that will read each of the records
     cdf_buf = malloc( rsize+1 ) ;
@@ -303,7 +303,7 @@ CDFArray::read(const string &dataset)
 				   varType, numElems ) ;
     }
 
-    if( BESISDEBUG )
+    if( BESISDEBUG( "cdf" ) )
     {
 	CDFutilities::write_record( arrbuf, telements, varType ) ;
     }

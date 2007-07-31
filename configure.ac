@@ -99,8 +99,8 @@ AH_BOTTOM([/* Shorthand for gcc's unused attribute feature */
 #ifdef HAVE_BES
 #include "BESDebug.h"
 #else
-#define BESDEBUG( x ) ;
-#define BESISDEBUG false
+#define BESDEBUG( x, y ) ;
+#define BESISDEBUG( x ) false
 #endif /* HAVE_BES */
 
 #endif /* _config_cdf_h */])

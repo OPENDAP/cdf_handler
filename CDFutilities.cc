@@ -480,7 +480,7 @@ CDFutilities::write_record( void *arrbuf,
 	    dods_int32 *my_buf = (dods_int32 *)arrbuf ;
 	    for( anindex = 0; anindex < numElements; anindex++ )
 	    {
-		BESDEBUG( "    val = " << my_buf[anindex] << endl )
+		BESDEBUG( "cdf", "    val = " << my_buf[anindex] << endl )
 	    }
 	}
 	break ;
