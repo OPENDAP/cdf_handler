@@ -29,8 +29,6 @@ CDFHDRS:= CDFArray.h CDFByte.h CDFFloat32.h CDFFloat64.h CDFGrid.h \
 	  config_cdf.h
 
 libcdf_handler_la_SOURCES = $(CDFSRCS) $(CDFHDRS)
-libcdf_handler_la_CPPFLAGS = $(BES_CPPFLAGS)
-libcdf_handler_la_LIBADD = $(BES_LIBS)
 
 SERVER_SRC:=CDFRequestHandler.cc CDFModule.cc CDFRequestHandler.h \
 		CDFModule.h CDFResponseNames.h

@@ -78,6 +78,12 @@ main(int argc, char *argv[])
 	    string dsn = df.get_dataset_name();
 	    readDescriptors( dds, dsn, name_path( dsn ) ) ;
 	    df.read_ancillary_dds(dds);
+
+	    DAS das;
+	    readAttributes(das, df.get_dataset_name());
+	    df.read_ancillary_das(das);
+
+	    dds.transfer_attributes(&das);
 	    df.send_dds(dds, ce, true);
 	    break;
 	  }
@@ -90,6 +96,12 @@ main(int argc, char *argv[])
 	    dds.filename( dsn ) ;
 	    readDescriptors( dds, dsn, name_path( dsn ) ) ;
 	    df.read_ancillary_dds(dds);
+
+	    DAS das;
+	    readAttributes(das, df.get_dataset_name());
+	    df.read_ancillary_das(das);
+
+	    dds.transfer_attributes(&das);
 	    df.send_data(dds, ce, stdout);
 	    break;
 	  }
