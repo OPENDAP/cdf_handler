@@ -12,9 +12,13 @@ ACLOCAL_AMFLAGS = -I conf
 bin_PROGRAMS = dap_cdf_handler
 
 lib_LTLIBRARIES = libcdf_handler.la
+
 if OPENDAPSERVER
-    lib_besdir=$(libdir)/bes
-    lib_bes_LTLIBRARIES = libcdf_module.la
+
+lib_besdir=$(libdir)/bes
+lib_bes_LTLIBRARIES = libcdf_module.la
+dist_bin_SCRIPTS = bes-cdf-data.sh
+
 endif
 
 CDFSRCS:= CDFArray.cc CDFByte.cc CDFFloat32.cc CDFFloat64.cc CDFGrid.cc \
@@ -41,17 +45,74 @@ libcdf_module_la_LIBADD = $(BES_LIBS)
 dap_cdf_handler_SOURCES = dap_cdf_handler.cc
 dap_cdf_handler_LDADD = libcdf_handler.la
 
-EXTRA_DIST = COPYRIGHT COPYING
+EXTRA_DIST = data COPYRIGHT COPYING cdf_handler.spec \
+	bes-cdf-data.sh.in OSX_Resources
 
 CLEANFILES = *~
 
+if OPENDAPSERVER
+
+CLEANFILES += bes-cdf-data.sh
+
+sample_datadir = $(datadir)/hyrax/data/cdf
+sample_data_DATA = data/example.cdf data/example1.cdf data/geocpi0.cdf data/wind.cdf
+
+
+do_subst = sed -e 's,[@]sysconfdir[@],$(sysconfdir),g' \
+		   	   -e 's,[@]libdir[@],$(libdir),g' \
+		   	   -e 's,[@]datadir[@],$(datadir),g'
+
+bes-cdf-data.sh: bes-cdf-data.sh.in config.status
+	$(do_subst) < $(srcdir)/bes-cdf-data.sh.in > bes-cdf-data.sh
+	chmod +x bes-cdf-data.sh
+
+# This makes sure that the handler modifies the bes which configure found
+# even when distcheck is run.
+bes-conf: bes-cdf-data.sh
+	(bes_prefix=`bes-config --prefix` ; \
+	if test "$$bes_prefix" = "/usr" ; \
+	 then \
+	    ./bes-cdf-data.sh /etc/bes/bes.conf /usr/lib/bes ;\
+	else \
+	    ./bes-cdf-data.sh $$bes_prefix/etc/bes/bes.conf $$bes_prefix/lib/bes ; \
+	fi)
+
+endif
+
 ###########################################################################
 
+# Fortify targets.
+
+.PHONY: fortify
+fortify:
+	sourceanalyzer -b @PACKAGE@ $(MAKE)
+	sourceanalyzer -b @PACKAGE@ -scan -f @PACKAGE@-@PACKAGE_VERSION@.fpr
+
+# Use this to clean the fortify project.
+.PHONY: fortifyclean
+fortifyclean:
+	sourceanalyzer -b @PACKAGE@ -clean
+
+###########################################################################
+#
 # Build linux RPMs
 
-srpm:
+srpm: dist
 	rpmbuild -ts cdf_handler-@PACKAGE_VERSION@.tar.gz
 
-rpm:
+rpm: dist
 	rpmbuild -tb cdf_handler-@PACKAGE_VERSION@.tar.gz
+
+###########################################################################
+#
+# Build OS/X Packages.
+
+PACKAGEMAKER=/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker*
+
+pkg:
+	rm -rf mac_osx @PACKAGE@-@PACKAGE_VERSION@.pkg
+	./configure --prefix=/usr $(PKG_CONFIGURE_FLAGS)
+	make clean all
+	DESTDIR=${PWD}/mac_osx make install
+	${PACKAGEMAKER} -build -p @PACKAGE@-@PACKAGE_VERSION@.pkg -f mac_osx/usr -ds -r OSX_Resources -i OSX_Resources/Info.plist -d OSX_Resources/Description.plist
 

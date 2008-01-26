@@ -55,7 +55,7 @@ using std::endl ;
 #include "BESConstraintFuncs.h"
 #include "BESVersionInfo.h"
 #include "TheBESKeys.h"
-#include "BESHandlerException.h"
+#include "BESInternalError.h"
 #include "config_cdf.h"
 
 CDFRequestHandler::CDFRequestHandler( const string &name )
@@ -82,7 +82,7 @@ CDFRequestHandler::cdf_build_das( BESDataHandlerInterface &dhi )
     if( !readAttributes( *das, dhi.container->access() ) )
     {
 	string s = "CDF could not build the DAS response" ;
-	throw BESHandlerException( s, __FILE__, __LINE__ ) ;
+	throw BESInternalError( s, __FILE__, __LINE__ ) ;
     }
     return true ;
 }
@@ -102,14 +102,14 @@ CDFRequestHandler::cdf_build_dds( BESDataHandlerInterface &dhi )
     if( !readDescriptors( *dds, accessed, symbolic ) )
     {
 	string s = "CDF could not build the DDS response" ;
-	throw BESHandlerException( s, __FILE__, __LINE__ ) ;
+	throw BESInternalError( s, __FILE__, __LINE__ ) ;
     }
 
     DAS das;
     if( !readAttributes( das, dhi.container->access() ) )
     {
 	string s = "CDF could not build the DAS response" ;
-	throw BESHandlerException( s, __FILE__, __LINE__ ) ;
+	throw BESInternalError( s, __FILE__, __LINE__ ) ;
     }
     dds->transfer_attributes(&das);
 
@@ -135,14 +135,14 @@ CDFRequestHandler::cdf_build_data( BESDataHandlerInterface &dhi )
     if( !readDescriptors( *dds, accessed, symbolic ) )
     {
 	string s = "CDF could not build the Data DDS response" ;
-	throw BESHandlerException( s, __FILE__, __LINE__ ) ;
+	throw BESInternalError( s, __FILE__, __LINE__ ) ;
     }
 
     DAS das;
     if( !readAttributes( das, dhi.container->access() ) )
     {
 	string s = "CDF could not build the DAS response" ;
-	throw BESHandlerException( s, __FILE__, __LINE__ ) ;
+	throw BESInternalError( s, __FILE__, __LINE__ ) ;
     }
     dds->transfer_attributes(&das);
 
