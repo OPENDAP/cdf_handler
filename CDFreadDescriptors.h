@@ -31,12 +31,14 @@
 // Authors:
 //      pwest       Patrick West <pwest@ucar.edu>
 
+#ifndef CDFreadDescriptors_h_
+#define CDFreadDescriptors_h_ 1
+
 #include <DDS.h>
 #include <cgi_util.h>
 #include <DODSFilter.h>
 
-#ifndef CDFreadDescriptors_h_
-#define CDFreadDescriptors_h_
+using namespace libdap ;
 
 bool readDescriptors( DDS &dds, const string &filename, const string &name ) ;
 

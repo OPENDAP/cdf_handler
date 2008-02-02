@@ -36,6 +36,8 @@
 
 #include "Grid.h"
 
+using namespace libdap ;
+
 class CDFGrid: public Grid {
 
 public:

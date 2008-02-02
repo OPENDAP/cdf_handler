@@ -36,6 +36,8 @@
 
 #include "UInt32.h"
 
+using namespace libdap ;
+
 class CDFUInt32: public UInt32 {
         
 public:

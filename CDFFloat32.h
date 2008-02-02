@@ -36,6 +36,8 @@
 
 #include "Float32.h"
 
+using namespace libdap ;
+
 class CDFFloat32: public Float32 {
 
 public:

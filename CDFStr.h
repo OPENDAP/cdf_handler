@@ -36,6 +36,8 @@
 
 #include "Str.h"
 
+using namespace libdap ;
+
 class CDFStr: public Str {
      
 public:

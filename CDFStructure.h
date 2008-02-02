@@ -36,6 +36,8 @@
 
 #include "Structure.h"
 
+using namespace libdap ;
+
 class CDFStructure: public Structure {
         
 public:

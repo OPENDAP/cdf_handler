@@ -32,13 +32,15 @@
 //      pwest       Patrick West <pwest@ucar.edu>
 
 #ifndef CDFreadAttributes_h_
-#define CDFreadAttributes_h_
+#define CDFreadAttributes_h_ 1
 
 #include <string>
 
 using std::string ;
 
 #include "DAS.h"
+
+using namespace libdap ;
 
 bool readAttributes( DAS &das, string filename ) ;
 

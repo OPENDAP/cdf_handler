@@ -36,6 +36,8 @@
 
 #include "Float64.h"
 
+using namespace libdap ;
+
 class CDFFloat64: public Float64 {
 
 public:

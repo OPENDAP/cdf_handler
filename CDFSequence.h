@@ -34,9 +34,9 @@
 #ifndef _cdfsequence_h
 #define _cdfsequence_h 1
 
-#include <list>
-
 #include "Sequence.h"
+
+using namespace libdap ;
 
 class CDFSequence: public Sequence {
 private:

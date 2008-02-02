@@ -40,8 +40,10 @@ using std::string ;
 
 #include "cdf.h"
 
-class BaseType ;
-class BaseTypeFactory ;
+#include "BaseType.h"
+#include "BaseTypeFactory.h"
+
+using namespace libdap ;
 
 class CDFutilities {
 public:

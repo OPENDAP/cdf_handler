@@ -35,9 +35,11 @@
 #define _cdfbyte_h 1
 
 #include "Byte.h"
+   
+using namespace libdap ;
 
 class CDFByte: public Byte {
-   
+
 public:
     CDFByte(const string &n = "");
     CDFByte(const CDFByte &rhs);

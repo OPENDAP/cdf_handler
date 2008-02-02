@@ -36,6 +36,8 @@
 
 #include "Array.h"
 
+using namespace libdap ;
+
 class CDFArray: public Array {
 public:
     CDFArray(const string &n = "", BaseType *v = 0);

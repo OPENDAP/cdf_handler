@@ -36,6 +36,8 @@
 
 #include "Url.h"
 
+using namespace libdap ;
+
 class CDFUrl: public Url {
         
 public:

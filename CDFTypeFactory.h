@@ -41,6 +41,8 @@
 
 #include "BaseTypeFactory.h"
 
+using namespace libdap ;
+
 #if 0
 class CDFByte;
 class CDFInt16;
