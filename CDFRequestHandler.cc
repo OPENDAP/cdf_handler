@@ -106,7 +106,7 @@ CDFRequestHandler::cdf_build_dds( BESDataHandlerInterface &dhi )
     }
 
     DAS das;
-    if( !readAttributes( das, dhi.container->access() ) )
+    if( !readAttributes( das, accessed ) )
     {
 	string s = "CDF could not build the DAS response" ;
 	throw BESInternalError( s, __FILE__, __LINE__ ) ;
@@ -139,7 +139,7 @@ CDFRequestHandler::cdf_build_data( BESDataHandlerInterface &dhi )
     }
 
     DAS das;
-    if( !readAttributes( das, dhi.container->access() ) )
+    if( !readAttributes( das, accessed ) )
     {
 	string s = "CDF could not build the DAS response" ;
 	throw BESInternalError( s, __FILE__, __LINE__ ) ;
