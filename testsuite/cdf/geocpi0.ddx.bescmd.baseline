@@ -1,0 +1,926 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dataset name="geocpi0"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://xml.opendap.org/ns/DAP2"
+xsi:schemaLocation="http://xml.opendap.org/ns/DAP2  http://xml.opendap.org/dap/dap2.xsd">
+
+    <Attribute name="CDF_GLOBAL" type="Container">
+        <Attribute name="Project" type="String">
+            <value>&quot;ISTP&gt;International Solar-Terrestrial Physics&quot;</value>
+        </Attribute>
+        <Attribute name="Discipline" type="String">
+            <value>&quot;Space Physics&gt;Magnetospheric Science&quot;</value>
+        </Attribute>
+        <Attribute name="Source_name" type="String">
+            <value>&quot;GEOTAIL&gt;Geomagnetic Tail&quot;</value>
+        </Attribute>
+        <Attribute name="Data_type" type="String">
+            <value>&quot;K0&gt;Key Parameter&quot;</value>
+        </Attribute>
+        <Attribute name="Descriptor" type="String">
+            <value>&quot;CPI&gt;Comprehensive Plasma Instrumentation&quot;</value>
+        </Attribute>
+        <Attribute name="Data_version" type="String">
+            <value>&quot;1&quot;</value>
+        </Attribute>
+        <Attribute name="TITLE" type="String">
+            <value>&quot;Geotail CPI&quot;</value>
+        </Attribute>
+        <Attribute name="TEXT" type="String">
+            <value>&quot;GEOTAIL Prelaunch Report&quot;</value>
+            <value>&quot; April 1992, SES-TD-92-007SY&quot;</value>
+            <value>&quot; CPI-SW Solar Wind Analyzer&quot;</value>
+            <value>&quot;   Key Parameters&quot;</value>
+            <value>&quot;      Ion number density&quot;</value>
+            <value>&quot;      Average energy&quot;</value>
+            <value>&quot;      Bulk flow velocity&quot;</value>
+            <value>&quot; CPI-HP Hot Plasma Analyzer&quot;</value>
+            <value>&quot;   Key Parameters&quot;</value>
+            <value>&quot;      Ion number density&quot;</value>
+            <value>&quot;      Average energy&quot;</value>
+            <value>&quot;      Bulk flow velocity&quot;</value>
+            <value>&quot; CPI-IC Ion Composition Analyzer&quot;</value>
+            <value>&quot;   Key Parameters&quot;</value>
+            <value>&quot;      Principal Species&quot;</value>
+            <value>&quot;        H+&quot;</value>
+            <value>&quot;        He++&quot;</value>
+            <value>&quot;        He+&quot;</value>
+            <value>&quot;        O+&quot;</value>
+        </Attribute>
+        <Attribute name="MODS" type="String">
+            <value>&quot;First Delivery version, 7-OCT-1993&quot;</value>
+            <value>&quot;Second version, 12-APR-1994, RLD&quot;</value>
+            <value>&quot;     Changed dimensions to 3 and 2 at&quot;</value>
+            <value>&quot;     recommendation of Mona Kessel&quot;</value>
+            <value>&quot;     With help of Jeff Love (CDFSUPPORT)&quot;</value>
+            <value>&quot;     have cleaned up dim problems&quot;</value>
+        </Attribute>
+        <Attribute name="ADID_ref" type="String">
+            <value>&quot;NSSD0091&quot;</value>
+        </Attribute>
+        <Attribute name="Logical_file_id" type="String">
+            <value>&quot;GE_K0_CPI_19940726_V01&quot;</value>
+        </Attribute>
+    </Attribute>
+
+    <Array name="Epoch">
+        <Attribute name="FIELDNAM" type="String">
+            <value>&quot;Time Line&quot;</value>
+        </Attribute>
+        <Attribute name="VALIDMIN" type="Float64">
+            <value>62883129600000.0</value>
+        </Attribute>
+        <Attribute name="VALIDMAX" type="Float64">
+            <value>63776664000000.0</value>
+        </Attribute>
+        <Attribute name="SCALEMIN" type="Float64">
+            <value>62883129600000.0</value>
+        </Attribute>
+        <Attribute name="SCALEMAX" type="Float64">
+            <value>63776664000000.0</value>
+        </Attribute>
+        <Attribute name="LABLAXIS" type="String">
+            <value>&quot;CDF Epoch&quot;</value>
+        </Attribute>
+        <Attribute name="UNITS" type="String">
+            <value>&quot;ms&quot;</value>
+        </Attribute>
+        <Attribute name="MONOTON" type="String">
+            <value>&quot;INCREASE&quot;</value>
+        </Attribute>
+        <Attribute name="VAR_TYPE" type="String">
+            <value>&quot;data&quot;</value>
+        </Attribute>
+        <Attribute name="DICT_KEY" type="String">
+            <value>&quot;ISTP&gt;class&gt;subclass&quot;</value>
+        </Attribute>
+        <Attribute name="FILLVAL" type="Float64">
+            <value>-9.9999999999999996e+30</value>
+        </Attribute>
+        <Float64/>
+        <dimension name="RecDim" size="50"/>
+    </Array>
+    <Array name="Time_PB5">
+        <Attribute name="FIELDNAM" type="String">
+            <value>&quot;Time Line&quot;</value>
+        </Attribute>
+        <Attribute name="VALIDMIN" type="Int32">
+            <value>1992</value>
+            <value>252</value>
+            <value>0</value>
+        </Attribute>
+        <Attribute name="VALIDMAX" type="Int32">
+            <value>2020</value>
+            <value>365</value>
+            <value>72000000</value>
+        </Attribute>
+        <Attribute name="SCALEMIN" type="Int32">
+            <value>1992</value>
+            <value>252</value>
+            <value>0</value>
+        </Attribute>
+        <Attribute name="SCALEMAX" type="Int32">
+            <value>2020</value>
+            <value>365</value>
+            <value>72000000</value>
+        </Attribute>
+        <Attribute name="VAR_TYPE" type="String">
+            <value>&quot;data&quot;</value>
+        </Attribute>
+        <Attribute name="DICT_KEY" type="String">
+            <value>&quot;ISTP&gt;class&gt;subclass&quot;</value>
+        </Attribute>
+        <Attribute name="FILLVAL" type="Int32">
+            <value>-2147483648</value>
+        </Attribute>
+        <Attribute name="LABL_PTR_1" type="String">
+            <value>&quot;label_time&quot;</value>
+        </Attribute>
+        <Attribute name="UNIT_PTR" type="String">
+            <value>&quot;unit_time&quot;</value>
+        </Attribute>
+        <Attribute name="FORM_PTR" type="String">
+            <value>&quot;format_time&quot;</value>
+        </Attribute>
+        <Attribute name="DEPEND_0" type="String">
+            <value>&quot;Epoch&quot;</value>
+        </Attribute>
+        <Attribute name="DEPEND_1" type="String">
+            <value>&quot;unit_time&quot;</value>
+        </Attribute>
+        <Int32/>
+        <dimension name="RecDim" size="50"/>
+        <dimension name="Dim0" size="3"/>
+    </Array>
+    <Array name="SW_P_Den">
+        <Attribute name="FIELDNAM" type="String">
+            <value>&quot;Ion Number Density, SW&quot;</value>
+        </Attribute>
+        <Attribute name="CATDESC" type="String">
+            <value>&quot;Number density for positive ions in the energy range 144&lt;E&lt;7000 eV&quot;</value>
+        </Attribute>
+        <Attribute name="VALIDMIN" type="Float32">
+            <value>0.009999999776</value>
+        </Attribute>
+        <Attribute name="VALIDMAX" type="Float32">
+            <value>1000.0</value>
+        </Attribute>
+        <Attribute name="SCALEMIN" type="Float32">
+            <value>0.009999999776</value>
+        </Attribute>
+        <Attribute name="SCALEMAX" type="Float32">
+            <value>1000.0</value>
+        </Attribute>
+        <Attribute name="LABLAXIS" type="String">
+            <value>&quot;N(sw)&quot;</value>
+        </Attribute>
+        <Attribute name="UNITS" type="String">
+            <value>&quot;/cm**3&quot;</value>
+        </Attribute>
+        <Attribute name="FORMAT" type="String">
+            <value>&quot;f8.3&quot;</value>
+        </Attribute>
+        <Attribute name="VAR_TYPE" type="String">
+            <value>&quot;data&quot;</value>
+        </Attribute>
+        <Attribute name="DICT_KEY" type="String">
+            <value>&quot;ISTP&gt;class&gt;subclass&quot;</value>
+        </Attribute>
+        <Attribute name="FILLVAL" type="Float32">
+            <value>-9.999999848e+30</value>
+        </Attribute>
+        <Attribute name="DEPEND_0" type="String">
+            <value>&quot;Epoch&quot;</value>
+        </Attribute>
+        <Float32/>
+        <dimension name="RecDim" size="50"/>
+    </Array>
+    <Array name="SW_P_AVGE">
+        <Attribute name="FIELDNAM" type="String">
+            <value>&quot;Ion Average Energy, SW&quot;</value>
+        </Attribute>
+        <Attribute name="CATDESC" type="String">
+            <value>&quot;Ion average energy for positive ions in the energy range 144&lt;E&lt;7000 eV&quot;</value>
+        </Attribute>
+        <Attribute name="VALIDMIN" type="Float32">
+            <value>100.0</value>
+        </Attribute>
+        <Attribute name="VALIDMAX" type="Float32">
+            <value>8000.0</value>
+        </Attribute>
+        <Attribute name="SCALEMIN" type="Float32">
+            <value>100.0</value>
+        </Attribute>
+        <Attribute name="SCALEMAX" type="Float32">
+            <value>8000.0</value>
+        </Attribute>
+        <Attribute name="LABLAXIS" type="String">
+            <value>&quot;&lt;E&gt;(sw)&quot;</value>
+        </Attribute>
+        <Attribute name="UNITS" type="String">
+            <value>&quot;eV&quot;</value>
+        </Attribute>
+        <Attribute name="FORMAT" type="String">
+            <value>&quot;f7.0&quot;</value>
+        </Attribute>
+        <Attribute name="VAR_TYPE" type="String">
+            <value>&quot;data&quot;</value>
+        </Attribute>
+        <Attribute name="DICT_KEY" type="String">
+            <value>&quot;ISTP&gt;class&gt;subclass&quot;</value>
+        </Attribute>
+        <Attribute name="FILLVAL" type="Float32">
+            <value>-9.999999848e+30</value>
+        </Attribute>
+        <Attribute name="DEPEND_0" type="String">
+            <value>&quot;Epoch&quot;</value>
+        </Attribute>
+        <Float32/>
+        <dimension name="RecDim" size="50"/>
+    </Array>
+    <Array name="SW_V">
+        <Attribute name="FIELDNAM" type="String">
+            <value>&quot;Ion bulk Flow, SW&quot;</value>
+        </Attribute>
+        <Attribute name="CATDESC" type="String">
+            <value>&quot;Solar Wind Ion flow velocity for positive ions in the energy range 144&lt;E&lt;7000 eV&quot;</value>
+        </Attribute>
+        <Attribute name="VALIDMIN" type="Float32">
+            <value>-1400.0</value>
+            <value>-1400.0</value>
+        </Attribute>
+        <Attribute name="VALIDMAX" type="Float32">
+            <value>1400.0</value>
+            <value>1400.0</value>
+        </Attribute>
+        <Attribute name="SCALEMIN" type="Float32">
+            <value>-1400.0</value>
+            <value>-1400.0</value>
+        </Attribute>
+        <Attribute name="SCALEMAX" type="Float32">
+            <value>1400.0</value>
+            <value>1400.0</value>
+        </Attribute>
+        <Attribute name="UNITS" type="String">
+            <value>&quot;km/sec&quot;</value>
+        </Attribute>
+        <Attribute name="FORMAT" type="String">
+            <value>&quot;F7.0&quot;</value>
+        </Attribute>
+        <Attribute name="VAR_TYPE" type="String">
+            <value>&quot;data&quot;</value>
+        </Attribute>
+        <Attribute name="DICT_KEY" type="String">
+            <value>&quot;ISTP&gt;class&gt;subclass&quot;</value>
+        </Attribute>
+        <Attribute name="FILLVAL" type="Float32">
+            <value>-9.999999848e+30</value>
+        </Attribute>
+        <Attribute name="LABL_PTR_1" type="String">
+            <value>&quot;label_v&quot;</value>
+        </Attribute>
+        <Attribute name="DEPEND_0" type="String">
+            <value>&quot;Epoch&quot;</value>
+        </Attribute>
+        <Attribute name="DEPEND_1" type="String">
+            <value>&quot;cartesian&quot;</value>
+        </Attribute>
+        <Float32/>
+        <dimension name="RecDim" size="50"/>
+        <dimension name="Dim0" size="2"/>
+    </Array>
+    <Array name="Quality_SW">
+        <Attribute name="FIELDNAM" type="String">
+            <value>&quot;Data Quality Percentage&quot;</value>
+        </Attribute>
+        <Attribute name="CATDESC" type="String">
+            <value>&quot;0.0:   adequate data quality;100.0: inadequate data quality.&quot;</value>
+        </Attribute>
+        <Attribute name="VALIDMIN" type="Float32">
+            <value>0.0</value>
+        </Attribute>
+        <Attribute name="VALIDMAX" type="Float32">
+            <value>100.0</value>
+        </Attribute>
+        <Attribute name="SCALEMIN" type="Float32">
+            <value>0.0</value>
+        </Attribute>
+        <Attribute name="SCALEMAX" type="Float32">
+            <value>100.0</value>
+        </Attribute>
+        <Attribute name="LABLAXIS" type="String">
+            <value>&quot;SW Quality&quot;</value>
+        </Attribute>
+        <Attribute name="UNITS" type="String">
+            <value>&quot;&quot;</value>
+        </Attribute>
+        <Attribute name="FORMAT" type="String">
+            <value>&quot;F5.2&quot;</value>
+        </Attribute>
+        <Attribute name="VAR_TYPE" type="String">
+            <value>&quot;data&quot;</value>
+        </Attribute>
+        <Attribute name="DICT_KEY" type="String">
+            <value>&quot;ISTP&gt;class&gt;subclass&quot;</value>
+        </Attribute>
+        <Attribute name="FILLVAL" type="Float32">
+            <value>-9.999999848e+30</value>
+        </Attribute>
+        <Attribute name="DEPEND_0" type="String">
+            <value>&quot;Epoch&quot;</value>
+        </Attribute>
+        <Float32/>
+        <dimension name="RecDim" size="50"/>
+    </Array>
+    <Array name="GAP_FLAG">
+        <Attribute name="FIELDNAM" type="String">
+            <value>&quot;Post Gap Flag&quot;</value>
+        </Attribute>
+        <Attribute name="CATDESC" type="String">
+            <value>&quot;0:  no gap immediately prior to this record;1:  gap prior due to instrument mode;2:  gap prior due to missing SIRIUS data;3:  gap prior due to noisy SIRIUS data;20: gap prior due to missing Minor Frame(s).&quot;</value>
+        </Attribute>
+        <Attribute name="VALIDMIN" type="Int32">
+            <value>0</value>
+        </Attribute>
+        <Attribute name="VALIDMAX" type="Int32">
+            <value>5</value>
+        </Attribute>
+        <Attribute name="SCALEMIN" type="Int32">
+            <value>0</value>
+        </Attribute>
+        <Attribute name="SCALEMAX" type="Int32">
+            <value>5</value>
+        </Attribute>
+        <Attribute name="LABLAXIS" type="String">
+            <value>&quot;Data Gap&quot;</value>
+        </Attribute>
+        <Attribute name="UNITS" type="String">
+            <value>&quot;&quot;</value>
+        </Attribute>
+        <Attribute name="FORMAT" type="String">
+            <value>&quot;I1&quot;</value>
+        </Attribute>
+        <Attribute name="VAR_TYPE" type="String">
+            <value>&quot;data&quot;</value>
+        </Attribute>
+        <Attribute name="DICT_KEY" type="String">
+            <value>&quot;ISTP&gt;class&gt;subclass&quot;</value>
+        </Attribute>
+        <Attribute name="FILLVAL" type="Int32">
+            <value>-2147483648</value>
+        </Attribute>
+        <Attribute name="DEPEND_0" type="String">
+            <value>&quot;Epoch&quot;</value>
+        </Attribute>
+        <Int32/>
+        <dimension name="RecDim" size="50"/>
+    </Array>
+    <Array name="HP_P_Den">
+        <Attribute name="FIELDNAM" type="String">
+            <value>&quot;Ion Number Density, HP&quot;</value>
+        </Attribute>
+        <Attribute name="CATDESC" type="String">
+            <value>&quot;Ion number density in the range 50&lt;E&lt;50000 eV&quot;</value>
+        </Attribute>
+        <Attribute name="VALIDMIN" type="Float32">
+            <value>0.009999999776</value>
+        </Attribute>
+        <Attribute name="VALIDMAX" type="Float32">
+            <value>1000.0</value>
+        </Attribute>
+        <Attribute name="SCALEMIN" type="Float32">
+            <value>0.009999999776</value>
+        </Attribute>
+        <Attribute name="SCALEMAX" type="Float32">
+            <value>1000.0</value>
+        </Attribute>
+        <Attribute name="LABLAXIS" type="String">
+            <value>&quot;N(hp)&quot;</value>
+        </Attribute>
+        <Attribute name="UNITS" type="String">
+            <value>&quot;/cm**3&quot;</value>
+        </Attribute>
+        <Attribute name="FORMAT" type="String">
+            <value>&quot;F8.3&quot;</value>
+        </Attribute>
+        <Attribute name="VAR_TYPE" type="String">
+            <value>&quot;data&quot;</value>
+        </Attribute>
+        <Attribute name="DICT_KEY" type="String">
+            <value>&quot;ISTP&gt;class&gt;subclass&quot;</value>
+        </Attribute>
+        <Attribute name="FILLVAL" type="Float32">
+            <value>-9.999999848e+30</value>
+        </Attribute>
+        <Attribute name="DEPEND_0" type="String">
+            <value>&quot;Epoch&quot;</value>
+        </Attribute>
+        <Float32/>
+        <dimension name="RecDim" size="50"/>
+    </Array>
+    <Array name="HP_P_AVGE">
+        <Attribute name="FIELDNAM" type="String">
+            <value>&quot;Ion Average Energy, HP&quot;</value>
+        </Attribute>
+        <Attribute name="CATDESC" type="String">
+            <value>&quot;Ion average energy in the range 1&lt;E&lt;50000 eV&quot;</value>
+        </Attribute>
+        <Attribute name="VALIDMIN" type="Float32">
+            <value>50.0</value>
+        </Attribute>
+        <Attribute name="VALIDMAX" type="Float32">
+            <value>50000.0</value>
+        </Attribute>
+        <Attribute name="SCALEMIN" type="Float32">
+            <value>50.0</value>
+        </Attribute>
+        <Attribute name="SCALEMAX" type="Float32">
+            <value>50000.0</value>
+        </Attribute>
+        <Attribute name="LABLAXIS" type="String">
+            <value>&quot;&lt;E_i&gt;(hp)&quot;</value>
+        </Attribute>
+        <Attribute name="UNITS" type="String">
+            <value>&quot;eV&quot;</value>
+        </Attribute>
+        <Attribute name="FORMAT" type="String">
+            <value>&quot;F7.0&quot;</value>
+        </Attribute>
+        <Attribute name="VAR_TYPE" type="String">
+            <value>&quot;data&quot;</value>
+        </Attribute>
+        <Attribute name="DICT_KEY" type="String">
+            <value>&quot;ISTP&gt;class&gt;subclass&quot;</value>
+        </Attribute>
+        <Attribute name="FILLVAL" type="Float32">
+            <value>-9.999999848e+30</value>
+        </Attribute>
+        <Attribute name="DEPEND_0" type="String">
+            <value>&quot;Epoch&quot;</value>
+        </Attribute>
+        <Float32/>
+        <dimension name="RecDim" size="50"/>
+    </Array>
+    <Array name="HP_V">
+        <Attribute name="FIELDNAM" type="String">
+            <value>&quot;Ion bulk Flow, HP&quot;</value>
+        </Attribute>
+        <Attribute name="CATDESC" type="String">
+            <value>&quot;Bulk flow velocity for ions in the range 1&lt;E&lt;50000 eV&quot;</value>
+        </Attribute>
+        <Attribute name="VALIDMIN" type="Float32">
+            <value>-4000.0</value>
+            <value>-4000.0</value>
+        </Attribute>
+        <Attribute name="VALIDMAX" type="Float32">
+            <value>4000.0</value>
+            <value>4000.0</value>
+        </Attribute>
+        <Attribute name="SCALEMIN" type="Float32">
+            <value>-4000.0</value>
+            <value>-4000.0</value>
+        </Attribute>
+        <Attribute name="SCALEMAX" type="Float32">
+            <value>4000.0</value>
+            <value>4000.0</value>
+        </Attribute>
+        <Attribute name="UNITS" type="String">
+            <value>&quot;km/sec&quot;</value>
+        </Attribute>
+        <Attribute name="FORMAT" type="String">
+            <value>&quot;F6.0&quot;</value>
+        </Attribute>
+        <Attribute name="VAR_TYPE" type="String">
+            <value>&quot;data&quot;</value>
+        </Attribute>
+        <Attribute name="DICT_KEY" type="String">
+            <value>&quot;ISTP&gt;class&gt;subclass&quot;</value>
+        </Attribute>
+        <Attribute name="FILLVAL" type="Float32">
+            <value>-9.999999848e+30</value>
+        </Attribute>
+        <Attribute name="LABL_PTR_1" type="String">
+            <value>&quot;label_v&quot;</value>
+        </Attribute>
+        <Attribute name="DEPEND_0" type="String">
+            <value>&quot;Epoch&quot;</value>
+        </Attribute>
+        <Attribute name="DEPEND_1" type="String">
+            <value>&quot;cartesian&quot;</value>
+        </Attribute>
+        <Float32/>
+        <dimension name="RecDim" size="50"/>
+        <dimension name="Dim0" size="2"/>
+    </Array>
+    <Array name="HP_E_AVGE">
+        <Attribute name="FIELDNAM" type="String">
+            <value>&quot;Electron Average Energy, HP&quot;</value>
+        </Attribute>
+        <Attribute name="CATDESC" type="String">
+            <value>&quot;Average energy for electrons in the range 50&lt;E&lt;50000 eV&quot;</value>
+        </Attribute>
+        <Attribute name="VALIDMIN" type="Float32">
+            <value>50.0</value>
+        </Attribute>
+        <Attribute name="VALIDMAX" type="Float32">
+            <value>50000.0</value>
+        </Attribute>
+        <Attribute name="SCALEMIN" type="Float32">
+            <value>50.0</value>
+        </Attribute>
+        <Attribute name="SCALEMAX" type="Float32">
+            <value>50000.0</value>
+        </Attribute>
+        <Attribute name="LABLAXIS" type="String">
+            <value>&quot;&lt;E_e&gt;(hp)&quot;</value>
+        </Attribute>
+        <Attribute name="UNITS" type="String">
+            <value>&quot;eV&quot;</value>
+        </Attribute>
+        <Attribute name="FORMAT" type="String">
+            <value>&quot;F7.0&quot;</value>
+        </Attribute>
+        <Attribute name="VAR_TYPE" type="String">
+            <value>&quot;data&quot;</value>
+        </Attribute>
+        <Attribute name="DICT_KEY" type="String">
+            <value>&quot;ISTP&gt;class&gt;subclass&quot;</value>
+        </Attribute>
+        <Attribute name="FILLVAL" type="Float32">
+            <value>-9.999999848e+30</value>
+        </Attribute>
+        <Attribute name="DEPEND_0" type="String">
+            <value>&quot;Epoch&quot;</value>
+        </Attribute>
+        <Float32/>
+        <dimension name="RecDim" size="50"/>
+    </Array>
+    <Array name="W">
+        <Attribute name="FIELDNAM" type="String">
+            <value>&quot;Plasma Pressure&quot;</value>
+        </Attribute>
+        <Attribute name="CATDESC" type="String">
+            <value>&quot;Pressure for plasma in the range 50&lt;E&lt;50000 eV&quot;</value>
+        </Attribute>
+        <Attribute name="VALIDMIN" type="Float32">
+            <value>1.000000004e-15</value>
+        </Attribute>
+        <Attribute name="VALIDMAX" type="Float32">
+            <value>9.999999747e-06</value>
+        </Attribute>
+        <Attribute name="SCALEMIN" type="Float32">
+            <value>9.99999996e-13</value>
+        </Attribute>
+        <Attribute name="SCALEMAX" type="Float32">
+            <value>1.000000012e-07</value>
+        </Attribute>
+        <Attribute name="LABLAXIS" type="String">
+            <value>&quot;Pressure&quot;</value>
+        </Attribute>
+        <Attribute name="UNITS" type="String">
+            <value>&quot;Pascals&quot;</value>
+        </Attribute>
+        <Attribute name="FORMAT" type="String">
+            <value>&quot;1PE9.2&quot;</value>
+        </Attribute>
+        <Attribute name="VAR_TYPE" type="String">
+            <value>&quot;data&quot;</value>
+        </Attribute>
+        <Attribute name="DICT_KEY" type="String">
+            <value>&quot;ISTP&gt;class&gt;subclass&quot;</value>
+        </Attribute>
+        <Attribute name="FILLVAL" type="Float32">
+            <value>-9.999999848e+30</value>
+        </Attribute>
+        <Attribute name="DEPEND_0" type="String">
+            <value>&quot;Epoch&quot;</value>
+        </Attribute>
+        <Float32/>
+        <dimension name="RecDim" size="50"/>
+    </Array>
+    <Array name="Quality_HP">
+        <Attribute name="FIELDNAM" type="String">
+            <value>&quot;Data Quality Percentage&quot;</value>
+        </Attribute>
+        <Attribute name="CATDESC" type="String">
+            <value>&quot;0.0:   adequate data quality;100.0: inadequate data quality.&quot;</value>
+        </Attribute>
+        <Attribute name="VALIDMIN" type="Float32">
+            <value>0.0</value>
+        </Attribute>
+        <Attribute name="VALIDMAX" type="Float32">
+            <value>100.0</value>
+        </Attribute>
+        <Attribute name="SCALEMIN" type="Float32">
+            <value>0.0</value>
+        </Attribute>
+        <Attribute name="SCALEMAX" type="Float32">
+            <value>100.0</value>
+        </Attribute>
+        <Attribute name="LABLAXIS" type="String">
+            <value>&quot;HP Quality&quot;</value>
+        </Attribute>
+        <Attribute name="UNITS" type="String">
+            <value>&quot;&quot;</value>
+        </Attribute>
+        <Attribute name="FORMAT" type="String">
+            <value>&quot;F5.2&quot;</value>
+        </Attribute>
+        <Attribute name="VAR_TYPE" type="String">
+            <value>&quot;data&quot;</value>
+        </Attribute>
+        <Attribute name="DICT_KEY" type="String">
+            <value>&quot;ISTP&gt;class&gt;subclass&quot;</value>
+        </Attribute>
+        <Attribute name="FILLVAL" type="Float32">
+            <value>-9.999999848e+30</value>
+        </Attribute>
+        <Attribute name="DEPEND_0" type="String">
+            <value>&quot;Epoch&quot;</value>
+        </Attribute>
+        <Float32/>
+        <dimension name="RecDim" size="50"/>
+    </Array>
+    <Array name="Quality_IC">
+        <Attribute name="FIELDNAM" type="String">
+            <value>&quot;Data Quality Percentage&quot;</value>
+        </Attribute>
+        <Attribute name="CATDESC" type="String">
+            <value>&quot;0.0:   adequate data quality;100.0: inadequate data quality.&quot;</value>
+        </Attribute>
+        <Attribute name="VALIDMIN" type="Float32">
+            <value>0.0</value>
+        </Attribute>
+        <Attribute name="VALIDMAX" type="Float32">
+            <value>100.0</value>
+        </Attribute>
+        <Attribute name="SCALEMIN" type="Float32">
+            <value>0.0</value>
+        </Attribute>
+        <Attribute name="SCALEMAX" type="Float32">
+            <value>100.0</value>
+        </Attribute>
+        <Attribute name="LABLAXIS" type="String">
+            <value>&quot;IC Quality&quot;</value>
+        </Attribute>
+        <Attribute name="UNITS" type="String">
+            <value>&quot;&quot;</value>
+        </Attribute>
+        <Attribute name="FORMAT" type="String">
+            <value>&quot;F5.2&quot;</value>
+        </Attribute>
+        <Attribute name="VAR_TYPE" type="String">
+            <value>&quot;data&quot;</value>
+        </Attribute>
+        <Attribute name="DICT_KEY" type="String">
+            <value>&quot;ISTP&gt;class&gt;subclass&quot;</value>
+        </Attribute>
+        <Attribute name="FILLVAL" type="Float32">
+            <value>-9.999999848e+30</value>
+        </Attribute>
+        <Attribute name="DEPEND_0" type="String">
+            <value>&quot;Epoch&quot;</value>
+        </Attribute>
+        <Float32/>
+        <dimension name="RecDim" size="50"/>
+    </Array>
+    <Array name="H_P_FLAG">
+        <Attribute name="FIELDNAM" type="String">
+            <value>&quot;H+ FLAG&quot;</value>
+        </Attribute>
+        <Attribute name="CATDESC" type="String">
+            <value>&quot;Non-zero value indicates presence of singly ionized hydrogen&quot;</value>
+        </Attribute>
+        <Attribute name="VALIDMIN" type="Int16">
+            <value>0</value>
+        </Attribute>
+        <Attribute name="VALIDMAX" type="Int16">
+            <value>99</value>
+        </Attribute>
+        <Attribute name="SCALEMIN" type="Int16">
+            <value>0</value>
+        </Attribute>
+        <Attribute name="SCALEMAX" type="Int16">
+            <value>99</value>
+        </Attribute>
+        <Attribute name="LABLAXIS" type="String">
+            <value>&quot;H+&quot;</value>
+        </Attribute>
+        <Attribute name="UNITS" type="String">
+            <value>&quot;&quot;</value>
+        </Attribute>
+        <Attribute name="FORMAT" type="String">
+            <value>&quot;I2&quot;</value>
+        </Attribute>
+        <Attribute name="VAR_TYPE" type="String">
+            <value>&quot;data&quot;</value>
+        </Attribute>
+        <Attribute name="DICT_KEY" type="String">
+            <value>&quot;ISTP&gt;class&gt;subclass&quot;</value>
+        </Attribute>
+        <Attribute name="FILLVAL" type="Int16">
+            <value>-128</value>
+        </Attribute>
+        <Attribute name="DEPEND_0" type="String">
+            <value>&quot;Epoch&quot;</value>
+        </Attribute>
+        <Int16/>
+        <dimension name="RecDim" size="50"/>
+    </Array>
+    <Array name="HE_PP_FLAG">
+        <Attribute name="FIELDNAM" type="String">
+            <value>&quot;Doubly ionized Helium, He++&quot;</value>
+        </Attribute>
+        <Attribute name="CATDESC" type="String">
+            <value>&quot;Non-zero value indicates presence of doubly ionized helium&quot;</value>
+        </Attribute>
+        <Attribute name="VALIDMIN" type="Int16">
+            <value>0</value>
+        </Attribute>
+        <Attribute name="VALIDMAX" type="Int16">
+            <value>99</value>
+        </Attribute>
+        <Attribute name="SCALEMIN" type="Int16">
+            <value>0</value>
+        </Attribute>
+        <Attribute name="SCALEMAX" type="Int16">
+            <value>99</value>
+        </Attribute>
+        <Attribute name="LABLAXIS" type="String">
+            <value>&quot;He++&quot;</value>
+        </Attribute>
+        <Attribute name="UNITS" type="String">
+            <value>&quot;&quot;</value>
+        </Attribute>
+        <Attribute name="FORMAT" type="String">
+            <value>&quot;I2&quot;</value>
+        </Attribute>
+        <Attribute name="VAR_TYPE" type="String">
+            <value>&quot;data&quot;</value>
+        </Attribute>
+        <Attribute name="DICT_KEY" type="String">
+            <value>&quot;ISTP&gt;class&gt;subclass&quot;</value>
+        </Attribute>
+        <Attribute name="FILLVAL" type="Int16">
+            <value>-128</value>
+        </Attribute>
+        <Attribute name="DEPEND_0" type="String">
+            <value>&quot;Epoch&quot;</value>
+        </Attribute>
+        <Int16/>
+        <dimension name="RecDim" size="50"/>
+    </Array>
+    <Array name="HE_P_FLAG">
+        <Attribute name="FIELDNAM" type="String">
+            <value>&quot;Singly ionized Helium, He+&quot;</value>
+        </Attribute>
+        <Attribute name="CATDESC" type="String">
+            <value>&quot;Non-zero value indicates presence of singly ionized helium&quot;</value>
+        </Attribute>
+        <Attribute name="VALIDMIN" type="Int16">
+            <value>0</value>
+        </Attribute>
+        <Attribute name="VALIDMAX" type="Int16">
+            <value>99</value>
+        </Attribute>
+        <Attribute name="SCALEMIN" type="Int16">
+            <value>0</value>
+        </Attribute>
+        <Attribute name="SCALEMAX" type="Int16">
+            <value>99</value>
+        </Attribute>
+        <Attribute name="LABLAXIS" type="String">
+            <value>&quot;He+&quot;</value>
+        </Attribute>
+        <Attribute name="UNITS" type="String">
+            <value>&quot;&quot;</value>
+        </Attribute>
+        <Attribute name="FORMAT" type="String">
+            <value>&quot;I2&quot;</value>
+        </Attribute>
+        <Attribute name="VAR_TYPE" type="String">
+            <value>&quot;data&quot;</value>
+        </Attribute>
+        <Attribute name="DICT_KEY" type="String">
+            <value>&quot;ISTP&gt;class&gt;subclass&quot;</value>
+        </Attribute>
+        <Attribute name="FILLVAL" type="Int16">
+            <value>-128</value>
+        </Attribute>
+        <Attribute name="DEPEND_0" type="String">
+            <value>&quot;Epoch&quot;</value>
+        </Attribute>
+        <Int16/>
+        <dimension name="RecDim" size="50"/>
+    </Array>
+    <Array name="O_P_FLAG">
+        <Attribute name="FIELDNAM" type="String">
+            <value>&quot;Singly ionized Oxygen, O+&quot;</value>
+        </Attribute>
+        <Attribute name="CATDESC" type="String">
+            <value>&quot;Non-zero value indicates presence of singly ionized atomic oxygen&quot;</value>
+        </Attribute>
+        <Attribute name="VALIDMIN" type="Int16">
+            <value>0</value>
+        </Attribute>
+        <Attribute name="VALIDMAX" type="Int16">
+            <value>99</value>
+        </Attribute>
+        <Attribute name="SCALEMIN" type="Int16">
+            <value>0</value>
+        </Attribute>
+        <Attribute name="SCALEMAX" type="Int16">
+            <value>99</value>
+        </Attribute>
+        <Attribute name="LABLAXIS" type="String">
+            <value>&quot;O+&quot;</value>
+        </Attribute>
+        <Attribute name="UNITS" type="String">
+            <value>&quot;&quot;</value>
+        </Attribute>
+        <Attribute name="FORMAT" type="String">
+            <value>&quot;I2&quot;</value>
+        </Attribute>
+        <Attribute name="VAR_TYPE" type="String">
+            <value>&quot;data&quot;</value>
+        </Attribute>
+        <Attribute name="DICT_KEY" type="String">
+            <value>&quot;ISTP&gt;class&gt;subclass&quot;</value>
+        </Attribute>
+        <Attribute name="FILLVAL" type="Int16">
+            <value>-128</value>
+        </Attribute>
+        <Attribute name="DEPEND_0" type="String">
+            <value>&quot;Epoch&quot;</value>
+        </Attribute>
+        <Int16/>
+        <dimension name="RecDim" size="50"/>
+    </Array>
+    <Array name="label_time">
+        <Attribute name="FIELDNAM" type="String">
+            <value>&quot;Label for Time_PB5&quot;</value>
+        </Attribute>
+        <Attribute name="VAR_TYPE" type="String">
+            <value>&quot;metadata&quot;</value>
+        </Attribute>
+        <Attribute name="DICT_KEY" type="String">
+            <value>&quot;ISTP&gt;class&gt;subclass&quot;</value>
+        </Attribute>
+        <String/>
+        <dimension name="Dim0" size="3"/>
+    </Array>
+    <Array name="unit_time">
+        <Attribute name="FIELDNAM" type="String">
+            <value>&quot;Units for Time_PB5&quot;</value>
+        </Attribute>
+        <Attribute name="VAR_TYPE" type="String">
+            <value>&quot;metadata&quot;</value>
+        </Attribute>
+        <Attribute name="DICT_KEY" type="String">
+            <value>&quot;ISTP&gt;class&gt;subclass&quot;</value>
+        </Attribute>
+        <String/>
+        <dimension name="Dim0" size="3"/>
+    </Array>
+    <Array name="format_time">
+        <Attribute name="FIELDNAM" type="String">
+            <value>&quot;Format for Time_PB5&quot;</value>
+        </Attribute>
+        <Attribute name="VAR_TYPE" type="String">
+            <value>&quot;metadata&quot;</value>
+        </Attribute>
+        <Attribute name="DICT_KEY" type="String">
+            <value>&quot;ISTP&gt;class&gt;subclass&quot;</value>
+        </Attribute>
+        <String/>
+        <dimension name="Dim0" size="3"/>
+    </Array>
+    <Array name="label_v">
+        <Attribute name="FIELDNAM" type="String">
+            <value>&quot;Label for velocity&quot;</value>
+        </Attribute>
+        <Attribute name="VAR_TYPE" type="String">
+            <value>&quot;metadata&quot;</value>
+        </Attribute>
+        <Attribute name="DICT_KEY" type="String">
+            <value>&quot;ISTP&gt;class&gt;subclass&quot;</value>
+        </Attribute>
+        <String/>
+        <dimension name="Dim0" size="2"/>
+    </Array>
+    <Array name="cartesian">
+        <Attribute name="FIELDNAM" type="String">
+            <value>&quot;Dimension Label&quot;</value>
+        </Attribute>
+        <Attribute name="VAR_TYPE" type="String">
+            <value>&quot;metadata&quot;</value>
+        </Attribute>
+        <Attribute name="DICT_KEY" type="String">
+            <value>&quot;ISTP&gt;vector&gt;cartesian&quot;</value>
+        </Attribute>
+        <String/>
+        <dimension name="Dim0" size="2"/>
+    </Array>
+
+    <dataBLOB href=""/>
+</Dataset>

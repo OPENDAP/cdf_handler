@@ -9,6 +9,8 @@ AUTOMAKE_OPTIONS = foreign check-news
 
 ACLOCAL_AMFLAGS = -I conf
 
+SUBDIRS = testsuite
+
 bin_PROGRAMS = dap_cdf_handler
 
 lib_LTLIBRARIES = libcdf_handler.la
@@ -33,6 +35,7 @@ CDFHDRS:= CDFArray.h CDFByte.h CDFFloat32.h CDFFloat64.h CDFGrid.h \
 	  config_cdf.h
 
 libcdf_handler_la_SOURCES = $(CDFSRCS) $(CDFHDRS)
+libcdf_handler_la_LDFLAGS = -version-info $(LIBCDF_HANDLER_VERSION)
 
 SERVER_SRC:=CDFRequestHandler.cc CDFModule.cc CDFRequestHandler.h \
 		CDFModule.h CDFResponseNames.h

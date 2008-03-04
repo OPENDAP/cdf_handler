@@ -1,0 +1,3 @@
+set container in catalog values geocpi0,data/cdf/geocpi0.cdf;
+define d1 as geocpi0;
+get ddx for d1;

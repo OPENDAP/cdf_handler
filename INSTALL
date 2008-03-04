@@ -37,16 +37,16 @@ Building from Our SVN Repository
 
 REQUIREMENTS
 
-  o You need the libdap library version 3.7.4 to build and install this
+  o You need the libdap library version 3.8.0 to build and install this
     software. If you're using Linux, this means either building form source
     or using the libdap and libdap-devel RPM packages.
 
   o To use this software with our data server, you will need the OPeNDAP
-    dap-server software package, version 3.6.0 (although for this release,
+    dap-server software package, version 3.8.5 (although for this release,
     operation with Server3 has not been tested).
   
-  o If you're planning on using this with Server4, version 1.2, you'll need
-    version 3.3.1 of the BES software.
+  o If you're planning on using this with Server4, you'll need version 3.6.0
+    of the BES software.
 
   o You also need a recent copy of the cdf api. We've tested this server with
     cdf31-dist, although any recent version should work fine. If the
@@ -79,3 +79,10 @@ NOTES
       `./configure'. If you want the extra features, use:
 
       ./configure --enable-dbnew --enable-debug=2
+
+    - To use BES debugging aids simply pass the -d option to the BES starter
+      script, like so: besctl start -d "bes.debug,cdf". This will turn on
+      any debugging in the BES code of cdf_handler and dump the debugging
+      statements to the file bes.debug. If you just want it to your screen,
+      replace bes.debug with cerr.
+

@@ -1,0 +1,25 @@
+Dataset {
+    Float64 Epoch[RecDim = 50];
+    Int32 Time_PB5[RecDim = 50][Dim0 = 3];
+    Float32 SW_P_Den[RecDim = 50];
+    Float32 SW_P_AVGE[RecDim = 50];
+    Float32 SW_V[RecDim = 50][Dim0 = 2];
+    Float32 Quality_SW[RecDim = 50];
+    Int32 GAP_FLAG[RecDim = 50];
+    Float32 HP_P_Den[RecDim = 50];
+    Float32 HP_P_AVGE[RecDim = 50];
+    Float32 HP_V[RecDim = 50][Dim0 = 2];
+    Float32 HP_E_AVGE[RecDim = 50];
+    Float32 W[RecDim = 50];
+    Float32 Quality_HP[RecDim = 50];
+    Float32 Quality_IC[RecDim = 50];
+    Int16 H_P_FLAG[RecDim = 50];
+    Int16 HE_PP_FLAG[RecDim = 50];
+    Int16 HE_P_FLAG[RecDim = 50];
+    Int16 O_P_FLAG[RecDim = 50];
+    String label_time[Dim0 = 3];
+    String unit_time[Dim0 = 3];
+    String format_time[Dim0 = 3];
+    String label_v[Dim0 = 2];
+    String cartesian[Dim0 = 2];
+} geocpi0;

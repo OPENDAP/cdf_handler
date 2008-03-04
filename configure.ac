@@ -2,13 +2,30 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT(cdf_handler, 1.0.2, opendap-tech@opendap.org)
+AC_INIT(cdf_handler, 1.0.3, opendap-tech@opendap.org)
+AC_CONFIG_SRCDIR([CDFStr.h])
+AC_CONFIG_HEADER([config_cdf.h])
 AC_CONFIG_AUX_DIR([conf])
 
 AM_INIT_AUTOMAKE
 
-AC_CONFIG_SRCDIR([CDFStr.h])
-AC_CONFIG_HEADER([config_cdf.h])
+dnl flags for the compilers and linkers - set these before locating the
+dnl actual tools since some of the AC_PROG macros set these `flag variables'
+dnl to default values otherwise.
+
+AC_CANONICAL_HOST
+AC_SUBST(host)
+
+dnl library visioning: Update these when the interface changes. Generally,
+dnl assume that the interface tracks the major and minor release numbers.
+LIB_CDF_HANDLER_CURRENT=1
+LIB_CDF_HANDLER_AGE=0
+LIB_CDF_HANDLER_REVISION=0
+AC_SUBST(LIB_CDF_HANDLER_CURRENT)
+AC_SUBST(LIB_CDF_HANDLER_AGE)
+AC_SUBST(LIB_CDF_HANDLER_REVISION)
+LIBCDF_HANDLER_VERSION="$LIB_CDF_HANDLER_CURRENT:$LIB_CDF_HANDLER_REVISION:$LIB_CDF_HANDLER_AGE"
+AC_SUBST(LIBCDF_HANDLER_VERSION)
 
 # Checks for programs.
 AC_PROG_CXX
@@ -83,5 +100,5 @@ AH_BOTTOM([/* Shorthand for gcc's unused attribute feature */
 
 #endif /* _config_cdf_h */])
 
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile testsuite/Makefile])
 AC_OUTPUT

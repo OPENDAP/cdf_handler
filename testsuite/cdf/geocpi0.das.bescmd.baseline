@@ -1,0 +1,310 @@
+Attributes {
+    CDF_GLOBAL {
+        String Project "ISTP>International Solar-Terrestrial Physics";
+        String Discipline "Space Physics>Magnetospheric Science";
+        String Source_name "GEOTAIL>Geomagnetic Tail";
+        String Data_type "K0>Key Parameter";
+        String Descriptor "CPI>Comprehensive Plasma Instrumentation";
+        String Data_version "1";
+        String TITLE "Geotail CPI";
+        String TEXT "GEOTAIL Prelaunch Report", " April 1992, SES-TD-92-007SY", " CPI-SW Solar Wind Analyzer", "   Key Parameters", "      Ion number density", "      Average energy", "      Bulk flow velocity", " CPI-HP Hot Plasma Analyzer", "   Key Parameters", "      Ion number density", "      Average energy", "      Bulk flow velocity", " CPI-IC Ion Composition Analyzer", "   Key Parameters", "      Principal Species", "        H+", "        He++", "        He+", "        O+";
+        String MODS "First Delivery version, 7-OCT-1993", "Second version, 12-APR-1994, RLD", "     Changed dimensions to 3 and 2 at", "     recommendation of Mona Kessel", "     With help of Jeff Love (CDFSUPPORT)", "     have cleaned up dim problems";
+        String ADID_ref "NSSD0091";
+        String Logical_file_id "GE_K0_CPI_19940726_V01";
+    }
+    Epoch {
+        String FIELDNAM "Time Line";
+        Float64 VALIDMIN 62883129600000.0;
+        Float64 VALIDMAX 63776664000000.0;
+        Float64 SCALEMIN 62883129600000.0;
+        Float64 SCALEMAX 63776664000000.0;
+        String LABLAXIS "CDF Epoch";
+        String UNITS "ms";
+        String MONOTON "INCREASE";
+        String VAR_TYPE "data";
+        String DICT_KEY "ISTP>class>subclass";
+        Float64 FILLVAL -9.9999999999999996e+30;
+    }
+    Time_PB5 {
+        String FIELDNAM "Time Line";
+        Int32 VALIDMIN 1992, 252, 0;
+        Int32 VALIDMAX 2020, 365, 72000000;
+        Int32 SCALEMIN 1992, 252, 0;
+        Int32 SCALEMAX 2020, 365, 72000000;
+        String VAR_TYPE "data";
+        String DICT_KEY "ISTP>class>subclass";
+        Int32 FILLVAL -2147483648;
+        String LABL_PTR_1 "label_time";
+        String UNIT_PTR "unit_time";
+        String FORM_PTR "format_time";
+        String DEPEND_0 "Epoch";
+        String DEPEND_1 "unit_time";
+    }
+    SW_P_Den {
+        String FIELDNAM "Ion Number Density, SW";
+        String CATDESC "Number density for positive ions in the energy range 144<E<7000 eV";
+        Float32 VALIDMIN 0.009999999776;
+        Float32 VALIDMAX 1000.0;
+        Float32 SCALEMIN 0.009999999776;
+        Float32 SCALEMAX 1000.0;
+        String LABLAXIS "N(sw)";
+        String UNITS "/cm**3";
+        String FORMAT "f8.3";
+        String VAR_TYPE "data";
+        String DICT_KEY "ISTP>class>subclass";
+        Float32 FILLVAL -9.999999848e+30;
+        String DEPEND_0 "Epoch";
+    }
+    SW_P_AVGE {
+        String FIELDNAM "Ion Average Energy, SW";
+        String CATDESC "Ion average energy for positive ions in the energy range 144<E<7000 eV";
+        Float32 VALIDMIN 100.0;
+        Float32 VALIDMAX 8000.0;
+        Float32 SCALEMIN 100.0;
+        Float32 SCALEMAX 8000.0;
+        String LABLAXIS "<E>(sw)";
+        String UNITS "eV";
+        String FORMAT "f7.0";
+        String VAR_TYPE "data";
+        String DICT_KEY "ISTP>class>subclass";
+        Float32 FILLVAL -9.999999848e+30;
+        String DEPEND_0 "Epoch";
+    }
+    SW_V {
+        String FIELDNAM "Ion bulk Flow, SW";
+        String CATDESC "Solar Wind Ion flow velocity for positive ions in the energy range 144<E<7000 eV";
+        Float32 VALIDMIN -1400.0, -1400.0;
+        Float32 VALIDMAX 1400.0, 1400.0;
+        Float32 SCALEMIN -1400.0, -1400.0;
+        Float32 SCALEMAX 1400.0, 1400.0;
+        String UNITS "km/sec";
+        String FORMAT "F7.0";
+        String VAR_TYPE "data";
+        String DICT_KEY "ISTP>class>subclass";
+        Float32 FILLVAL -9.999999848e+30;
+        String LABL_PTR_1 "label_v";
+        String DEPEND_0 "Epoch";
+        String DEPEND_1 "cartesian";
+    }
+    Quality_SW {
+        String FIELDNAM "Data Quality Percentage";
+        String CATDESC "0.0:   adequate data quality;100.0: inadequate data quality.";
+        Float32 VALIDMIN 0.0;
+        Float32 VALIDMAX 100.0;
+        Float32 SCALEMIN 0.0;
+        Float32 SCALEMAX 100.0;
+        String LABLAXIS "SW Quality";
+        String UNITS "";
+        String FORMAT "F5.2";
+        String VAR_TYPE "data";
+        String DICT_KEY "ISTP>class>subclass";
+        Float32 FILLVAL -9.999999848e+30;
+        String DEPEND_0 "Epoch";
+    }
+    GAP_FLAG {
+        String FIELDNAM "Post Gap Flag";
+        String CATDESC "0:  no gap immediately prior to this record;1:  gap prior due to instrument mode;2:  gap prior due to missing SIRIUS data;3:  gap prior due to noisy SIRIUS data;20: gap prior due to missing Minor Frame(s).";
+        Int32 VALIDMIN 0;
+        Int32 VALIDMAX 5;
+        Int32 SCALEMIN 0;
+        Int32 SCALEMAX 5;
+        String LABLAXIS "Data Gap";
+        String UNITS "";
+        String FORMAT "I1";
+        String VAR_TYPE "data";
+        String DICT_KEY "ISTP>class>subclass";
+        Int32 FILLVAL -2147483648;
+        String DEPEND_0 "Epoch";
+    }
+    HP_P_Den {
+        String FIELDNAM "Ion Number Density, HP";
+        String CATDESC "Ion number density in the range 50<E<50000 eV";
+        Float32 VALIDMIN 0.009999999776;
+        Float32 VALIDMAX 1000.0;
+        Float32 SCALEMIN 0.009999999776;
+        Float32 SCALEMAX 1000.0;
+        String LABLAXIS "N(hp)";
+        String UNITS "/cm**3";
+        String FORMAT "F8.3";
+        String VAR_TYPE "data";
+        String DICT_KEY "ISTP>class>subclass";
+        Float32 FILLVAL -9.999999848e+30;
+        String DEPEND_0 "Epoch";
+    }
+    HP_P_AVGE {
+        String FIELDNAM "Ion Average Energy, HP";
+        String CATDESC "Ion average energy in the range 1<E<50000 eV";
+        Float32 VALIDMIN 50.0;
+        Float32 VALIDMAX 50000.0;
+        Float32 SCALEMIN 50.0;
+        Float32 SCALEMAX 50000.0;
+        String LABLAXIS "<E_i>(hp)";
+        String UNITS "eV";
+        String FORMAT "F7.0";
+        String VAR_TYPE "data";
+        String DICT_KEY "ISTP>class>subclass";
+        Float32 FILLVAL -9.999999848e+30;
+        String DEPEND_0 "Epoch";
+    }
+    HP_V {
+        String FIELDNAM "Ion bulk Flow, HP";
+        String CATDESC "Bulk flow velocity for ions in the range 1<E<50000 eV";
+        Float32 VALIDMIN -4000.0, -4000.0;
+        Float32 VALIDMAX 4000.0, 4000.0;
+        Float32 SCALEMIN -4000.0, -4000.0;
+        Float32 SCALEMAX 4000.0, 4000.0;
+        String UNITS "km/sec";
+        String FORMAT "F6.0";
+        String VAR_TYPE "data";
+        String DICT_KEY "ISTP>class>subclass";
+        Float32 FILLVAL -9.999999848e+30;
+        String LABL_PTR_1 "label_v";
+        String DEPEND_0 "Epoch";
+        String DEPEND_1 "cartesian";
+    }
+    HP_E_AVGE {
+        String FIELDNAM "Electron Average Energy, HP";
+        String CATDESC "Average energy for electrons in the range 50<E<50000 eV";
+        Float32 VALIDMIN 50.0;
+        Float32 VALIDMAX 50000.0;
+        Float32 SCALEMIN 50.0;
+        Float32 SCALEMAX 50000.0;
+        String LABLAXIS "<E_e>(hp)";
+        String UNITS "eV";
+        String FORMAT "F7.0";
+        String VAR_TYPE "data";
+        String DICT_KEY "ISTP>class>subclass";
+        Float32 FILLVAL -9.999999848e+30;
+        String DEPEND_0 "Epoch";
+    }
+    W {
+        String FIELDNAM "Plasma Pressure";
+        String CATDESC "Pressure for plasma in the range 50<E<50000 eV";
+        Float32 VALIDMIN 1.000000004e-15;
+        Float32 VALIDMAX 9.999999747e-06;
+        Float32 SCALEMIN 9.99999996e-13;
+        Float32 SCALEMAX 1.000000012e-07;
+        String LABLAXIS "Pressure";
+        String UNITS "Pascals";
+        String FORMAT "1PE9.2";
+        String VAR_TYPE "data";
+        String DICT_KEY "ISTP>class>subclass";
+        Float32 FILLVAL -9.999999848e+30;
+        String DEPEND_0 "Epoch";
+    }
+    Quality_HP {
+        String FIELDNAM "Data Quality Percentage";
+        String CATDESC "0.0:   adequate data quality;100.0: inadequate data quality.";
+        Float32 VALIDMIN 0.0;
+        Float32 VALIDMAX 100.0;
+        Float32 SCALEMIN 0.0;
+        Float32 SCALEMAX 100.0;
+        String LABLAXIS "HP Quality";
+        String UNITS "";
+        String FORMAT "F5.2";
+        String VAR_TYPE "data";
+        String DICT_KEY "ISTP>class>subclass";
+        Float32 FILLVAL -9.999999848e+30;
+        String DEPEND_0 "Epoch";
+    }
+    Quality_IC {
+        String FIELDNAM "Data Quality Percentage";
+        String CATDESC "0.0:   adequate data quality;100.0: inadequate data quality.";
+        Float32 VALIDMIN 0.0;
+        Float32 VALIDMAX 100.0;
+        Float32 SCALEMIN 0.0;
+        Float32 SCALEMAX 100.0;
+        String LABLAXIS "IC Quality";
+        String UNITS "";
+        String FORMAT "F5.2";
+        String VAR_TYPE "data";
+        String DICT_KEY "ISTP>class>subclass";
+        Float32 FILLVAL -9.999999848e+30;
+        String DEPEND_0 "Epoch";
+    }
+    H_P_FLAG {
+        String FIELDNAM "H+ FLAG";
+        String CATDESC "Non-zero value indicates presence of singly ionized hydrogen";
+        Int16 VALIDMIN 0;
+        Int16 VALIDMAX 99;
+        Int16 SCALEMIN 0;
+        Int16 SCALEMAX 99;
+        String LABLAXIS "H+";
+        String UNITS "";
+        String FORMAT "I2";
+        String VAR_TYPE "data";
+        String DICT_KEY "ISTP>class>subclass";
+        Int16 FILLVAL -128;
+        String DEPEND_0 "Epoch";
+    }
+    HE_PP_FLAG {
+        String FIELDNAM "Doubly ionized Helium, He++";
+        String CATDESC "Non-zero value indicates presence of doubly ionized helium";
+        Int16 VALIDMIN 0;
+        Int16 VALIDMAX 99;
+        Int16 SCALEMIN 0;
+        Int16 SCALEMAX 99;
+        String LABLAXIS "He++";
+        String UNITS "";
+        String FORMAT "I2";
+        String VAR_TYPE "data";
+        String DICT_KEY "ISTP>class>subclass";
+        Int16 FILLVAL -128;
+        String DEPEND_0 "Epoch";
+    }
+    HE_P_FLAG {
+        String FIELDNAM "Singly ionized Helium, He+";
+        String CATDESC "Non-zero value indicates presence of singly ionized helium";
+        Int16 VALIDMIN 0;
+        Int16 VALIDMAX 99;
+        Int16 SCALEMIN 0;
+        Int16 SCALEMAX 99;
+        String LABLAXIS "He+";
+        String UNITS "";
+        String FORMAT "I2";
+        String VAR_TYPE "data";
+        String DICT_KEY "ISTP>class>subclass";
+        Int16 FILLVAL -128;
+        String DEPEND_0 "Epoch";
+    }
+    O_P_FLAG {
+        String FIELDNAM "Singly ionized Oxygen, O+";
+        String CATDESC "Non-zero value indicates presence of singly ionized atomic oxygen";
+        Int16 VALIDMIN 0;
+        Int16 VALIDMAX 99;
+        Int16 SCALEMIN 0;
+        Int16 SCALEMAX 99;
+        String LABLAXIS "O+";
+        String UNITS "";
+        String FORMAT "I2";
+        String VAR_TYPE "data";
+        String DICT_KEY "ISTP>class>subclass";
+        Int16 FILLVAL -128;
+        String DEPEND_0 "Epoch";
+    }
+    label_time {
+        String FIELDNAM "Label for Time_PB5";
+        String VAR_TYPE "metadata";
+        String DICT_KEY "ISTP>class>subclass";
+    }
+    unit_time {
+        String FIELDNAM "Units for Time_PB5";
+        String VAR_TYPE "metadata";
+        String DICT_KEY "ISTP>class>subclass";
+    }
+    format_time {
+        String FIELDNAM "Format for Time_PB5";
+        String VAR_TYPE "metadata";
+        String DICT_KEY "ISTP>class>subclass";
+    }
+    label_v {
+        String FIELDNAM "Label for velocity";
+        String VAR_TYPE "metadata";
+        String DICT_KEY "ISTP>class>subclass";
+    }
+    cartesian {
+        String FIELDNAM "Dimension Label";
+        String VAR_TYPE "metadata";
+        String DICT_KEY "ISTP>vector>cartesian";
+    }
+}

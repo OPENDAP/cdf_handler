@@ -1,6 +1,16 @@
 
 $Id: NEWS 14029 2006-06-29 18:10:44Z pwest $
 
+Version 1.0.3 (03 Mar 2008)
+
+Configuration updates and keeping up with libdap and bes releases.
+
+Added testsuite to compare output results. Run by make.check.
+
+Version 1.0.2
+
+Configuration updates and keeping up with libdap and bes releases.
+
 Version 1.0.1
 
 Updates in line with libdap 3.7.4 and bes 3.3.1

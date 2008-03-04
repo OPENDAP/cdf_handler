@@ -1,3 +1,182 @@
+2008-02-26  Patrick West <pwest@ucar.edu>
+
+	Removed the version of Hyrax so we don't keep having to edit the
+	Welcome.html file
+	M    OSX_Resources/Welcome.html
+
+2008-02-26  Patrick West <pwest@ucar.edu>
+
+	Grabbing the version correctly for the pkg build.
+	M    configure.ac
+	M    OSX_Resources/Info.plist
+
+2008-02-26  Patrick West <pwest@ucar.edu>
+
+	Updated pkg target for Mac OSX, includes use of package maker and
+	dropdmg.
+	AM   OSX_Resources/update_mac_package_contents.pl
+	M    OSX_Resources/Info.plist
+	M    OSX_Resources/ReadMe.txt
+	M    Makefile.am
+
+2008-02-20  Patrick West <pwest@ucar.edu>
+
+	Added package config configuration used for libdap and bes
+	configuration
+	A    conf/pkg.m4
+
+2008-02-14  Patrick West <pwest@ucar.edu>
+
+	Updated configure to use latest libdap and bes configure scripts.
+	Updated request handler to not call access on container multiple
+	times.
+	M    conf/bes.m4
+	M    conf/libdap.m4
+	M    CDFRequestHandler.cc
+	M    configure.ac
+	M    Makefile.am
+
+2008-02-02  Patrick West <pwest@ucar.edu>
+
+	Added using namespace libdap where needed
+	M    CDFFloat64.h
+	M    CDFreadAttributes.h
+	M    CDFUInt32.h
+	M    CDFUInt16.h
+	M    CDFSequence.h
+	M    CDFTypeFactory.h
+	M    CDFFloat32.h
+	M    CDFArray.h
+	M    CDFGrid.h
+	M    CDFreadDescriptors.h
+	M    CDFInt32.h
+	M    CDFStructure.h
+	M    CDFInt16.h
+	M    CDFUrl.h
+	M    CDFByte.h
+	M    CDFStr.h
+	M    CDFutilities.h
+
+2008-01-25  Patrick West <pwest@ucar.edu>
+
+	Forgot to add the configuration script.
+	A    bes-cdf-data.sh.in
+
+2008-01-25  Patrick West <pwest@ucar.edu>
+
+	New error/exception handling in the BES. Added a script to update
+	the bes.configuration file and a target in the Makefile to handle
+	it. Moved the data files from tests to data and install that into
+	the default data directory for testiing. Added OSX information for
+	building packages.
+	M    CDFRequestHandler.cc
+	D    tests
+	M    configure.ac
+	A    data
+	A    OSX_Resources
+	AM   OSX_Resources/InstallationCheck
+	A    OSX_Resources/License.txt
+	A    OSX_Resources/Info.plist
+	A    OSX_Resources/InstallationCheck.strings
+	A    OSX_Resources/ReadMe.txt
+	A    OSX_Resources/Description.plist
+	AM   OSX_Resources/background.jpg
+	A    OSX_Resources/Welcome.html
+	M    Makefile.am
+
+2007-08-01  Patrick West <pwest@ucar.edu>
+
+	Makefile dependency on BES for dap_cdf_handler was removed.
+	dap_cdf_handler.cc needed to load the attributes for dds, datadds,
+	and ddx, as the handlers are now responsible for doing that.
+	M    dap_cdf_handler.cc
+	M    Makefile.am
+
+2007-07-31  Patrick West <pwest@ucar.edu>
+
+	BESDebug modifications, passing context to BESDEBUG and registering
+	debug context in Module classes.
+	M    CDFUInt32.cc
+	M    CDFModule.cc
+	M    CDFUInt16.cc
+	M    CDFreadDescriptors.cc
+	M    CDFInt32.cc
+	M    CDFInt16.cc
+	M    configure.ac
+	M    CDFByte.cc
+	M    CDFFloat32.cc
+	M    CDFutilities.cc
+	M    CDFArray.cc
+	M    CDFFloat64.cc
+	M    CDFStr.cc
+
+2007-07-30  Patrick West <pwest@ucar.edu>
+
+	When DDS being created need to also create a DAS object and transfer
+	the attributes to the DDS. This fixed the ddx output.  If the number
+	of records was 0 then the value wasn't being read. Changed the
+	condition to be if the number of records is greater than 1 then
+	there is a problem, else continue.  The filename was not being set
+	when reading the dds or datadds. This is why the read was failing.
+	This was changed not too long ago and modified in the other
+	handlers.
+
+	Changed CDFDebug to BESDebug so that we can set it on the command
+	line when running the bes server. This is a problem if running from
+	the command line dap_cdf_handler as there is not debug. Will look at
+	this later.
+	M    CDFUInt32.cc
+	M    CDFUInt16.cc
+	M    CDFRequestHandler.cc
+	M    bes.conf
+	M    CDFreadDescriptors.cc
+	M    CDFInt32.cc
+	M    CDFInt16.cc
+	M    configure.ac
+	M    CDFByte.cc
+	M    CDFFloat32.cc
+	M    CDFutilities.cc
+	D    config_cdf.h.in
+	M    CDFArray.cc
+	M    CDFFloat64.cc
+	D    CDFDebug.cc
+	D    CDFDebug.h
+	M    dap_cdf_handler.cc
+	M    CDFStr.cc
+	M    Makefile.am
+
+2007-07-27  Patrick West <pwest@ucar.edu>
+
+	Had specified --with-netcdf instead of --with-cdf. Corrected.
+	M    INSTALL
+
+2007-07-11  Patrick West <pwest@ucar.edu>
+
+	Using BESDebug rather than BESLog. Removing anthing added in the
+	module in the terminate method.
+	M    CDFModule.cc
+
+2007-06-07  Patrick West <pwest@ucar.edu>
+
+	Changed the constructor to the request handler class to take a const
+	string & instead of a string
+	M    CDFRequestHandler.cc
+	M    CDFRequestHandler.h
+
+2007-04-25  Patrick West <pwest@ucar.edu>
+
+	Moving opendap.ini to bes.conf
+	A    bes.conf
+	D    opendap.ini
+
+2007-01-10  Patrick West <pwest@ucar.edu>
+
+	Updated change log for release 1.0.1
+	M    ChangeLog
+
+;; Local Variables:
+;; coding: utf-8
+;; End:
 2007-01-10  Patrick West <pwest@ucar.edu>
 
 	Changed handler name from cdf-handler to cdf_handler. Made
