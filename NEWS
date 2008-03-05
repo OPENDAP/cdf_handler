@@ -3,9 +3,9 @@ $Id: NEWS 14029 2006-06-29 18:10:44Z pwest $
 
 Version 1.0.3 (03 Mar 2008)
 
-Configuration updates and keeping up with libdap and bes releases.
+Configuration updates and keeping up with libdap-3.8.0 and bes-3.6.0 releases.
 
-Added testsuite to compare output results. Run by make.check.
+Added testsuite to compare output results. Run by make check.
 
 Version 1.0.2
 
@@ -23,5 +23,5 @@ is a source release to support the Server4 1.2 beta release and has not been
 tested with Server3, although there should be no problems.
 
 This software has been built using gcc 3.2.3 and gcc 4.0.1. It requires the
-user of autoconf 2.59 or newer and was built using automake 1.9.6.
+use of autoconf 2.59 or newer and was built using automake 1.9.6.
 
