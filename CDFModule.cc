@@ -55,11 +55,27 @@ CDFModule::initialize( const string &modname )
     BESRequestHandlerList::TheList()->add_handler( modname, handler ) ;
 
     BESDEBUG( "cdf", "    adding " << CDF_CATALOG << " catalog" << endl )
-    BESCatalogList::TheCatalogList()->add_catalog( new BESCatalogDirectory( CDF_CATALOG) ) ;
+    if( !BESCatalogList::TheCatalogList()->find_catalog( CDF_CATALOG ) )
+    {
+	BESCatalogList::TheCatalogList()->
+	    add_catalog( new BESCatalogDirectory( CDF_CATALOG) ) ;
+    }
+    else
+    {
+	BESDEBUG( "cdf", "    catalog already exists, skipping" << endl )
+    }
 
     BESDEBUG( "cdf", "    adding catalog container storage " << CDF_CATALOG << endl )
-    BESContainerStorageCatalog *csc = new BESContainerStorageCatalog( CDF_CATALOG ) ;
-    BESContainerStorageList::TheList()->add_persistence( csc ) ;
+    if( !BESContainerStorageList::TheList()->find_persistence( CDF_CATALOG ) )
+    {
+	BESContainerStorageCatalog *csc =
+	    new BESContainerStorageCatalog( CDF_CATALOG ) ;
+	BESContainerStorageList::TheList()->add_persistence( csc ) ;
+    }
+    else
+    {
+	BESDEBUG( "cdf", "    storage already exists, skipping" << endl )
+    }
 
     BESDEBUG( "cdf", "    adding cdf debug context" << endl )
     BESDebug::Register( "cdf" ) ;
