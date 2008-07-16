@@ -76,9 +76,14 @@ CDFRequestHandler::~CDFRequestHandler()
 bool
 CDFRequestHandler::cdf_build_das( BESDataHandlerInterface &dhi )
 {
-    BESDASResponse *bdas =
-	dynamic_cast<BESDASResponse *>(dhi.response_handler->get_response_object() ) ;
-    DAS *das = bdas->get_das() ;
+    BESResponseObject *response =
+        dhi.response_handler->get_response_object() ;
+    BESDASResponse *bdas = dynamic_cast < BESDASResponse * >(response) ;
+    DAS *das = 0 ;
+    if (bdas)
+	das = bdas->get_das() ;
+    else
+	throw BESInternalError( "cast error", __FILE__, __LINE__ ) ;
 
     // read the attributes for this container, including ancillary
     // attributes
@@ -97,9 +102,15 @@ CDFRequestHandler::cdf_build_das( BESDataHandlerInterface &dhi )
 bool
 CDFRequestHandler::cdf_build_dds( BESDataHandlerInterface &dhi )
 {
-    BESDDSResponse *bdds =
-	dynamic_cast<BESDDSResponse *>( dhi.response_handler->get_response_object() ) ;
-    DDS *dds = bdds->get_dds() ;
+    BESResponseObject *response =
+        dhi.response_handler->get_response_object();
+    BESDDSResponse *bdds = dynamic_cast < BESDDSResponse * >(response);
+    DDS *dds = 0 ;
+    if (bdds)
+	dds = bdds->get_dds();
+    else
+	throw BESInternalError( "cast error", __FILE__, __LINE__ ) ;
+  
 
     // read the data structure including any ancillary structure
     CDFTypeFactory *factory = new CDFTypeFactory ;
@@ -137,9 +148,16 @@ CDFRequestHandler::cdf_build_dds( BESDataHandlerInterface &dhi )
 bool
 CDFRequestHandler::cdf_build_data( BESDataHandlerInterface &dhi )
 {
+    BESResponseObject *response =
+        dhi.response_handler->get_response_object();
     BESDataDDSResponse *bdds =
-	dynamic_cast<BESDataDDSResponse *>( dhi.response_handler->get_response_object() ) ;
-    DataDDS *dds = bdds->get_dds() ;
+        dynamic_cast < BESDataDDSResponse * >(response);
+    DataDDS *dds = 0 ;
+    if (bdds)
+	dds = bdds->get_dds();
+    else
+	throw BESInternalError( "cast error", __FILE__, __LINE__ ) ;
+  
 
     // read the data structure including any ancillary structure
     CDFTypeFactory *factory = new CDFTypeFactory ;
@@ -177,7 +195,11 @@ CDFRequestHandler::cdf_build_data( BESDataHandlerInterface &dhi )
 bool
 CDFRequestHandler::cdf_build_help( BESDataHandlerInterface &dhi )
 {
-    BESInfo *info = dynamic_cast<BESInfo *>(dhi.response_handler->get_response_object());
+    BESInfo *info =
+	dynamic_cast<BESInfo *>(dhi.response_handler->get_response_object());
+    if( !info )
+	throw BESInternalError( "cast error", __FILE__, __LINE__ ) ;
+
     info->begin_tag( "Handler" ) ;
     info->add_tag( "name", PACKAGE_NAME ) ;
     string handles = (string)DAS_RESPONSE
@@ -194,7 +216,12 @@ CDFRequestHandler::cdf_build_help( BESDataHandlerInterface &dhi )
 bool
 CDFRequestHandler::cdf_build_version( BESDataHandlerInterface &dhi )
 {
-    BESVersionInfo *info = dynamic_cast<BESVersionInfo *>(dhi.response_handler->get_response_object() ) ;
+    BESResponseObject *response =
+        dhi.response_handler->get_response_object();
+    BESVersionInfo *info = dynamic_cast < BESVersionInfo * >(response);
+    if( !info )
+	throw BESInternalError( "cast error", __FILE__, __LINE__ ) ;
+  
     info->addHandlerVersion( PACKAGE_NAME, PACKAGE_VERSION ) ;
     return true ;
 }
