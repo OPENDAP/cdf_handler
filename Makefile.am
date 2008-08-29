@@ -9,7 +9,7 @@ AUTOMAKE_OPTIONS = foreign check-news
 
 ACLOCAL_AMFLAGS = -I conf
 
-SUBDIRS = testsuite
+SUBDIRS = bes-testsuite
 
 bin_PROGRAMS = dap_cdf_handler
 
