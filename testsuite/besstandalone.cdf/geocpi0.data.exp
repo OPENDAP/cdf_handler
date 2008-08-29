@@ -8,6 +8,6 @@ global srcdir
 
 # The `1' in compare_stdout means call xfail if the test fails.
 
-besstandalone_start "cdf/geocpi0.ascii.bescmd"
-compare_stdout "cdf/geocpi0.ascii.bescmd.baseline" "geocpi0 ascii" 0
+besstandalone_start "cdf/geocpi0.data.bescmd" "data"
+compare_stdout "cdf/geocpi0.data.bescmd.baseline" "geocpi0 data" 0
 
