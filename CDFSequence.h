@@ -42,7 +42,7 @@ class CDFSequence: public Sequence {
 private:
         
 public:
-    CDFSequence(const string &n = "");
+    CDFSequence(const string &n, const string &d);
     CDFSequence(const CDFSequence &rhs);
     virtual ~CDFSequence();
 

@@ -41,7 +41,6 @@ using std::string ;
 #include "cdf.h"
 
 #include "BaseType.h"
-#include "BaseTypeFactory.h"
 
 using namespace libdap ;
 
@@ -53,8 +52,9 @@ public:
     static char *	DataType( long attrDataType ) ;
     static char *	DodsDataType( long attrDataType ) ;
 
-    static BaseType *	DodsBaseType( BaseTypeFactory *factory,
-				      char *varName, long cdfDataType ) ;
+    static BaseType *	DodsBaseType( const string &varName,
+				      const string &dataset,
+				      long cdfDataType ) ;
 
     static void		read_record( void *cdf_buf, void *arrbuf,
 				     unsigned int &arrindex,

@@ -38,7 +38,7 @@
 #include "CDFFloat32.h"
 #include "CDFutilities.h"
 
-CDFFloat32::CDFFloat32(const string &n) : Float32(n)
+CDFFloat32::CDFFloat32(const string &n, const string &d) : Float32(n, d)
 {
 }
 
@@ -70,7 +70,7 @@ CDFFloat32::ptr_duplicate()
 
 
 bool
-CDFFloat32::read(const string &dataset)
+CDFFloat32::read()
 {
     if( read_p( ) )
     {
@@ -110,8 +110,9 @@ CDFFloat32::read(const string &dataset)
     /*************************************************************************
     * Open the CDF.
     *************************************************************************/
-    BESDEBUG( "cdf", "CDFFloat32: " << name() << ": Opening " << dataset << endl )
-    status = CDFopen ( dataset.c_str(), &id ) ;
+    string ds_name = dataset() ;
+    BESDEBUG( "cdf", "CDFFloat32: " << name() << ": Opening " << ds_name << endl )
+    status = CDFopen ( ds_name.c_str(), &id ) ;
     if ( status != CDF_OK )
     {
 	if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )

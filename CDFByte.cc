@@ -38,7 +38,7 @@
 #include "CDFByte.h"
 #include "CDFutilities.h"
 
-CDFByte::CDFByte(const string &n) : Byte(n)
+CDFByte::CDFByte(const string &n, const string &d) : Byte(n, d)
 {
 }
 
@@ -70,7 +70,7 @@ CDFByte::ptr_duplicate()
 
 
 bool
-CDFByte::read(const string &dataset)
+CDFByte::read()
 {
     if( read_p( ) )
     {
@@ -110,8 +110,9 @@ CDFByte::read(const string &dataset)
     /*************************************************************************
     * Open the CDF.
     *************************************************************************/
-    BESDEBUG( "cdf", "CDFByte: " << name() << ": Opening " << dataset << endl )
-    status = CDFopen ( dataset.c_str(), &id ) ;
+    string ds_name = dataset() ;
+    BESDEBUG( "cdf", "CDFByte: " << name() << ": Opening " << ds_name << endl )
+    status = CDFopen ( ds_name.c_str(), &id ) ;
     if ( status != CDF_OK )
     {
 	if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )

@@ -44,7 +44,8 @@ CDFArray::ptr_duplicate()
     return new CDFArray(*this);
 }
 
-CDFArray::CDFArray(const string &n, BaseType *v) : Array(n, v)
+CDFArray::CDFArray(const string &n, const string &d, BaseType *v)
+    : Array(n, d, v)
 {
 }
 
@@ -68,7 +69,7 @@ CDFArray::operator=(const CDFArray &rhs)
 }
 
 bool
-CDFArray::read(const string &dataset)
+CDFArray::read()
 {
     if( read_p( ) )
     {
@@ -106,8 +107,9 @@ CDFArray::read(const string &dataset)
     /*************************************************************************
     * Open the CDF.
     *************************************************************************/
-    BESDEBUG( "cdf", "CDFArray: " << name() << ": Opening " << dataset << endl )
-    status = CDFopen ( dataset.c_str(), &id ) ;
+    string ds_name = dataset() ;
+    BESDEBUG( "cdf", "CDFArray: " << name() << ": Opening " << ds_name << endl )
+    status = CDFopen ( ds_name.c_str(), &id ) ;
     if ( status != CDF_OK )
     {
 	if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )

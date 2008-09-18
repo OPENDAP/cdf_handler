@@ -43,7 +43,7 @@ CDFStructure::ptr_duplicate()
     return new CDFStructure(*this);
 }
 
-CDFStructure::CDFStructure(const string &n) : Structure(n)
+CDFStructure::CDFStructure(const string &n, const string &d) : Structure(n, d)
 {
 }
 

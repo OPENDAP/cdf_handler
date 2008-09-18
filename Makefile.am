@@ -9,13 +9,13 @@ AUTOMAKE_OPTIONS = foreign check-news
 
 ACLOCAL_AMFLAGS = -I conf
 
-SUBDIRS = bes-testsuite
-
 bin_PROGRAMS = dap_cdf_handler
 
 lib_LTLIBRARIES = libcdf_handler.la
 
 if OPENDAPSERVER
+
+SUBDIRS = bes-testsuite
 
 lib_besdir=$(libdir)/bes
 lib_bes_LTLIBRARIES = libcdf_module.la
@@ -25,12 +25,12 @@ endif
 
 CDFSRCS:= CDFArray.cc CDFByte.cc CDFFloat32.cc CDFFloat64.cc CDFGrid.cc \
 	  CDFInt16.cc CDFInt32.cc CDFSequence.cc CDFStr.cc CDFStructure.cc \
-	  CDFTypeFactory.cc CDFUInt16.cc CDFUInt32.cc CDFUrl.cc \
+	  CDFUInt16.cc CDFUInt32.cc CDFUrl.cc \
 	  CDFreadAttributes.cc CDFreadDescriptors.cc CDFutilities.cc
 
 CDFHDRS:= CDFArray.h CDFByte.h CDFFloat32.h CDFFloat64.h CDFGrid.h \
 	  CDFInt16.h CDFInt32.h CDFSequence.h CDFStr.h CDFStructure.h \
-	  CDFTypeFactory.h CDFUInt16.h CDFUInt32.h CDFUrl.h CDFnamePath.h \
+	  CDFUInt16.h CDFUInt32.h CDFUrl.h CDFnamePath.h \
 	  CDFreadAttributes.h CDFreadDescriptors.h CDFutilities.h \
 	  config_cdf.h
 

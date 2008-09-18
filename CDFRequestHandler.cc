@@ -43,7 +43,6 @@ using std::cerr ;
 using std::endl ;
 
 #include "CDFRequestHandler.h"
-#include "CDFTypeFactory.h"
 #include "BESResponseHandler.h"
 #include "BESResponseNames.h"
 #include "BESDataNames.h"
@@ -81,6 +80,7 @@ CDFRequestHandler::cdf_build_das( BESDataHandlerInterface &dhi )
     if( !bdas )
 	throw BESInternalError( "cast error", __FILE__, __LINE__ ) ;
 
+    bdas->set_container( dhi.container->get_symbolic_name() ) ;
     DAS *das = bdas->get_das() ;
 
     // read the attributes for this container, including ancillary
@@ -94,6 +94,8 @@ CDFRequestHandler::cdf_build_das( BESDataHandlerInterface &dhi )
 
     Ancillary::read_ancillary_das( *das, accessed ) ;
 
+    bdas->clear_container( ) ;
+
     return true ;
 }
 
@@ -105,11 +107,10 @@ CDFRequestHandler::cdf_build_dds( BESDataHandlerInterface &dhi )
     if( !bdds )
 	throw BESInternalError( "cast error", __FILE__, __LINE__ ) ;
   
+    bdds->set_container( dhi.container->get_symbolic_name() ) ;
     DDS *dds = bdds->get_dds();
 
     // read the data structure including any ancillary structure
-    CDFTypeFactory *factory = new CDFTypeFactory ;
-    dds->set_factory( factory ) ;
     string accessed = dhi.container->access() ;
     string symbolic = dhi.container->get_symbolic_name() ;
     dds->filename( accessed );
@@ -122,20 +123,22 @@ CDFRequestHandler::cdf_build_dds( BESDataHandlerInterface &dhi )
 
     // The dds now includes attribute information. Grab the attributes and
     // any ancillary attributes.
-    DAS das;
-    if( !readAttributes( das, accessed ) )
+    DAS *das = new DAS ;
+    BESDASResponse bdas( das ) ;
+    bdas.set_container( dhi.container->get_symbolic_name() ) ;
+    if( !readAttributes( *das, accessed ) )
     {
 	string s = "CDF could not build the DAS response" ;
 	throw BESInternalError( s, __FILE__, __LINE__ ) ;
     }
-    Ancillary::read_ancillary_das( das, accessed ) ;
+    Ancillary::read_ancillary_das( *das, accessed ) ;
 
     // transfer the attributes to the dds.
-    dds->transfer_attributes(&das);
+    dds->transfer_attributes(das);
+
+    bdds->clear_container( ) ;
 
     dhi.data[POST_CONSTRAINT] = dhi.container->get_constraint();
-
-    dds->set_factory( NULL ) ;
 
     return true ;
 }
@@ -148,11 +151,10 @@ CDFRequestHandler::cdf_build_data( BESDataHandlerInterface &dhi )
     if( !bdds )
 	throw BESInternalError( "cast error", __FILE__, __LINE__ ) ;
   
+    bdds->set_container( dhi.container->get_symbolic_name() ) ;
     DataDDS *dds = bdds->get_dds();
 
     // read the data structure including any ancillary structure
-    CDFTypeFactory *factory = new CDFTypeFactory ;
-    dds->set_factory( factory ) ;
     string accessed = dhi.container->access() ;
     string symbolic = dhi.container->get_symbolic_name() ;
     dds->filename( accessed );
@@ -165,20 +167,22 @@ CDFRequestHandler::cdf_build_data( BESDataHandlerInterface &dhi )
 
     // The dds now includes attribute information. Grab the attributes and
     // any ancillary attributes.
-    DAS das;
-    if( !readAttributes( das, accessed ) )
+    DAS *das = new DAS ;
+    BESDASResponse bdas( das ) ;
+    bdas.set_container( dhi.container->get_symbolic_name() ) ;
+    if( !readAttributes( *das, accessed ) )
     {
 	string s = "CDF could not build the DAS response" ;
 	throw BESInternalError( s, __FILE__, __LINE__ ) ;
     }
-    Ancillary::read_ancillary_das( das, accessed ) ;
+    Ancillary::read_ancillary_das( *das, accessed ) ;
 
     // transfer the attributes to the dds.
-    dds->transfer_attributes(&das);
+    dds->transfer_attributes(das);
+
+    bdds->clear_container( ) ;
 
     dhi.data[POST_CONSTRAINT] = dhi.container->get_constraint();
-
-    dds->set_factory( NULL ) ;
 
     return true ;
 }

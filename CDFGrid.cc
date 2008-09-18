@@ -43,14 +43,13 @@ CDFGrid::ptr_duplicate()
     return new CDFGrid(*this);
 }
 
-CDFGrid::CDFGrid(const string &n) : Grid(n)
+CDFGrid::CDFGrid(const string &n, const string &d) : Grid(n, d)
 {
 }
 
 CDFGrid::CDFGrid(const CDFGrid &rhs) : Grid(rhs)
 {
 }
-
 
 CDFGrid::~CDFGrid()
 {

@@ -35,7 +35,7 @@
 
 #include "CDFUrl.h"
 
-CDFUrl::CDFUrl(const string &n) : Url(n)
+CDFUrl::CDFUrl(const string &n, const string &d) : Url(n, d)
 {
 }
 

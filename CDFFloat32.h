@@ -41,14 +41,14 @@ using namespace libdap ;
 class CDFFloat32: public Float32 {
 
 public:
-    CDFFloat32(const string &n = "");
+    CDFFloat32(const string &n, const string &d);
     CDFFloat32(const CDFFloat32 &rhs);
     virtual ~CDFFloat32();
 
     CDFFloat32 &operator=(const CDFFloat32 &rhs);
     virtual BaseType *ptr_duplicate();
 
-    virtual bool read(const string &dataset);
+    virtual bool read();
 };
 
 #endif

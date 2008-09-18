@@ -43,7 +43,6 @@ using std::ios ;
 
 #include "config_cdf.h"
 #include "CDFutilities.h"
-#include "BaseTypeFactory.h"
 #include "CDFByte.h"
 #include "CDFInt16.h"
 #include "CDFUInt16.h"
@@ -52,11 +51,6 @@ using std::ios ;
 #include "CDFFloat32.h"
 #include "CDFFloat64.h"
 #include "CDFStr.h"
-#include "CDFUrl.h"
-#include "CDFArray.h"
-#include "CDFStructure.h"
-#include "CDFSequence.h"
-#include "CDFGrid.h"
 
 /*****************************************************************************
 * Status handler.
@@ -206,41 +200,41 @@ CDFutilities::DataType( long cdfDataType )
 * Return DODS BaseType given CDF data type
 *****************************************************************************/
 BaseType *
-CDFutilities::DodsBaseType( BaseTypeFactory *factory,
-                            char *varName,
+CDFutilities::DodsBaseType( const string &varName,
+			    const string &dataset,
 			    long cdfDataType )
 {
     switch( cdfDataType )
     {
 	case CDF_BYTE:
-	    return factory->NewByte( varName ) ;
+	    return new CDFByte( varName, dataset ) ;
 	    break ;
 	case CDF_UCHAR:
 	case CDF_CHAR:
-	    return factory->NewStr( varName ) ;
+	    return new CDFStr( varName, dataset ) ;
 	    break ;
 	case CDF_INT1:
 	case CDF_INT2:
-	    return factory->NewInt16( varName ) ;
+	    return new CDFInt16( varName, dataset ) ;
 	    break ;
 	case CDF_UINT1:
 	case CDF_UINT2:
-	    return factory->NewUInt16( varName ) ;
+	    return new CDFUInt16( varName, dataset ) ;
 	    break ;
 	case CDF_INT4:
-	    return factory->NewInt32( varName ) ;
+	    return new CDFInt32( varName, dataset ) ;
 	    break ;
 	case CDF_UINT4:
-	    return factory->NewUInt32( varName ) ;
+	    return new CDFUInt32( varName, dataset ) ;
 	    break ;
 	case CDF_REAL4:
 	case CDF_FLOAT:
-	    return factory->NewFloat32( varName ) ;
+	    return new CDFFloat32( varName, dataset ) ;
 	    break ;
 	case CDF_REAL8:
 	case CDF_DOUBLE:
 	case CDF_EPOCH:
-	    return factory->NewFloat64( varName ) ;
+	    return new CDFFloat64( varName, dataset ) ;
 	    break ;
 	case CDF_EPOCH16:
 	    return NULL ;

@@ -38,7 +38,7 @@
 #include "CDFStr.h"
 #include "CDFutilities.h"
 
-CDFStr::CDFStr(const string &n) : Str(n)
+CDFStr::CDFStr(const string &n, const string &d) : Str(n, d)
 {
 }
 
@@ -69,7 +69,7 @@ CDFStr::ptr_duplicate()
 }
 
 bool
-CDFStr::read(const string &dataset)
+CDFStr::read()
 {
     if( read_p( ) )
     {
@@ -109,8 +109,9 @@ CDFStr::read(const string &dataset)
     /*************************************************************************
     * Open the CDF.
     *************************************************************************/
-    BESDEBUG( "cdf", "CDFStr: " << name() << ": Opening " << dataset << endl )
-    status = CDFopen ( dataset.c_str(), &id ) ;
+    string ds_name = dataset() ;
+    BESDEBUG( "cdf", "CDFStr: " << name() << ": Opening " << ds_name << endl )
+    status = CDFopen ( ds_name.c_str(), &id ) ;
     if ( status != CDF_OK )
     {
 	if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )

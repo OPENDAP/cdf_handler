@@ -38,7 +38,7 @@
 #include "CDFInt16.h"
 #include "CDFutilities.h"
 
-CDFInt16::CDFInt16(const string &n) : Int16(n)
+CDFInt16::CDFInt16(const string &n, const string &d) : Int16(n, d)
 {
 }
 
@@ -68,7 +68,7 @@ CDFInt16::ptr_duplicate()
 }
 
 bool
-CDFInt16::read(const string &dataset)
+CDFInt16::read()
 {
     if( read_p( ) )
     {
@@ -108,8 +108,9 @@ CDFInt16::read(const string &dataset)
     /*************************************************************************
     * Open the CDF.
     *************************************************************************/
-    BESDEBUG( "cdf", "CDFInt16: " << name() << ": Opening " << dataset << endl )
-    status = CDFopen ( dataset.c_str(), &id ) ;
+    string ds_name = dataset() ;
+    BESDEBUG( "cdf", "CDFInt16: " << name() << ": Opening " << ds_name << endl )
+    status = CDFopen ( ds_name.c_str(), &id ) ;
     if ( status != CDF_OK )
     {
 	if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )

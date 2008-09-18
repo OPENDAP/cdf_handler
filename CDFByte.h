@@ -41,7 +41,7 @@ using namespace libdap ;
 class CDFByte: public Byte {
 
 public:
-    CDFByte(const string &n = "");
+    CDFByte(const string &n, const string &d);
     CDFByte(const CDFByte &rhs);
     virtual ~CDFByte();
 
@@ -49,7 +49,7 @@ public:
 
     virtual BaseType *ptr_duplicate();
 
-    virtual bool read(const string &dataset);
+    virtual bool read();
 };
 
 #endif

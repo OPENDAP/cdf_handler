@@ -41,7 +41,7 @@ using namespace libdap ;
 class CDFUrl: public Url {
         
 public:
-    CDFUrl(const string &n = "");
+    CDFUrl(const string &n, const string &d);
     CDFUrl(const CDFUrl &rhs);
     virtual ~CDFUrl();
 

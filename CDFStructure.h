@@ -41,7 +41,7 @@ using namespace libdap ;
 class CDFStructure: public Structure {
         
 public:
-    CDFStructure(const string &n = "");
+    CDFStructure(const string &n, const string &d);
     CDFStructure(const CDFStructure &rhs);
     virtual ~CDFStructure();
 

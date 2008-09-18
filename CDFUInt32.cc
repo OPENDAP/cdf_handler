@@ -38,7 +38,7 @@
 #include "CDFUInt32.h"
 #include "CDFutilities.h"
 
-CDFUInt32::CDFUInt32(const string &n) : UInt32(n)
+CDFUInt32::CDFUInt32(const string &n, const string &d) : UInt32(n, d)
 {
 }
 
@@ -70,7 +70,7 @@ CDFUInt32::ptr_duplicate()
 
 
 bool
-CDFUInt32::read(const string &dataset)
+CDFUInt32::read()
 {
     if( read_p( ) )
     {
@@ -110,8 +110,9 @@ CDFUInt32::read(const string &dataset)
     /*************************************************************************
     * Open the CDF.
     *************************************************************************/
-    BESDEBUG( "cdf", "CDFUInt32: " << name() << ": Opening " << dataset << endl )
-    status = CDFopen ( dataset.c_str(), &id ) ;
+    string ds_name = dataset() ;
+    BESDEBUG( "cdf", "CDFUInt32: " << name() << ": Opening " << ds_name << endl)
+    status = CDFopen ( ds_name.c_str(), &id ) ;
     if ( status != CDF_OK )
     {
 	if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )

@@ -40,14 +40,14 @@ using namespace libdap ;
 
 class CDFArray: public Array {
 public:
-    CDFArray(const string &n = "", BaseType *v = 0);
+    CDFArray(const string &n, const string &d, BaseType *v);
     CDFArray(const CDFArray &cdf_array);
     CDFArray &operator=(const CDFArray &rhs);
     virtual ~CDFArray();
 
     virtual BaseType *ptr_duplicate();
 
-    virtual bool read(const string &dataset);
+    virtual bool read();
 };
 
 #endif

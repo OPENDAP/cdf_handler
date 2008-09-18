@@ -62,7 +62,6 @@ bool
 readDescriptors( DDS &dds, const string &filename, const string &name )
 {
     dds.set_dataset_name( name ) ;
-    BaseTypeFactory *factory = dds.get_factory() ;
 
     CDFid id;            /* CDF identifier. */
     CDFstatus status;    /* CDF completion status. */
@@ -179,13 +178,16 @@ readDescriptors( DDS &dds, const string &filename, const string &name )
 	    // otherwise it's an array
 	    if( numDims == 0 && numRecs < 2 )
 	    {
-		var = CDFutilities::DodsBaseType( factory, varName, varType ) ;
+		var = CDFutilities::DodsBaseType( varName, filename, varType ) ;
 	    }
 	    else
 	    {
-		Array *ar = dds.get_factory()->NewArray( varName ) ;
+		BaseType *bt = CDFutilities::DodsBaseType( varName,
+							   filename,
+							   varType ) ;
+		Array *ar = new CDFArray( varName, filename, bt ) ;
+		delete bt ;
 		var = ar ;
-		ar->add_var( CDFutilities::DodsBaseType( factory, varName, varType ) ) ;
 		if( recVary && numRecs > 0 )
 		{
 		    ar->append_dim( numRecs, "RecDim" ) ;

@@ -41,7 +41,7 @@ using namespace libdap ;
 class CDFStr: public Str {
      
 public:
-    CDFStr(const string &n = "");
+    CDFStr(const string &n, const string &d);
     CDFStr(const CDFStr &rhs);
     virtual ~CDFStr();
 
@@ -49,7 +49,7 @@ public:
 
     virtual BaseType *ptr_duplicate();
     
-    virtual bool read(const string &dataset);
+    virtual bool read();
 };
 
 #endif

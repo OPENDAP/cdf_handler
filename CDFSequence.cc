@@ -41,7 +41,7 @@ CDFSequence::ptr_duplicate()
     return new CDFSequence(*this);
 }
 
-CDFSequence::CDFSequence(const string &n) : Sequence(n)
+CDFSequence::CDFSequence(const string &n, const string &d) : Sequence(n, d)
 {
 }
 

@@ -45,7 +45,6 @@
 #include "cgi_util.h"
 #include "ConstraintEvaluator.h"
 
-#include "CDFTypeFactory.h"
 #include "CDFreadAttributes.h"
 #include "CDFreadDescriptors.h"
 
@@ -54,8 +53,6 @@ const string cgi_version = PACKAGE_VERSION;
 int 
 main(int argc, char *argv[])
 {
-    CDFTypeFactory *cdftf = new CDFTypeFactory;
-
     try { 
 	DODSFilter df(argc, argv);
 	if (df.get_cgi_version() == "")
@@ -72,7 +69,7 @@ main(int argc, char *argv[])
 	  }
 
 	  case DODSFilter::DDS_Response: {
-	    DDS dds(cdftf);
+	    DDS dds(NULL);
 	    ConstraintEvaluator ce ;
 
 	    string dsn = df.get_dataset_name();
@@ -89,7 +86,7 @@ main(int argc, char *argv[])
 	  }
 
 	  case DODSFilter::DataDDS_Response: {
-	    DDS dds(cdftf);
+	    DDS dds(NULL);
 	    ConstraintEvaluator ce ;
 
 	    string dsn = df.get_dataset_name();
@@ -107,7 +104,7 @@ main(int argc, char *argv[])
 	  }
 
 	  case DODSFilter::DDX_Response: {
-	    DDS dds(cdftf);
+	    DDS dds(NULL);
 	    DAS das;
 	    ConstraintEvaluator ce ;
 
@@ -138,13 +135,11 @@ main(int argc, char *argv[])
 	}
     }
     catch (Error &e) {
-	delete cdftf; cdftf = 0;
 	set_mime_text(stdout, dods_error, cgi_version);
 	e.print(stdout);
 	return 1;
     }
 
-    delete cdftf; cdftf = 0;
     return 0;
 }
 

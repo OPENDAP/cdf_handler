@@ -41,7 +41,7 @@ using namespace libdap ;
 class CDFGrid: public Grid {
 
 public:
-    CDFGrid(const string &n = "");
+    CDFGrid(const string &n, const string &d);
     CDFGrid(const CDFGrid &rhs);
     virtual ~CDFGrid();
 
