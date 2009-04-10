@@ -43,19 +43,22 @@ using std::cerr ;
 using std::endl ;
 
 #include "CDFRequestHandler.h"
-#include "BESResponseHandler.h"
-#include "BESResponseNames.h"
-#include "BESDataNames.h"
+#include <BESResponseHandler.h>
+#include <BESResponseNames.h>
+#include "CDFResponseNames.h"
+#include <BESDataNames.h>
 #include "CDFreadAttributes.h"
-#include "BESDASResponse.h"
+#include <BESDASResponse.h>
 #include "CDFreadDescriptors.h"
-#include "BESDDSResponse.h"
-#include "BESDataDDSResponse.h"
-#include "BESConstraintFuncs.h"
-#include "BESVersionInfo.h"
-#include "TheBESKeys.h"
-#include "BESInternalError.h"
-#include "Ancillary.h"
+#include <BESDDSResponse.h>
+#include <BESDataDDSResponse.h>
+#include <BESConstraintFuncs.h>
+#include <BESVersionInfo.h>
+#include <TheBESKeys.h>
+#include <BESInternalError.h>
+#include <Ancillary.h>
+#include <BESUtil.h>
+#include <BESServiceRegistry.h>
 #include "config_cdf.h"
 
 CDFRequestHandler::CDFRequestHandler( const string &name )
@@ -136,9 +139,9 @@ CDFRequestHandler::cdf_build_dds( BESDataHandlerInterface &dhi )
     // transfer the attributes to the dds.
     dds->transfer_attributes(das);
 
-    bdds->clear_container( ) ;
+    bdds->set_constraint( dhi ) ;
 
-    dhi.data[POST_CONSTRAINT] = dhi.container->get_constraint();
+    bdds->clear_container( ) ;
 
     return true ;
 }
@@ -180,9 +183,9 @@ CDFRequestHandler::cdf_build_data( BESDataHandlerInterface &dhi )
     // transfer the attributes to the dds.
     dds->transfer_attributes(das);
 
-    bdds->clear_container( ) ;
+    bdds->set_constraint( dhi ) ;
 
-    dhi.data[POST_CONSTRAINT] = dhi.container->get_constraint();
+    bdds->clear_container( ) ;
 
     return true ;
 }
@@ -195,16 +198,19 @@ CDFRequestHandler::cdf_build_help( BESDataHandlerInterface &dhi )
     if( !info )
 	throw BESInternalError( "cast error", __FILE__, __LINE__ ) ;
 
-    info->begin_tag( "Handler" ) ;
-    info->add_tag( "name", PACKAGE_NAME ) ;
-    string handles = (string)DAS_RESPONSE
-                     + "," + DDS_RESPONSE
-                     + "," + DATA_RESPONSE
-                     + "," + HELP_RESPONSE
-                     + "," + VERS_RESPONSE ;
-    info->add_tag( "handles", handles ) ;
-    info->add_tag( "version", PACKAGE_STRING ) ;
-    info->end_tag( "Handler" ) ;
+    map<string,string> attrs ;
+    attrs["name"] = PACKAGE_NAME ;
+    attrs["version"] = PACKAGE_VERSION ;
+    list<string> services ;
+    BESServiceRegistry::TheRegistry()->services_handled( CDF_NAME, services );
+    if( services.size() > 0 )
+    {
+	string handles = BESUtil::implode( services, ',' ) ;
+	attrs["handles"] = handles ;
+    }
+    info->begin_tag( "module", &attrs ) ;
+    info->end_tag( "module" ) ;
+
     return true ;
 }
 
@@ -216,7 +222,8 @@ CDFRequestHandler::cdf_build_version( BESDataHandlerInterface &dhi )
     if( !info )
 	throw BESInternalError( "cast error", __FILE__, __LINE__ ) ;
   
-    info->addHandlerVersion( PACKAGE_NAME, PACKAGE_VERSION ) ;
+    info->add_module( PACKAGE_NAME, PACKAGE_VERSION ) ;
+
     return true ;
 }
 
