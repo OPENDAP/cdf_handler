@@ -45,6 +45,7 @@ using std::endl ;
 #include "CDFRequestHandler.h"
 #include <BESResponseHandler.h>
 #include <BESResponseNames.h>
+#include <BESDapNames.h>
 #include "CDFResponseNames.h"
 #include <BESDataNames.h>
 #include "CDFreadAttributes.h"
