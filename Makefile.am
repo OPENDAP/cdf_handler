@@ -9,19 +9,11 @@ AUTOMAKE_OPTIONS = foreign check-news
 
 ACLOCAL_AMFLAGS = -I conf
 
-bin_PROGRAMS = dap_cdf_handler
-
-lib_LTLIBRARIES = libcdf_handler.la
-
-if OPENDAPSERVER
-
 SUBDIRS = bes-testsuite
 
 lib_besdir=$(libdir)/bes
 lib_bes_LTLIBRARIES = libcdf_module.la
 dist_bin_SCRIPTS = bes-cdf-data.sh
-
-endif
 
 CDFSRCS:= CDFArray.cc CDFByte.cc CDFFloat32.cc CDFFloat64.cc CDFGrid.cc \
 	  CDFInt16.cc CDFInt32.cc CDFSequence.cc CDFStr.cc CDFStructure.cc \
@@ -34,9 +26,6 @@ CDFHDRS:= CDFArray.h CDFByte.h CDFFloat32.h CDFFloat64.h CDFGrid.h \
 	  CDFreadAttributes.h CDFreadDescriptors.h CDFutilities.h \
 	  config_cdf.h
 
-libcdf_handler_la_SOURCES = $(CDFSRCS) $(CDFHDRS)
-libcdf_handler_la_LDFLAGS = -version-info $(LIBCDF_HANDLER_VERSION)
-
 SERVER_SRC:=CDFRequestHandler.cc CDFModule.cc CDFRequestHandler.h \
 		CDFModule.h CDFResponseNames.h
 
@@ -45,15 +34,10 @@ libcdf_module_la_CPPFLAGS = -DHAVE_BES=1 $(BES_CPPFLAGS)
 libcdf_module_la_LDFLAGS = -avoid-version -module 
 libcdf_module_la_LIBADD = $(BES_DAP_LIBS)
 
-dap_cdf_handler_SOURCES = dap_cdf_handler.cc
-dap_cdf_handler_LDADD = libcdf_handler.la
-
 EXTRA_DIST = data COPYRIGHT COPYING cdf_handler.spec \
 	bes-cdf-data.sh.in OSX_Resources
 
 CLEANFILES = *~
-
-if OPENDAPSERVER
 
 CLEANFILES += bes-cdf-data.sh
 
@@ -79,8 +63,6 @@ bes-conf: bes-cdf-data.sh
 	else \
 	    ./bes-cdf-data.sh $$bes_prefix/etc/bes/bes.conf $$bes_prefix/lib/bes ; \
 	fi)
-
-endif
 
 ###########################################################################
 
