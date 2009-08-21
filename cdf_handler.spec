@@ -40,7 +40,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%{_bindir}/dap_cdf_handler
 %{_bindir}/bes-cdf-data.sh
 %{_libdir}/libcdf_handler.so.*
 %{_libdir}/bes/libcdf_module.so
