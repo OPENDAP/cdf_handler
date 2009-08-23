@@ -84,7 +84,7 @@ readDescriptors( DDS &dds, const string &filename, const string &name )
     /*************************************************************************
     * Open the CDF.
     *************************************************************************/
-    BESDEBUG( "cdf", "Opening CDF file " << filename << endl )
+    BESDEBUG( "cdf", "Opening CDF file " << filename << endl ) ;
     status = CDFopen ( filename.c_str(), &id ) ;
     if ( status != CDF_OK )
     {
@@ -121,7 +121,7 @@ readDescriptors( DDS &dds, const string &filename, const string &name )
 	    return false ;
 	}
     }
-    BESDEBUG( "cdf", "  numVars = " << numVars << endl )
+    BESDEBUG( "cdf", "  numVars = " << numVars << endl ) ;
 
     /*************************************************************************
     * Get and display variable information
@@ -159,18 +159,22 @@ readDescriptors( DDS &dds, const string &filename, const string &name )
 
 	    if( BESISDEBUG( "cdf" ) )
 	    {
-		BESDEBUG( "cdf", "varName: " << varName << endl )
-		BESDEBUG( "cdf", "  varType = " << CDFutilities::DataType( varType ) << endl )
-		BESDEBUG( "cdf", "  numDims = " << numDims << endl )
+		BESDEBUG( "cdf", "varName: " << varName << endl ) ;
+		BESDEBUG( "cdf", "  varType = "
+				 << CDFutilities::DataType( varType )
+				 << endl ) ;
+		BESDEBUG( "cdf", "  numDims = " << numDims << endl ) ;
 		unsigned int i_numDims = 0 ;
 		for( i_numDims = 0; i_numDims < numDims; i_numDims++ )
 		{
-		    BESDEBUG( "cdf", "    dimSizes[" << i_numDims << "] = " << dimSizes[i_numDims] << endl )
-		    BESDEBUG( "cdf", "    dimVarys[" << i_numDims << "] = " << dimVarys[i_numDims] << endl )
+		    BESDEBUG( "cdf", "    dimSizes[" << i_numDims << "] = "
+				     << dimSizes[i_numDims] << endl ) ;
+		    BESDEBUG( "cdf", "    dimVarys[" << i_numDims << "] = "
+				     << dimVarys[i_numDims] << endl ) ;
 		}
-		BESDEBUG( "cdf", "  numRecs = " << numRecs << endl )
-		BESDEBUG( "cdf", "  recVary = " << recVary << endl )
-		BESDEBUG( "cdf", "  numElems = " << numElems << endl )
+		BESDEBUG( "cdf", "  numRecs = " << numRecs << endl ) ;
+		BESDEBUG( "cdf", "  recVary = " << recVary << endl ) ;
+		BESDEBUG( "cdf", "  numElems = " << numElems << endl ) ;
 	    }
 
 	    BaseType *var = 0 ;

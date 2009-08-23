@@ -110,7 +110,8 @@ CDFFloat64::read()
     * Open the CDF.
     *************************************************************************/
     string ds_name = dataset() ;
-    BESDEBUG( "cdf", "CDFFloat64: " << name() << ": Opening " << ds_name << endl )
+    BESDEBUG( "cdf", "CDFFloat64: " << name() << ": Opening "
+		     << ds_name << endl ) ;
     status = CDFopen ( ds_name.c_str(), &id ) ;
     if ( status != CDF_OK )
     {
@@ -175,12 +176,13 @@ CDFFloat64::read()
     }
     if( BESISDEBUG( "cdf" ) )
     {
-	BESDEBUG( "cdf", "  varType = " << CDFutilities::DataType( varType ) << endl )
-	BESDEBUG( "cdf", "  numDims = " << numDims << endl )
-	BESDEBUG( "cdf", "  maxRec = " << maxRec << endl )
-	BESDEBUG( "cdf", "  numRecs = " << numRecs << endl )
-	BESDEBUG( "cdf", "  recVary = " << recVary << endl )
-	BESDEBUG( "cdf", "  numElems = " << numElems << endl )
+	BESDEBUG( "cdf", "  varType = "
+			 << CDFutilities::DataType( varType ) << endl ) ;
+	BESDEBUG( "cdf", "  numDims = " << numDims << endl ) ;
+	BESDEBUG( "cdf", "  maxRec = " << maxRec << endl ) ;
+	BESDEBUG( "cdf", "  numRecs = " << numRecs << endl ) ;
+	BESDEBUG( "cdf", "  recVary = " << recVary << endl ) ;
+	BESDEBUG( "cdf", "  numElems = " << numElems << endl ) ;
     }
 
     if( varType != CDF_REAL8 && varType != CDF_DOUBLE && varType != CDF_EPOCH )
@@ -210,7 +212,7 @@ CDFFloat64::read()
 	    return false ;
 	}
     }
-    BESDEBUG( "cdf", "  varTypeSize = " << varTypeSize << endl )
+    BESDEBUG( "cdf", "  varTypeSize = " << varTypeSize << endl ) ;
 
     cdf_buf = malloc( varTypeSize ) ;
     arrbuf = (void *)&_buf ;
@@ -245,7 +247,7 @@ CDFFloat64::read()
     unsigned int arrindex = 0 ;
     CDFutilities::read_record( cdf_buf, arrbuf, arrindex,
                                numElems, varType, numElems ) ;
-    BESDEBUG( "cdf", "  _buf = " << _buf << endl )
+    BESDEBUG( "cdf", "  _buf = " << _buf << endl ) ;
 
     /*************************************************************************
     * Close CDF.

@@ -49,16 +49,16 @@ using std::endl ;
 void
 CDFModule::initialize( const string &modname )
 {
-    BESDEBUG( "cdf", "Initializing CDF module " << modname << endl )
+    BESDEBUG( "cdf", "Initializing CDF module " << modname << endl ) ;
 
-    BESDEBUG( "cdf", "    adding " << modname << " request handler" << endl )
+    BESDEBUG( "cdf", "    adding " << modname << " request handler" << endl ) ;
     BESRequestHandler *handler = new CDFRequestHandler( modname ) ;
     BESRequestHandlerList::TheList()->add_handler( modname, handler ) ;
 
-    BESDEBUG( "cdf", modname << " handles dap services" << endl )
+    BESDEBUG( "cdf", modname << " handles dap services" << endl ) ;
     BESDapService::handle_dap_service( modname ) ;
 
-    BESDEBUG( "cdf", "    adding " << CDF_CATALOG << " catalog" << endl )
+    BESDEBUG( "cdf", "    adding " << CDF_CATALOG << " catalog" << endl ) ;
     if( !BESCatalogList::TheCatalogList()->ref_catalog( CDF_CATALOG ) )
     {
 	BESCatalogList::TheCatalogList()->
@@ -66,11 +66,11 @@ CDFModule::initialize( const string &modname )
     }
     else
     {
-	BESDEBUG( "cdf", "    catalog already exists, skipping" << endl )
+	BESDEBUG( "cdf", "    catalog already exists, skipping" << endl ) ;
     }
 
     BESDEBUG( "cdf", "    adding catalog container storage " << CDF_CATALOG
-		    << endl )
+		    << endl ) ;
     if( !BESContainerStorageList::TheList()->ref_persistence( CDF_CATALOG ) )
     {
 	BESContainerStorageCatalog *csc =
@@ -79,32 +79,32 @@ CDFModule::initialize( const string &modname )
     }
     else
     {
-	BESDEBUG( "cdf", "    storage already exists, skipping" << endl )
+	BESDEBUG( "cdf", "    storage already exists, skipping" << endl ) ;
     }
 
-    BESDEBUG( "cdf", "    adding cdf debug context" << endl )
+    BESDEBUG( "cdf", "    adding cdf debug context" << endl ) ;
     BESDebug::Register( "cdf" ) ;
 
-    BESDEBUG( "cdf", "Done Initializing CDF module " << modname << endl )
+    BESDEBUG( "cdf", "Done Initializing CDF module " << modname << endl ) ;
 }
 
 void
 CDFModule::terminate( const string &modname )
 {
-    BESDEBUG( "cdf", "Cleaning CDF module " << modname << endl )
+    BESDEBUG( "cdf", "Cleaning CDF module " << modname << endl ) ;
 
-    BESDEBUG( "cdf", "    removing CDF Handler" << modname << endl )
+    BESDEBUG( "cdf", "    removing CDF Handler" << modname << endl ) ;
     BESRequestHandler *rh = BESRequestHandlerList::TheList()->remove_handler( modname ) ;
     if( rh ) delete rh ;
 
     BESDEBUG( "cdf", "    removing catalog container storage"
-                    << CDF_CATALOG << endl )
+                    << CDF_CATALOG << endl ) ;
     BESContainerStorageList::TheList()->deref_persistence( CDF_CATALOG ) ;
 
-    BESDEBUG( "cdf", "    removing " << CDF_CATALOG << " catalog" << endl )
+    BESDEBUG( "cdf", "    removing " << CDF_CATALOG << " catalog" << endl ) ;
     BESCatalogList::TheCatalogList()->deref_catalog( CDF_CATALOG ) ;
 
-    BESDEBUG( "cdf", "Done Cleaning CDF module " << modname << endl )
+    BESDEBUG( "cdf", "Done Cleaning CDF module " << modname << endl ) ;
 }
 
 /** @brief dumps information about this object
