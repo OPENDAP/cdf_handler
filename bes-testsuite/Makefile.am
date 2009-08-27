@@ -1,7 +1,5 @@
 
-AUTOMAKE_OPTIONS = foreign dejagnu
-
-DEJATOOL=besstandalone
+AUTOMAKE_OPTIONS = foreign
 
 AM_CPPFLAGS = -I$(top_srcdir)
 
@@ -17,11 +15,11 @@ TEST_COV_FLAGS = -ftest-coverage -fprofile-arcs
 
 noinst_DATA = bes.conf
 
-CLEANFILES = *.log *.sum site.exp
+CLEANFILES = *.log
 
-EXTRA_DIST = cdf besstandalone.cdf common_tests.exp bes.conf.in
+EXTRA_DIST = cdf_handlerTest.at $(TESTSUITE) atlocal.in cdf bes.conf.in
 
-DISTCLEANFILES = bes.conf
+DISTCLEANFILES = bes.conf $(srcdir)/package.m4 cdf_handlerTest
 
 bes.conf: bes.conf.in ../config.status
 	sed -e "s%[@]pkgdatadir[@]%${pkgdatadir}%" \
@@ -31,4 +29,36 @@ bes.conf: bes.conf.in ../config.status
 		-e "s%[@]abs_top_srcdir[@]%${abs_top_srcdir}%" \
 		-e "s%[@]abs_top_builddir[@]%${abs_top_builddir}%" \
 		-e "s%[@]bindir[@]%${bindir}%" $< > bes.conf
+
+############## Autotest follows #####################
+
+AUTOM4TE = autom4te
+ 
+TESTSUITE = $(srcdir)/cdf_handlerTest
+
+check-local: atconfig atlocal $(TESTSUITE)
+	$(SHELL) '$(TESTSUITE)' $(TESTSUITEFLAGS)
+
+clean-local:
+	test ! -f '$(TESTSUITE)' || $(SHELL) '$(TESTSUITE)' --clean
+
+distclean-local:
+	-rm atconfig
+
+AUTOTEST = $(AUTOM4TE) --language=autotest
+$(TESTSUITE): $(srcdir)/cdf_handlerTest.at $(srcdir)/package.m4
+	$(AUTOTEST) -I '$(srcdir)' -o $@.tmp $@.at
+	mv $@.tmp $@
+
+# The `:;' works around a Bash 3.2 bug when the output is not writeable.
+$(srcdir)/package.m4: $(top_srcdir)/configure.ac
+	:;{ \
+	echo '# Signature of the current package.' && \
+	echo 'm4_define([AT_PACKAGE_NAME],      [@PACKAGE_NAME@])' && \
+	echo 'm4_define([AT_PACKAGE_TARNAME],   [@PACKAGE_TARNAME@])' && \
+	echo 'm4_define([AT_PACKAGE_VERSION],   [@PACKAGE_VERSION@])' && \
+	echo 'm4_define([AT_PACKAGE_STRING],    [@PACKAGE_STRING@])' && \
+	echo 'm4_define([AT_PACKAGE_BUGREPORT], [@PACKAGE_BUGREPORT@])'; \
+	} >'$(srcdir)/package.m4'
+
 

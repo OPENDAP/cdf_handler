@@ -7,7 +7,8 @@ AC_CONFIG_SRCDIR([CDFStr.h])
 AC_CONFIG_HEADER([config_cdf.h])
 AC_CONFIG_AUX_DIR([conf])
 
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE(1.10)
+AC_CONFIG_TESTDIR(bes-testsuite, [.])
 
 dnl flags for the compilers and linkers - set these before locating the
 dnl actual tools since some of the AC_PROG macros set these `flag variables'
@@ -97,5 +98,7 @@ AH_BOTTOM([/* Shorthand for gcc's unused attribute feature */
 
 #endif /* _config_cdf_h */])
 
-AC_CONFIG_FILES([Makefile bes-testsuite/Makefile])
+AC_CONFIG_FILES([Makefile
+		 bes-testsuite/atlocal
+		 bes-testsuite/Makefile])
 AC_OUTPUT
