@@ -15,11 +15,11 @@ TEST_COV_FLAGS = -ftest-coverage -fprofile-arcs
 
 noinst_DATA = bes.conf
 
-CLEANFILES = *.log
+CLEANFILES = *.log *.sum
 
 EXTRA_DIST = cdf_handlerTest.at $(TESTSUITE) atlocal.in cdf bes.conf.in
 
-DISTCLEANFILES = bes.conf $(srcdir)/package.m4 cdf_handlerTest
+DISTCLEANFILES = bes.conf $(srcdir)/package.m4 cdf_handlerTest site.exp
 
 bes.conf: bes.conf.in ../config.status
 	sed -e "s%[@]pkgdatadir[@]%${pkgdatadir}%" \
