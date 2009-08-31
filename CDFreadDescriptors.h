@@ -35,7 +35,6 @@
 #define CDFreadDescriptors_h_ 1
 
 #include <DDS.h>
-#include <cgi_util.h>
 #include <DODSFilter.h>
 
 using namespace libdap ;

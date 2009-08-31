@@ -43,7 +43,6 @@ using std::endl ;
 #include "CDFreadDescriptors.h"
 #include "CDFutilities.h"
 #include "CDFArray.h"
-#include "cgi_util.h"
 
 /*
  * Current method of reading the data from  a CDF file:
