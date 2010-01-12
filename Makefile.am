@@ -13,7 +13,6 @@ SUBDIRS = bes-testsuite
 
 lib_besdir=$(libdir)/bes
 lib_bes_LTLIBRARIES = libcdf_module.la
-dist_bin_SCRIPTS = bes-cdf-data.sh
 
 CDFSRCS:= CDFArray.cc CDFByte.cc CDFFloat32.cc CDFFloat64.cc CDFGrid.cc \
 	  CDFInt16.cc CDFInt32.cc CDFSequence.cc CDFStr.cc CDFStructure.cc \
@@ -35,34 +34,25 @@ libcdf_module_la_LDFLAGS = -avoid-version -module
 libcdf_module_la_LIBADD = $(BES_DAP_LIBS)
 
 EXTRA_DIST = data COPYRIGHT COPYING cdf_handler.spec \
-	bes-cdf-data.sh.in OSX_Resources
+	cdf.conf.in OSX_Resources
 
-CLEANFILES = *~
-
-CLEANFILES += bes-cdf-data.sh
+CLEANFILES = *~ cdf.conf
 
 sample_datadir = $(datadir)/hyrax/data/cdf
 sample_data_DATA = data/example.cdf data/example1.cdf data/geocpi0.cdf data/wind.cdf
 
+install-data-local: cdf.conf
+	@currdate=`date +"%y%m%d%H%M"`; \
+	test -d $(DESTDIR)$(sysconfdir)/bes || $(MKDIR_P) $(DESTDIR)$(sysconfdir)/bes; \
+	test -d $(DESTDIR)$(sysconfdir)/bes/modules || $(MKDIR_P) $(DESTDIR)$(sysconfdir)/bes/modules; \
+	test -f $(DESTDIR)$(sysconfdir)/bes/modules/cdf.conf && mv -f $(DESTDIR)$(sysconfdir)/bes/modules/cdf.conf $(DESTDIR)$(sysconfdir)/bes/modules/cdf.conf.$$currdate; \
+	$(INSTALL_DATA) cdf.conf $(DESTDIR)$(sysconfdir)/bes/modules/cdf.conf
 
-do_subst = sed -e 's,[@]sysconfdir[@],$(sysconfdir),g' \
-		   	   -e 's,[@]libdir[@],$(libdir),g' \
-		   	   -e 's,[@]datadir[@],$(datadir),g'
+uninstall-local:
+	rm -f $(DESTDIR)$(sysconfdir)/bes/modules/cdf.conf
 
-bes-cdf-data.sh: bes-cdf-data.sh.in config.status
-	$(do_subst) < $(srcdir)/bes-cdf-data.sh.in > bes-cdf-data.sh
-	chmod +x bes-cdf-data.sh
-
-# This makes sure that the handler modifies the bes which configure found
-# even when distcheck is run.
-bes-conf: bes-cdf-data.sh
-	(bes_prefix=`bes-config --prefix` ; \
-	if test "$$bes_prefix" = "/usr" ; \
-	 then \
-	    ./bes-cdf-data.sh /etc/bes/bes.conf /usr/lib/bes ;\
-	else \
-	    ./bes-cdf-data.sh $$bes_prefix/etc/bes/bes.conf $$bes_prefix/lib/bes ; \
-	fi)
+cdf.conf: cdf.conf.in config.status
+	sed -e "s%[@]bes_modules_dir[@]%${lib_besdir}%" $< > cdf.conf
 
 ###########################################################################
 
