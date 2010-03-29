@@ -6,7 +6,7 @@
 # modules to load, includes data modules and command modules            #
 #-----------------------------------------------------------------------#
 
-BES.modules=cdf
+BES.modules+=cdf
 BES.module.cdf=@bes_modules_dir@/libcdf_module.so
 
 #-----------------------------------------------------------------------#
