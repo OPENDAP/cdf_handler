@@ -2,10 +2,11 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT(cdf_handler, 1.0.3, opendap-tech@opendap.org)
-AC_CONFIG_SRCDIR([CDFStr.h])
+AC_INIT(cdf_handler, 1.0.4, opendap-tech@opendap.org)
+AC_CONFIG_SRCDIR([configure.ac])
 AC_CONFIG_HEADER([config_cdf.h])
 AC_CONFIG_AUX_DIR([conf])
+AC_CONFIG_MACRO_DIR([conf])
 
 AM_INIT_AUTOMAKE(1.10)
 AC_CONFIG_TESTDIR(bes-testsuite, [.])
@@ -47,7 +48,7 @@ AC_CHECK_TYPES([ptrdiff_t])
 AC_CHECK_FUNCS([strchr])
 
 dnl Checks for specific libraries
-AC_CHECK_LIBDAP([3.9.2],
+AC_CHECK_LIBDAP([3.10.2],
  [
   LIBS="$LIBS $DAP_SERVER_LIBS"
   CPPFLAGS="$CPPFLAGS $DAP_CFLAGS"
@@ -55,7 +56,7 @@ AC_CHECK_LIBDAP([3.9.2],
  [ AC_MSG_ERROR([Cannot find libdap])
 ])
   
-AC_CHECK_BES([3.7.2],
+AC_CHECK_BES([3.8.3],
 [
 ],
 [ AC_MSG_ERROR([Cannot find bes])
