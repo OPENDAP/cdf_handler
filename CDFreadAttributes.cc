@@ -33,9 +33,39 @@
  
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "CDFreadAttributes.h"
 #include "CDFutilities.h"
+
+#if 0
+static int CDFelemSize(long dataType);
+#endif
+
+static int CDFelemSize (long dataType)
+{
+    switch (dataType) 
+    {
+	case CDF_BYTE: return 1;
+	case CDF_INT1: return 1;
+	case CDF_INT2: return 2;
+	case CDF_INT4: return 4;
+	case CDF_INT8: return 8;
+	case CDF_UINT1: return 1;
+	case CDF_UINT2: return 2;
+	case CDF_UINT4: return 4;
+	case CDF_REAL4: return 4;
+	case CDF_REAL8: return 8;
+	case CDF_FLOAT: return 4;
+	case CDF_DOUBLE: return 8;
+	case CDF_EPOCH: return 8;
+	case CDF_EPOCH16: return 16;
+	case CDF_TIME_TT2000: return 8;
+	case CDF_CHAR: return 1;
+	case CDF_UCHAR: return 1;
+    }
+    return 0;
+}
 
 bool readAttributes( DAS &das, string filename )
 {
@@ -67,6 +97,7 @@ bool readAttributes( DAS &das, string filename )
     {
 	if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
 	{
+	    CDFclose( id ) ;
 	    return false ;
 	}
     }
@@ -80,6 +111,7 @@ bool readAttributes( DAS &das, string filename )
     {
 	if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
 	{
+	    CDFclose( id ) ;
 	    return false ;
 	}
     }
@@ -98,7 +130,7 @@ bool readAttributes( DAS &das, string filename )
     long numEntry = 0 ;
     long attrDataType = 0 ;
     long attrNumElems = 0 ;
-    char attrData[2048] ; // FIX: hard coded size
+    void *attrData;
 
     for( anindex = 0; anindex < numAttrs; anindex++ )
     {
@@ -110,6 +142,7 @@ bool readAttributes( DAS &das, string filename )
 	{
 	    if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
 	    {
+		CDFclose( id ) ;
 		return false ;
 	    }
 	}
@@ -123,6 +156,7 @@ bool readAttributes( DAS &das, string filename )
 	    {
 		if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
 		{
+		    CDFclose( id ) ;
 		    return false ;
 		}
 	    }
@@ -132,8 +166,7 @@ bool readAttributes( DAS &das, string filename )
 	    for( subindex = 0; subindex < maxEntry+1; subindex++ )
 	    {
 		status = CDFlib( SELECT_, gENTRY_, subindex,
-				 GET_, gENTRY_DATA_, attrData,
-				       gENTRY_DATATYPE_, &attrDataType,
+				 GET_, gENTRY_DATATYPE_, &attrDataType,
 				       gENTRY_NUMELEMS_, &attrNumElems,
 				 NULL_ ) ;
 		if( status == NO_SUCH_ENTRY ) continue ;
@@ -141,12 +174,32 @@ bool readAttributes( DAS &das, string filename )
 		{
 		    if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
 		    {
+			CDFclose( id ) ;
 			return false ;
 		    }
 		}
-
+		if (attrDataType == CDF_CHAR || attrDataType == CDF_UCHAR)
+                {
+		    attrData = malloc((size_t)attrNumElems+1) ;
+                }
+		else
+                {
+		    attrData = malloc((size_t)CDFelemSize(attrDataType) * attrNumElems);
+                }
+		status = CDFlib( GET_, gENTRY_DATA_, attrData,
+				 NULL_ ) ;
+		if ( status != CDF_OK )
+		{
+		    if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
+		    {
+			free (attrData) ;
+			CDFclose( id ) ;
+			return false ;
+		    }
+		}
 		AddValue( das, attrName, attrData, attrDataType,
 			  attrNumElems, varName) ;
+		free (attrData) ;
 	    }
 	}
 	else
@@ -158,6 +211,7 @@ bool readAttributes( DAS &das, string filename )
 	    {
 		if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
 		{
+		    CDFclose( id ) ;
 		    return false ;
 		}
 	    }
@@ -165,8 +219,7 @@ bool readAttributes( DAS &das, string filename )
 	    for( subindex = 0; subindex < maxEntry+1; subindex++ )
 	    {
 		status = CDFlib( SELECT_, zENTRY_, subindex,
-				 GET_, zENTRY_DATA_, attrData,
-				       zENTRY_DATATYPE_, &attrDataType,
+				 GET_, zENTRY_DATATYPE_, &attrDataType,
 				       zENTRY_NUMELEMS_, &attrNumElems,
 				 SELECT_, zVAR_, subindex,
 				 GET_, zVAR_NAME_, varName,
@@ -176,12 +229,33 @@ bool readAttributes( DAS &das, string filename )
 		{
 		    if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
 		    {
+			CDFclose( id ) ;
+			return false ;
+		    }
+		}
+		if (attrDataType == CDF_CHAR || attrDataType == CDF_UCHAR)
+		{
+		  attrData = malloc((size_t)attrNumElems+1) ;
+		}
+		else
+		{
+		  attrData = malloc((size_t)CDFelemSize(attrDataType) * attrNumElems);
+		}
+		status = CDFlib( GET_, zENTRY_DATA_, attrData,
+				 NULL_ ) ;
+		if ( status != CDF_OK )
+		{
+		    if( CDFutilities::StatusHandler( status, __FILE__, __LINE__ ) == false )
+		    {
+			free (attrData) ;
+			CDFclose( id ) ;
 			return false ;
 		    }
 		}
 
 		AddValue( das, attrName, attrData, attrDataType,
 			  attrNumElems, varName) ;
+		free (attrData) ;
 	    }
 	}
     }

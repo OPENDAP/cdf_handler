@@ -33,6 +33,7 @@
 
 #include <string>
 #include <fstream>
+#include <memory.h>
 
 using std::string ;
 using std::endl ;
