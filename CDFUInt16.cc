@@ -218,7 +218,7 @@ CDFUInt16::read()
     BESDEBUG( "cdf", "  varTypeSize = " << varTypeSize << endl ) ;
 
     cdf_buf = malloc( varTypeSize ) ;
-    arrbuf = (void *)&_buf ;
+    arrbuf = (void *)&d_buf ;
 
     if( numRecs == 0 ) numRecs = 1 ;
     status = CDFlib( SELECT_, zVAR_RECCOUNT_, (long)1,
@@ -250,7 +250,7 @@ CDFUInt16::read()
     unsigned int arrindex = 0 ;
     CDFutilities::read_record( cdf_buf, arrbuf, arrindex,
                                numElems, varType, numElems ) ;
-    BESDEBUG( "cdf", "  _buf = " << _buf << endl ) ;
+    BESDEBUG( "cdf", "  _buf = " << d_buf << endl ) ;
 
     /*************************************************************************
     * Close CDF.
